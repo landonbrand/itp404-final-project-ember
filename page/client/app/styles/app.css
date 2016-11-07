@@ -12,6 +12,7 @@ nav {
 body {
   text-align: center;
   font-family: helvetica;
+  font-size: 14px;
 }
 
 .container {
@@ -24,4 +25,27 @@ body {
   text-align: left;
   padding-left: 200px;
   padding-right: 200px;
+}
+
+#edit {
+  outline: none;
+}
+
+button {
+  font-size: 1.25em;
+  padding: 8px;
+  background-color: #33c;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #66f;
+}
+
+button:active {
+  background-color: #11a;
 }

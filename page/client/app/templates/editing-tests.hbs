@@ -1,8 +1,12 @@
 {{outlet}}
 <div class="container">
   <div class="page">
-    {{#each model as |node|}}
-      {{{tag-start node}}}
-    {{/each}}
+    <div id="edit" contenteditable="true">
+      {{#each model as |node|}}
+        {{{tag-start node}}}
+      {{/each}}
+    </div>
+    <button {{action 'save'}}>Save</button>
+    <button {{action 'cancelEdits'}}>Cancel Editing</button>
   </div>
 </div>
