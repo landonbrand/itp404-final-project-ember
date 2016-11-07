@@ -3,7 +3,7 @@ import Ember from 'ember';
 export function tagStart(inputNode) {
 
   var renderNode = function(node){
-    console.log(node);
+    // console.log(node);
     var tag = node.tag;
     var content = node.content;
     var outputArray = [];
@@ -20,7 +20,7 @@ export function tagStart(inputNode) {
       outputArray.push("</" + tag + ">");
     }
     var renderedNodes = outputArray.join("");
-    console.log(renderedNodes);
+    // console.log(renderedNodes);
     return renderedNodes;
   };
 

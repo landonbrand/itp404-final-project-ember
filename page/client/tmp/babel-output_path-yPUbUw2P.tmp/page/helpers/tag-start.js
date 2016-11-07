@@ -4,7 +4,7 @@ define("page/helpers/tag-start", ["exports", "ember"], function (exports, _ember
   function tagStart(inputNode) {
 
     var renderNode = function renderNode(node) {
-      console.log(node);
+      // console.log(node);
       var tag = node.tag;
       var content = node.content;
       var outputArray = [];
@@ -20,7 +20,7 @@ define("page/helpers/tag-start", ["exports", "ember"], function (exports, _ember
         outputArray.push("</" + tag + ">");
       }
       var renderedNodes = outputArray.join("");
-      console.log(renderedNodes);
+      // console.log(renderedNodes);
       return renderedNodes;
     };
 

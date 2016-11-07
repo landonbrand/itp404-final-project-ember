@@ -87,6 +87,9 @@ app.get('/api/spoofnodes', function (request, response) {
   response.json(spoofNodes);
 });
 app.post('/api/saveTest', function (req, res) {
+  console.log("\n\n\n");
+  console.log(spoofNodes);
+  console.log("\n\n");
   console.log("Request Body", req.body);
   spoofNodes = JSON.parse(req.body);
   console.log("\n\n");
