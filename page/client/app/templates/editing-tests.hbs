@@ -1,10 +1,10 @@
 {{outlet}}
-<div class="container">
+{{side-bar selectedTags=selectedTags.data}}
+<div class="container" {{action 'mouseUp'}}>
   <div class="page">
+    {{{model}}}
     <div id="edit" contenteditable="true">
-      {{#each model as |node|}}
-        {{{tag-start node}}}
-      {{/each}}
+      {{{model}}}
     </div>
     <button {{action 'save'}}>Save</button>
     <button {{action 'cancelEdits'}}>Cancel Editing</button>
