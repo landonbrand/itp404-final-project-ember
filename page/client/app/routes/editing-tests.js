@@ -12,5 +12,16 @@ export default Ember.Route.extend({
     return promise.then(function(response){
       return response.html;
     });
+  },
+
+  actions: {
+    cancelEditsOnModel: function() {
+      console.log("refreshing...");
+      this.refresh();
+    },
+
+    invalidateModel: function() {
+      this.refresh();
+    }
   }
 });

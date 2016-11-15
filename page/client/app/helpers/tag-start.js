@@ -1,6 +1,5 @@
 import Ember from 'ember';
 
-
 export function tagStart(html) {
   return html
 }

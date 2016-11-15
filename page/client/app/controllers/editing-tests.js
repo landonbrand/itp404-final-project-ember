@@ -31,10 +31,6 @@ export default Ember.Controller.extend({
       }
     },
 
-    invalidateModel: function() {
-      this.refresh();
-    },
-
     save: function(){
       var pageContent = document.getElementById("edit").innerHTML;
       console.log(pageContent);
@@ -51,12 +47,19 @@ export default Ember.Controller.extend({
       });
     },
 
-    cancelEdits: function(){
-      console.log("cancel edits");
-      this.refresh();
-      console.log(this.get('model'));
+    cancelEdits: function() {
+      var edit = document.getElementById("edit");
+      this.send("cancelEditsOnModel");
+      edit.innerHTML = this.get("model");
+    },
+  },
+  
+  modelObserver: Ember.observer('model', function() {
+    var edit = document.getElementById("edit");
+    console.log(edit);
+    if(edit != null){
+      edit.innerHTML = this.get("model");
+      console.log("changing edit's html");
     }
-
-
-  }
+  })
 });
