@@ -5,10 +5,13 @@ export default Ember.Controller.extend({
     data: ["null", "null", "null"]
   },
 
+  cursorPosition: 1,
+
   actions: {
     mouseUp: function() {
       console.log(this.get("selectedTags"));
       var selected = window.getSelection();
+      console.log(selected);
       var elements = {};
       var treeViewer = document.getElementById("treeViewer");
       // document.getElementById("treeViewer").textContent = "innerHTML";
@@ -52,8 +55,32 @@ export default Ember.Controller.extend({
       this.send("cancelEditsOnModel");
       edit.innerHTML = this.get("model");
     },
+
+    onChange: function(){
+      console.log("change");
+      var tags = [];
+      var treeViewer = document.getElementById("treeViewer");
+      var childs = [];
+      childs[0] = treeViewer.children[0].children[0];
+      console.log(childs[0]);
+      for(var i = 1; i < 3; i++){
+        childs[i] = childs[i - 1].children[0].children[0];
+      }
+      var nodeNames = [];
+      for(var i = 0; i < childs.length; i++){
+        var innerHTML = childs[i].innerHTML;
+        for(var j = 0; j < innerHTML.length; j++){
+          if(innerHTML[j] == "<"){
+            nodeNames[i] = innerHTML.slice(0, j);
+            nodeNames[i] = nodeNames[i].trim();
+            break;
+          }
+        }
+      }
+      console.log(nodeNames);
+    }
   },
-  
+
   modelObserver: Ember.observer('model', function() {
     var edit = document.getElementById("edit");
     console.log(edit);

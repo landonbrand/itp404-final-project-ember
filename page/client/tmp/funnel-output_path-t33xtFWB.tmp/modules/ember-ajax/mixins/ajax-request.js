@@ -1,0 +1,1 @@
+/Users/Landon/Desktop/itp404/itp404-final-project-ember/page/client/tmp/funnel-input_base_path-Mg6LxL8k.tmp/0/mixins/ajax-request.js

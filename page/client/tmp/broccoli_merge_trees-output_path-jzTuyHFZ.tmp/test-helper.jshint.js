@@ -1,0 +1,1 @@
+/Users/Landon/Desktop/itp404/itp404-final-project-ember/page/client/tmp/broccoli_merge_trees-input_base_path-sKTI6jbj.tmp/0/test-helper.jshint.js

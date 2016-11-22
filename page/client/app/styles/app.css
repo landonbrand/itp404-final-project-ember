@@ -47,6 +47,7 @@ body {
   border-style: solid;
   border-radius: 4px;
   padding: 10px;
+  min-height: 16px;
 }
 
 .tree-view-box:focus {
@@ -62,6 +63,7 @@ body {
   margin-left: 0;
   margin-right: 0;
 }
+
 
 button {
   font-size: 1.25em;

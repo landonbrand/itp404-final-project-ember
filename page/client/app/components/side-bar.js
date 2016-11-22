@@ -5,16 +5,6 @@ export default Ember.Component.extend({
   //   console.log(this.get('selectedTags'));
   // }),
   actions: {
-
-    noStyle: function(){
-      console.log("noStyle");
-    },
-
-    h1: function(){
-      console.log(this.get("selectedTags"));
-    },
-
-    onChange: function(){
-    }
+    
   }
 });

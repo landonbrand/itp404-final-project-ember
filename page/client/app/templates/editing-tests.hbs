@@ -1,5 +1,23 @@
 {{outlet}}
-{{side-bar selectedTags=selectedTags.data}}
+<div id="sidebar">
+  <div id="treeViewer" {{action 'onChange'}}>
+    <div class='tree-view-box' contenteditable='true'><span>
+      {{selectedTags.data.[2].nodeName}}
+      <div class='tree-view-box' contenteditable='true'><span>
+        {{selectedTags.data.[1].nodeName}}
+        <div class='tree-view-box' contenteditable='true'><span>
+          {{selectedTags.data.[0].nodeName}}
+          <div class='tree-view-box' contenteditable='true'><span>
+
+          </span></div>
+        </span></div>
+      </span></div>
+    </span></div>
+  </div>
+  <button {{action 'h1'}}>H1</button>
+  <button {{action 'noStyle'}}>No Style</button>
+</div>
+
 <div class="container" {{action 'mouseUp'}}>
   <div class="page">
     <div id="edit" contenteditable="true">

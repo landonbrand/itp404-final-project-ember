@@ -43,23 +43,12 @@ define('page/components/content-editable', ['exports', 'ember-content-editable/c
 define('page/components/nav-bar', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({});
 });
-define("page/components/side-bar", ["exports", "ember"], function (exports, _ember) {
-  exports["default"] = _ember["default"].Component.extend({
+define('page/components/side-bar', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({
     // selectedTagsObserver: Ember.observer('selectedTags', function(){
     //   console.log(this.get('selectedTags'));
     // }),
-    actions: {
-
-      noStyle: function noStyle() {
-        console.log("noStyle");
-      },
-
-      h1: function h1() {
-        console.log(this.get("selectedTags"));
-      },
-
-      onChange: function onChange() {}
-    }
+    actions: {}
   });
 });
 define("page/controllers/editing-tests", ["exports", "ember"], function (exports, _ember) {
@@ -111,6 +100,32 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
         var edit = document.getElementById("edit");
         this.send("cancelEditsOnModel");
         edit.innerHTML = this.get("model");
+      },
+
+      onChange: function onChange() {
+        console.log("change");
+        var tags = [];
+        var treeViewer = document.getElementById("treeViewer");
+        var childs = [];
+        childs[0] = treeViewer.children[0].children[0];
+        for (var i = 1; i < 3; i++) {
+          childs[i] = childs[i - 1].children[0].children[0];
+        }
+        var nodeNames = [];
+        for (var i = 0; i < childs.length; i++) {
+          var innerHTML = childs[i].innerHTML;
+          for (var j = 0; j < innerHTML.length; j++) {
+            if (innerHTML[j] == "<") {
+              nodeNames[i] = innerHTML.slice(0, j);
+              nodeNames[i] = nodeNames[i].trim();
+              break;
+            }
+          }
+          this.set("selectedTags", {
+            data: [elements.lastChild, elements.midChild, elements.parent]
+          });
+        }
+        console.log(nodeNames);
       }
     },
 
@@ -626,7 +641,7 @@ define("page/templates/components/side-bar", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 17,
+            "line": 20,
             "column": 0
           }
         },
@@ -677,6 +692,16 @@ define("page/templates/components/side-bar", ["exports"], function (exports) {
         var el9 = dom.createTextNode("\n          ");
         dom.appendChild(el8, el9);
         var el9 = dom.createComment("");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n          ");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createElement("div");
+        dom.setAttribute(el9, "class", "tree-view-box");
+        dom.setAttribute(el9, "contenteditable", "true");
+        var el10 = dom.createElement("span");
+        var el11 = dom.createTextNode("\n            \n          ");
+        dom.appendChild(el10, el11);
+        dom.appendChild(el9, el10);
         dom.appendChild(el8, el9);
         var el9 = dom.createTextNode("\n        ");
         dom.appendChild(el8, el9);
@@ -730,7 +755,7 @@ define("page/templates/components/side-bar", ["exports"], function (exports) {
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]], 0, 0, 0, 0], ["element", "action", ["onChange"], [], ["loc", [null, [3, 23], [3, 44]]], 0, 0], ["content", "selectedTags.2.nodeName", ["loc", [null, [5, 6], [5, 35]]], 0, 0, 0, 0], ["content", "selectedTags.1.nodeName", ["loc", [null, [7, 8], [7, 37]]], 0, 0, 0, 0], ["content", "selectedTags.0.nodeName", ["loc", [null, [9, 10], [9, 39]]], 0, 0, 0, 0], ["element", "action", ["h1"], [], ["loc", [null, [14, 10], [14, 25]]], 0, 0], ["element", "action", ["noStyle"], [], ["loc", [null, [15, 10], [15, 30]]], 0, 0]],
+      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]], 0, 0, 0, 0], ["element", "action", ["onChange"], [], ["loc", [null, [3, 23], [3, 44]]], 0, 0], ["content", "selectedTags.2.nodeName", ["loc", [null, [5, 6], [5, 35]]], 0, 0, 0, 0], ["content", "selectedTags.1.nodeName", ["loc", [null, [7, 8], [7, 37]]], 0, 0, 0, 0], ["content", "selectedTags.0.nodeName", ["loc", [null, [9, 10], [9, 39]]], 0, 0, 0, 0], ["element", "action", ["h1"], [], ["loc", [null, [17, 10], [17, 25]]], 0, 0], ["element", "action", ["noStyle"], [], ["loc", [null, [18, 10], [18, 30]]], 0, 0]],
       locals: [],
       templates: []
     };
@@ -795,7 +820,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 12,
+            "line": 30,
             "column": 0
           }
         },
@@ -811,9 +836,83 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "id", "sidebar");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "id", "treeViewer");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3, "class", "tree-view-box");
+        dom.setAttribute(el3, "contenteditable", "true");
+        var el4 = dom.createElement("span");
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5, "class", "tree-view-box");
+        dom.setAttribute(el5, "contenteditable", "true");
+        var el6 = dom.createElement("span");
+        var el7 = dom.createTextNode("\n        ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n        ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("div");
+        dom.setAttribute(el7, "class", "tree-view-box");
+        dom.setAttribute(el7, "contenteditable", "true");
+        var el8 = dom.createElement("span");
+        var el9 = dom.createTextNode("\n          ");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createComment("");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n          ");
+        dom.appendChild(el8, el9);
+        var el9 = dom.createElement("div");
+        dom.setAttribute(el9, "class", "tree-view-box");
+        dom.setAttribute(el9, "contenteditable", "true");
+        var el10 = dom.createElement("span");
+        var el11 = dom.createTextNode("\n\n          ");
+        dom.appendChild(el10, el11);
+        dom.appendChild(el9, el10);
+        dom.appendChild(el8, el9);
+        var el9 = dom.createTextNode("\n        ");
+        dom.appendChild(el8, el9);
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n      ");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n    ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        var el3 = dom.createTextNode("H1");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        var el3 = dom.createTextNode("No Style");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
         dom.setAttribute(el1, "class", "container");
@@ -856,21 +955,32 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [4]);
+        var element0 = dom.childAt(fragment, [2]);
         var element1 = dom.childAt(element0, [1]);
-        var element2 = dom.childAt(element1, [3]);
-        var element3 = dom.childAt(element1, [5]);
-        var morphs = new Array(6);
+        var element2 = dom.childAt(element1, [1, 0]);
+        var element3 = dom.childAt(element2, [3, 0]);
+        var element4 = dom.childAt(element0, [3]);
+        var element5 = dom.childAt(element0, [5]);
+        var element6 = dom.childAt(fragment, [4]);
+        var element7 = dom.childAt(element6, [1]);
+        var element8 = dom.childAt(element7, [3]);
+        var element9 = dom.childAt(element7, [5]);
+        var morphs = new Array(11);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
-        morphs[2] = dom.createElementMorph(element0);
-        morphs[3] = dom.createUnsafeMorphAt(dom.childAt(element1, [1]), 1, 1);
-        morphs[4] = dom.createElementMorph(element2);
-        morphs[5] = dom.createElementMorph(element3);
+        morphs[1] = dom.createElementMorph(element1);
+        morphs[2] = dom.createMorphAt(element2, 1, 1);
+        morphs[3] = dom.createMorphAt(element3, 1, 1);
+        morphs[4] = dom.createMorphAt(dom.childAt(element3, [3, 0]), 1, 1);
+        morphs[5] = dom.createElementMorph(element4);
+        morphs[6] = dom.createElementMorph(element5);
+        morphs[7] = dom.createElementMorph(element6);
+        morphs[8] = dom.createUnsafeMorphAt(dom.childAt(element7, [1]), 1, 1);
+        morphs[9] = dom.createElementMorph(element8);
+        morphs[10] = dom.createElementMorph(element9);
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["inline", "side-bar", [], ["selectedTags", ["subexpr", "@mut", [["get", "selectedTags.data", ["loc", [null, [2, 24], [2, 41]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [2, 0], [2, 43]]], 0, 0], ["element", "action", ["mouseUp"], [], ["loc", [null, [3, 23], [3, 43]]], 0, 0], ["content", "model", ["loc", [null, [6, 6], [6, 17]]], 0, 0, 0, 0], ["element", "action", ["save"], [], ["loc", [null, [8, 12], [8, 29]]], 0, 0], ["element", "action", ["cancelEdits"], [], ["loc", [null, [9, 12], [9, 36]]], 0, 0]],
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["element", "action", ["onChange"], [], ["loc", [null, [3, 23], [3, 44]]], 0, 0], ["content", "selectedTags.data.2.nodeName", ["loc", [null, [5, 6], [5, 40]]], 0, 0, 0, 0], ["content", "selectedTags.data.1.nodeName", ["loc", [null, [7, 8], [7, 42]]], 0, 0, 0, 0], ["content", "selectedTags.data.0.nodeName", ["loc", [null, [9, 10], [9, 44]]], 0, 0, 0, 0], ["element", "action", ["h1"], [], ["loc", [null, [17, 10], [17, 25]]], 0, 0], ["element", "action", ["noStyle"], [], ["loc", [null, [18, 10], [18, 30]]], 0, 0], ["element", "action", ["mouseUp"], [], ["loc", [null, [21, 23], [21, 43]]], 0, 0], ["content", "model", ["loc", [null, [24, 6], [24, 17]]], 0, 0, 0, 0], ["element", "action", ["save"], [], ["loc", [null, [26, 12], [26, 29]]], 0, 0], ["element", "action", ["cancelEdits"], [], ["loc", [null, [27, 12], [27, 36]]], 0, 0]],
       locals: [],
       templates: []
     };
