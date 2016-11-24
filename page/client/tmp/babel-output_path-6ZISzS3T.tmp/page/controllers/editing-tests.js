@@ -4,21 +4,45 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
       data: ["null", "null", "null"]
     },
 
-    cursorPosition: 1,
+    selectedTag: {},
 
     actions: {
-      mouseUp: function mouseUp() {
-        console.log(this.get("selectedTags"));
+      deselect: function deselect() {
+        console.log("deselect firing!");
+        var elems = document.querySelectorAll(".selected-region");
+        [].forEach.call(elems, function (el) {
+          el.classList.remove("selected-region");
+        });
+        console.log("deselecting. SelectedTag: ", this.get("selectedTag"));
+        return false;
+      },
+
+      mouseUpOnEdits: function mouseUpOnEdits() {
+        // remove .selected-region from all elements
+        console.log("mouseUpOnEdits firing!");
+        var elems = document.querySelectorAll(".selected-region");
+        [].forEach.call(elems, function (el) {
+          el.classList.remove("selected-region");
+        });
+
+        // get selection, then change all relevant elements
         var selected = window.getSelection();
-        console.log(selected);
+        console.log("Selected: ", selected);
+        selected = new SelectedRegion(selected.anchorNode, selected.extentNode, selected.anchorOffset, selected.extentOffset);
+        console.log("SelectedRegion: ", selected);
+        this.set("selectedTag", selected);
         var elements = {};
         var treeViewer = document.getElementById("treeViewer");
-        // document.getElementById("treeViewer").textContent = "innerHTML";
         if (selected.anchorNode == selected.extentNode) {
           if (selected.anchorNode.nodeName == "#text") {
             elements.lastChild = selected.anchorNode.parentElement;
             elements.midChild = elements.lastChild.parentElement;
             elements.parent = elements.midChild.parentElement;
+
+            elements.lastChild.classList.add("selected-region");
+            elements.midChild.classList.add("selected-region");
+            elements.parent.classList.add("selected-region");
+
             this.set("selectedTags", {
               data: [elements.lastChild, elements.midChild, elements.parent]
             });
@@ -53,27 +77,12 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
       },
 
       onChange: function onChange() {
-        console.log("change");
-        var tags = [];
-        var treeViewer = document.getElementById("treeViewer");
-        var childs = [];
-        childs[0] = treeViewer.children[0].children[0];
-        console.log(childs[0]);
-        for (var i = 1; i < 3; i++) {
-          childs[i] = childs[i - 1].children[0].children[0];
-        }
-        var nodeNames = [];
-        for (var i = 0; i < childs.length; i++) {
-          var innerHTML = childs[i].innerHTML;
-          for (var j = 0; j < innerHTML.length; j++) {
-            if (innerHTML[j] == "<") {
-              nodeNames[i] = innerHTML.slice(0, j);
-              nodeNames[i] = nodeNames[i].trim();
-              break;
-            }
-          }
-        }
-        console.log(nodeNames);
+        var selectedTag = this.get("selectedTag");
+        console.log("selectedTag from onChange: ", selectedTag);
+        changeNodeType(selectedTag.anchorNode.parentNode, "h3");
+
+        console.log("onChange fired. SelectedTag: ", selectedTag);
+        return false;
       }
     },
 
@@ -86,4 +95,44 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
       }
     })
   });
+
+  // useful functions
+
+  function changeNodeType(selectedNode, newType) {
+    var element = selectedNode;
+    var new_element = document.createElement('h3'),
+        old_attributes = element.attributes,
+        new_attributes = new_element.attributes;
+    // console.log("old attributes", old_attributes);
+    // console.log("New attributes", new_attributes);
+
+    // copy attributes
+    if (typeof old_attributes !== "undefined") {
+      for (var i = 0, len = old_attributes.length; i < len; i++) {
+        new_attributes.setNamedItem(old_attributes.item(i).cloneNode());
+      }
+    }
+
+    // copy child nodes
+    console.log("new element", new_element);
+    console.log("changeNodeType firing. element: ", element);
+    do {
+      new_element.appendChild(element.firstChild);
+    } while (element.firstChild);
+
+    // replace element
+    element.parentNode.replaceChild(new_element, element);
+  }
+
+  function byValue(obj) {
+    var clonedObj = Object.create(obj).__proto__;
+    return clonedObj;
+  }
+
+  function SelectedRegion(anchorNode, extentNode, anchorOffset, extentOffset) {
+    this.anchorNode = anchorNode;
+    this.extentNode = extentNode;
+    this.anchorOffset = anchorOffset;
+    this.extentOffset = extentOffset;
+  }
 });

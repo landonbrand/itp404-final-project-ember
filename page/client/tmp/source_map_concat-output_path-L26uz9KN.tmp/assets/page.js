@@ -57,21 +57,45 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
       data: ["null", "null", "null"]
     },
 
-    cursorPosition: 1,
+    selectedTag: {},
 
     actions: {
-      mouseUp: function mouseUp() {
-        console.log(this.get("selectedTags"));
+      deselect: function deselect() {
+        console.log("deselect firing!");
+        var elems = document.querySelectorAll(".selected-region");
+        [].forEach.call(elems, function (el) {
+          el.classList.remove("selected-region");
+        });
+        console.log("deselecting. SelectedTag: ", this.get("selectedTag"));
+        return false;
+      },
+
+      mouseUpOnEdits: function mouseUpOnEdits() {
+        // remove .selected-region from all elements
+        console.log("mouseUpOnEdits firing!");
+        var elems = document.querySelectorAll(".selected-region");
+        [].forEach.call(elems, function (el) {
+          el.classList.remove("selected-region");
+        });
+
+        // get selection, then change all relevant elements
         var selected = window.getSelection();
-        console.log(selected);
+        console.log("Selected: ", selected);
+        selected = new SelectedRegion(selected.anchorNode, selected.extentNode, selected.anchorOffset, selected.extentOffset);
+        console.log("SelectedRegion: ", selected);
+        this.set("selectedTag", selected);
         var elements = {};
         var treeViewer = document.getElementById("treeViewer");
-        // document.getElementById("treeViewer").textContent = "innerHTML";
         if (selected.anchorNode == selected.extentNode) {
           if (selected.anchorNode.nodeName == "#text") {
             elements.lastChild = selected.anchorNode.parentElement;
             elements.midChild = elements.lastChild.parentElement;
             elements.parent = elements.midChild.parentElement;
+
+            elements.lastChild.classList.add("selected-region");
+            elements.midChild.classList.add("selected-region");
+            elements.parent.classList.add("selected-region");
+
             this.set("selectedTags", {
               data: [elements.lastChild, elements.midChild, elements.parent]
             });
@@ -106,27 +130,12 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
       },
 
       onChange: function onChange() {
-        console.log("change");
-        var tags = [];
-        var treeViewer = document.getElementById("treeViewer");
-        var childs = [];
-        childs[0] = treeViewer.children[0].children[0];
-        console.log(childs[0]);
-        for (var i = 1; i < 3; i++) {
-          childs[i] = childs[i - 1].children[0].children[0];
-        }
-        var nodeNames = [];
-        for (var i = 0; i < childs.length; i++) {
-          var innerHTML = childs[i].innerHTML;
-          for (var j = 0; j < innerHTML.length; j++) {
-            if (innerHTML[j] == "<") {
-              nodeNames[i] = innerHTML.slice(0, j);
-              nodeNames[i] = nodeNames[i].trim();
-              break;
-            }
-          }
-        }
-        console.log(nodeNames);
+        var selectedTag = this.get("selectedTag");
+        console.log("selectedTag from onChange: ", selectedTag);
+        changeNodeType(selectedTag.anchorNode.parentNode, "h3");
+
+        console.log("onChange fired. SelectedTag: ", selectedTag);
+        return false;
       }
     },
 
@@ -139,6 +148,46 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
       }
     })
   });
+
+  // useful functions
+
+  function changeNodeType(selectedNode, newType) {
+    var element = selectedNode;
+    var new_element = document.createElement('h3'),
+        old_attributes = element.attributes,
+        new_attributes = new_element.attributes;
+    // console.log("old attributes", old_attributes);
+    // console.log("New attributes", new_attributes);
+
+    // copy attributes
+    if (typeof old_attributes !== "undefined") {
+      for (var i = 0, len = old_attributes.length; i < len; i++) {
+        new_attributes.setNamedItem(old_attributes.item(i).cloneNode());
+      }
+    }
+
+    // copy child nodes
+    console.log("new element", new_element);
+    console.log("changeNodeType firing. element: ", element);
+    do {
+      new_element.appendChild(element.firstChild);
+    } while (element.firstChild);
+
+    // replace element
+    element.parentNode.replaceChild(new_element, element);
+  }
+
+  function byValue(obj) {
+    var clonedObj = Object.create(obj).__proto__;
+    return clonedObj;
+  }
+
+  function SelectedRegion(anchorNode, extentNode, anchorOffset, extentOffset) {
+    this.anchorNode = anchorNode;
+    this.extentNode = extentNode;
+    this.anchorOffset = anchorOffset;
+    this.extentOffset = extentOffset;
+  }
 });
 define('page/helpers/pluralize', ['exports', 'ember-inflector/lib/helpers/pluralize'], function (exports, _emberInflectorLibHelpersPluralize) {
   exports['default'] = _emberInflectorLibHelpersPluralize['default'];
@@ -820,7 +869,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 30,
+            "line": 31,
             "column": 0
           }
         },
@@ -932,22 +981,22 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("button");
-        var el4 = dom.createTextNode("Save");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("button");
-        var el4 = dom.createTextNode("Cancel Editing");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("button");
+        var el2 = dom.createTextNode("Save");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("button");
+        var el2 = dom.createTextNode("Cancel Editing");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
@@ -962,25 +1011,25 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
         var element4 = dom.childAt(element0, [3]);
         var element5 = dom.childAt(element0, [5]);
         var element6 = dom.childAt(fragment, [4]);
-        var element7 = dom.childAt(element6, [1]);
-        var element8 = dom.childAt(element7, [3]);
-        var element9 = dom.childAt(element7, [5]);
-        var morphs = new Array(11);
+        var element7 = dom.childAt(fragment, [6]);
+        var element8 = dom.childAt(fragment, [8]);
+        var morphs = new Array(12);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createElementMorph(element1);
-        morphs[2] = dom.createMorphAt(element2, 1, 1);
-        morphs[3] = dom.createMorphAt(element3, 1, 1);
-        morphs[4] = dom.createMorphAt(dom.childAt(element3, [3, 0]), 1, 1);
-        morphs[5] = dom.createElementMorph(element4);
-        morphs[6] = dom.createElementMorph(element5);
-        morphs[7] = dom.createElementMorph(element6);
-        morphs[8] = dom.createUnsafeMorphAt(dom.childAt(element7, [1]), 1, 1);
-        morphs[9] = dom.createElementMorph(element8);
-        morphs[10] = dom.createElementMorph(element9);
+        morphs[1] = dom.createElementMorph(element0);
+        morphs[2] = dom.createElementMorph(element1);
+        morphs[3] = dom.createMorphAt(element2, 1, 1);
+        morphs[4] = dom.createMorphAt(element3, 1, 1);
+        morphs[5] = dom.createMorphAt(dom.childAt(element3, [3, 0]), 1, 1);
+        morphs[6] = dom.createElementMorph(element4);
+        morphs[7] = dom.createElementMorph(element5);
+        morphs[8] = dom.createElementMorph(element6);
+        morphs[9] = dom.createUnsafeMorphAt(dom.childAt(element6, [1, 1]), 1, 1);
+        morphs[10] = dom.createElementMorph(element7);
+        morphs[11] = dom.createElementMorph(element8);
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["element", "action", ["onChange"], [], ["loc", [null, [3, 23], [3, 44]]], 0, 0], ["content", "selectedTags.data.2.nodeName", ["loc", [null, [5, 6], [5, 40]]], 0, 0, 0, 0], ["content", "selectedTags.data.1.nodeName", ["loc", [null, [7, 8], [7, 42]]], 0, 0, 0, 0], ["content", "selectedTags.data.0.nodeName", ["loc", [null, [9, 10], [9, 44]]], 0, 0, 0, 0], ["element", "action", ["h1"], [], ["loc", [null, [17, 10], [17, 25]]], 0, 0], ["element", "action", ["noStyle"], [], ["loc", [null, [18, 10], [18, 30]]], 0, 0], ["element", "action", ["mouseUp"], [], ["loc", [null, [21, 23], [21, 43]]], 0, 0], ["content", "model", ["loc", [null, [24, 6], [24, 17]]], 0, 0, 0, 0], ["element", "action", ["save"], [], ["loc", [null, [26, 12], [26, 29]]], 0, 0], ["element", "action", ["cancelEdits"], [], ["loc", [null, [27, 12], [27, 36]]], 0, 0]],
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["element", "action", ["deselect"], [], ["loc", [null, [2, 18], [2, 39]]], 0, 0], ["element", "action", ["onChange"], [], ["loc", [null, [3, 23], [3, 44]]], 0, 0], ["content", "selectedTags.data.2.nodeName", ["loc", [null, [5, 6], [5, 40]]], 0, 0, 0, 0], ["content", "selectedTags.data.1.nodeName", ["loc", [null, [7, 8], [7, 42]]], 0, 0, 0, 0], ["content", "selectedTags.data.0.nodeName", ["loc", [null, [9, 10], [9, 44]]], 0, 0, 0, 0], ["element", "action", ["h1"], [], ["loc", [null, [17, 10], [17, 25]]], 0, 0], ["element", "action", ["noStyle"], [], ["loc", [null, [18, 10], [18, 30]]], 0, 0], ["element", "action", ["mouseUpOnEdits"], [], ["loc", [null, [21, 23], [21, 50]]], 0, 0], ["content", "model", ["loc", [null, [24, 6], [24, 17]]], 0, 0, 0, 0], ["element", "action", ["save"], [], ["loc", [null, [29, 8], [29, 25]]], 0, 0], ["element", "action", ["cancelEdits"], [], ["loc", [null, [30, 8], [30, 32]]], 0, 0]],
       locals: [],
       templates: []
     };

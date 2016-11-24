@@ -83,3 +83,11 @@ button:hover {
 button:active {
   background-color: #11a;
 }
+
+.selected-region {
+  background-color: rgba(255, 0, 0, 0.1);
+  border-radius: 2px;
+  outline: 2px solid;
+  outline-width: 2px;
+  outline-color: rgba(255, 0, 0, 0.3);
+}
