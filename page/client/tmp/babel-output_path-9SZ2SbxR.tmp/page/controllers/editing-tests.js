@@ -1,6 +1,6 @@
 define("page/controllers/editing-tests", ["exports", "ember"], function (exports, _ember) {
   exports["default"] = _ember["default"].Controller.extend({
-    selectedTag: {},
+    selectedRegion: {},
 
     actions: {
       deselect: function deselect() {
