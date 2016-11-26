@@ -1,21 +1,29 @@
 {{outlet}}
 <div id="sidebar" {{action 'deselect'}}>
-  <div id="treeViewer" {{action 'onChange'}}>
-    <div class='tree-view-box' contenteditable='true'><span>
-      {{selectedTags.data.[2].nodeName}}
-      <div class='tree-view-box' contenteditable='true'><span>
-        {{selectedTags.data.[1].nodeName}}
-        <div class='tree-view-box' contenteditable='true'><span>
-          {{selectedTags.data.[0].nodeName}}
-          <div class='tree-view-box' contenteditable='true'><span>
+  <section id="sidebar-top">
+    <button id="viewRoot" class="up">up</button>
+    <br/>
+    <button id="newNode" {{action 'newNode' bubbles=false}}>+</button>
+    <span id="tagName" class="field big" contenteditable="true"
+          {{action "noBubble" bubbles=false}}
+          onkeyup={{action "changeTag"}}
+          onfocus={{action "fieldFocused"}}
+          onblur={{action "fieldBlurred"}}>
+      {{selectedTag.anchorNode.parentNode.nodeName}}
+    </span>
+    <span id="tagId" class="field" contenteditable="false">
+      <span class="no-padding">#</span>
+        <span id="tagId-unfocusable" tabindex="-1" class="no-padding no-focus" contenteditable="true" onfocus={{action "parentFieldFocused"}} onblur={{action "parentFieldBlurred"}}>
+          {{selectedTag.anchorNode.parentNode.id}}
+        </span>
+      </span>
+  </section>
+  <section id="sidebar-classes">
+    <button id="newClass" class="class" {{action 'newClass' bubbles=false}}>+</button>
+  </section>
+  <section id="sidebar-styles">
 
-          </span></div>
-        </span></div>
-      </span></div>
-    </span></div>
-  </div>
-  <button {{action 'h1'}}>H1</button>
-  <button {{action 'noStyle'}}>No Style</button>
+  </section>
 </div>
 
 <div class="container" {{action 'mouseUpOnEdits'}}>
@@ -25,6 +33,3 @@
     </div>
   </div>
 </div>
-
-<button {{action 'save'}}>Save</button>
-<button {{action 'cancelEdits'}}>Cancel Editing</button>
