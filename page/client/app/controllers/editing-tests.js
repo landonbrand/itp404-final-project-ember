@@ -5,21 +5,17 @@ export default Ember.Controller.extend({
 
   actions: {
     deselect: function() {
-      console.log("deselect firing!");
       var elems = document.querySelectorAll(".selected-region");
       [].forEach.call(elems, function(el) {
           el.classList.remove("selected-region");
       });
-      console.log("deselecting. selectedRegion: ", this.get("selectedRegion"));
       return false;
     },
 
     mouseUpOnEdits: function() {
       var selected = window.getSelection();
-      console.log("Selected: ", selected);
       selected = new Region(selected.anchorNode, selected.extentNode,
           selected.anchorOffset, selected.extentOffset);
-      console.log("selectedRegion: ", selected);
       this.send("selectRegion", selected);
     },
 
@@ -46,23 +42,19 @@ export default Ember.Controller.extend({
     },
 
     noBubble: function(){
-      console.log("noBubble");
       return false;
     },
 
     newNode: function(){
       var node = insertNode(this.get("selectedRegion"));
-      console.log("newNode's node: ", node);
       this.send("selectNode", node);
     },
 
     changeTag: function(){
       var selectedRegion = this.get("selectedRegion");
       var tagNameElement = document.getElementById("tagName");
-      console.log("selectedRegion from onChange: ", selectedRegion);
       var newNode = changeNodeType(selectedRegion.anchorElement, tagNameElement.innerHTML.replace(/&nbsp;/gi,'').trim());
       this.send("selectNode", newNode);
-      console.log("onChange fired. selectedRegion: ", selectedRegion);
       Caret.goToEndOfNode(event.target);
       return false;
     },
@@ -71,7 +63,6 @@ export default Ember.Controller.extend({
       var selectedRegion = this.get("selectedRegion");
       var tagIdElement = document.getElementById("tagId-unfocusable");
       tagIdElement.focus();
-      console.log("selectedRegion from changeId: ", selectedRegion);
       selectedRegion.anchorElement.setAttribute("id", tagIdElement.innerHTML.replace(/&nbsp;/gi,'').trim());
       return false;
     },
@@ -100,7 +91,6 @@ export default Ember.Controller.extend({
     },
 
     selectRegion: function(region){
-      console.log("region: ", region);
       var elems = document.querySelectorAll(".selected-region");
       [].forEach.call(elems, function(el) {
           el.classList.remove("selected-region");
@@ -114,23 +104,31 @@ export default Ember.Controller.extend({
 
       document.getElementById("tagName").innerHTML = region.anchorElement.nodeName;
       document.getElementById("tagId-unfocusable").innerHTML = region.anchorElement.id;
+      this.send("updateClassList", region.anchorElement);
     },
 
     selectNode: function(node){
-      console.log("node: ", node);
       var selected = new Region(node, node, 0, 0);
-      console.log("selectedFromSelectNode: ", selected);
       this.send("selectRegion", selected);
+    },
+
+    updateClassList: function(node){
+      var div = document.getElementById("classList");
+      div.innerHTML = "";
+      for(var i = 0; i < node.classList.length; i++){
+        var el = document.createElement("span");
+        el.setAttribute("contenteditable", true);
+        el.classList.add("field");
+        el.textContent = node.classList[i];
+        div.appendChild(el);
+      }
     }
   },
 
-
   modelObserver: Ember.observer('model', function() {
     var edit = document.getElementById("edit");
-    console.log(edit);
     if(edit != null){
       edit.innerHTML = this.get("model");
-      console.log("changing edit's html");
     }
   })
 });
@@ -150,9 +148,6 @@ function changeNodeType(element, newType){
   }
 
   // copy child nodes
-  console.log("new element", new_element);
-  console.log("element: ", element);
-  console.log("firstChild: ", element.firstChild);
   do {
     new_element.appendChild(element.firstChild);
   }
@@ -164,14 +159,11 @@ function changeNodeType(element, newType){
 }
 
 function insertNode(selectedNode){
-  console.log("node inserted");
-  console.log(selectedNode);
   var new_element;
   // create a node after selectedNode
   if(selectedNode.extentNode.length <= selectedNode.extentOffset){
     new_element = document.createElement("h6");
     new_element.textContent = "new element";
-    console.log("NEED TO CREATE NEW NODE");
     var nextSibling = selectedNode.extentNode.parentNode.nextSibling;
     nextSibling.parentNode.insertBefore(new_element, nextSibling);
   // create a node before selectedNode
@@ -183,9 +175,7 @@ function insertNode(selectedNode){
   // create a node inside selectedNode
   } else {
     var selectedAnchor = selectedNode.anchorNode;
-    console.log("YO LETS NEST THESE NODES INSIDE EACHOTHER");
     if(selectedNode.extentNode == selectedNode.anchorNode){
-      console.log("easy peasy");
       var textNode1Content = selectedAnchor.textContent.slice(
           0, selectedNode.anchorOffset);
       var newNodeContent = selectedAnchor.textContent.slice(
@@ -204,7 +194,6 @@ function insertNode(selectedNode){
       selectedAnchor.remove();
     }
   }
-  console.log("New_element: ", new_element);
   document.getElementById("tagName").focus();
   return new_element;
 }
@@ -229,7 +218,6 @@ function Region(anchorNode, extentNode, anchorOffset, extentOffset){
   } else {
     this.extentElement = extentNode;
   }
-  console.log("new Region", this);
 }
 
 var Caret = {
@@ -251,6 +239,5 @@ var Caret = {
       sel.removeAllRanges();
       sel.addRange(range);
     });
-
   }
 }

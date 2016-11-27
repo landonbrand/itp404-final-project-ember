@@ -9,7 +9,7 @@ export default Ember.HTMLBars.template((function() {
           "column": 0
         },
         "end": {
-          "line": 42,
+          "line": 43,
           "column": 0
         }
       },
@@ -108,6 +108,11 @@ export default Ember.HTMLBars.template((function() {
       var el4 = dom.createTextNode("+");
       dom.appendChild(el3, el4);
       dom.appendChild(el2, el3);
+      var el3 = dom.createTextNode("\n    ");
+      dom.appendChild(el2, el3);
+      var el3 = dom.createElement("div");
+      dom.setAttribute(el3,"id","classList");
+      dom.appendChild(el2, el3);
       var el3 = dom.createTextNode("\n  ");
       dom.appendChild(el2, el3);
       dom.appendChild(el1, el2);
@@ -192,8 +197,8 @@ export default Ember.HTMLBars.template((function() {
       ["attribute","onblur",["subexpr","action",["parentFieldBlurred"],[],["loc",[null,[null,null],[22,52]]],0,0],0,0,0,0],
       ["content","selectedTag.anchorNode.parentNode.id",["loc",[null,[23,10],[23,50]]],0,0,0,0],
       ["element","action",["newClass"],["bubbles",false],["loc",[null,[28,40],[28,75]]],0,0],
-      ["element","action",["mouseUpOnEdits"],[],["loc",[null,[35,23],[35,50]]],0,0],
-      ["content","model",["loc",[null,[38,6],[38,17]]],0,0,0,0]
+      ["element","action",["mouseUpOnEdits"],[],["loc",[null,[36,23],[36,50]]],0,0],
+      ["content","model",["loc",[null,[39,6],[39,17]]],0,0,0,0]
     ],
     locals: [],
     templates: []

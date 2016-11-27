@@ -32,6 +32,9 @@ define('page/components/app-version', ['exports', 'ember-cli-app-version/compone
     name: name
   });
 });
+define('page/components/class-list-item', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Component.extend({});
+});
 define('page/components/content-editable', ['exports', 'ember-content-editable/components/content-editable'], function (exports, _emberContentEditableComponentsContentEditable) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
@@ -57,20 +60,16 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
 
     actions: {
       deselect: function deselect() {
-        console.log("deselect firing!");
         var elems = document.querySelectorAll(".selected-region");
         [].forEach.call(elems, function (el) {
           el.classList.remove("selected-region");
         });
-        console.log("deselecting. selectedRegion: ", this.get("selectedRegion"));
         return false;
       },
 
       mouseUpOnEdits: function mouseUpOnEdits() {
         var selected = window.getSelection();
-        console.log("Selected: ", selected);
         selected = new Region(selected.anchorNode, selected.extentNode, selected.anchorOffset, selected.extentOffset);
-        console.log("selectedRegion: ", selected);
         this.send("selectRegion", selected);
       },
 
@@ -97,23 +96,19 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
       },
 
       noBubble: function noBubble() {
-        console.log("noBubble");
         return false;
       },
 
       newNode: function newNode() {
         var node = insertNode(this.get("selectedRegion"));
-        console.log("newNode's node: ", node);
         this.send("selectNode", node);
       },
 
       changeTag: function changeTag() {
         var selectedRegion = this.get("selectedRegion");
         var tagNameElement = document.getElementById("tagName");
-        console.log("selectedRegion from onChange: ", selectedRegion);
         var newNode = changeNodeType(selectedRegion.anchorElement, tagNameElement.innerHTML.replace(/&nbsp;/gi, '').trim());
         this.send("selectNode", newNode);
-        console.log("onChange fired. selectedRegion: ", selectedRegion);
         Caret.goToEndOfNode(event.target);
         return false;
       },
@@ -122,7 +117,6 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
         var selectedRegion = this.get("selectedRegion");
         var tagIdElement = document.getElementById("tagId-unfocusable");
         tagIdElement.focus();
-        console.log("selectedRegion from changeId: ", selectedRegion);
         selectedRegion.anchorElement.setAttribute("id", tagIdElement.innerHTML.replace(/&nbsp;/gi, '').trim());
         return false;
       },
@@ -151,7 +145,6 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
       },
 
       selectRegion: function selectRegion(region) {
-        console.log("region: ", region);
         var elems = document.querySelectorAll(".selected-region");
         [].forEach.call(elems, function (el) {
           el.classList.remove("selected-region");
@@ -165,22 +158,31 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
 
         document.getElementById("tagName").innerHTML = region.anchorElement.nodeName;
         document.getElementById("tagId-unfocusable").innerHTML = region.anchorElement.id;
+        this.send("updateClassList", region.anchorElement);
       },
 
       selectNode: function selectNode(node) {
-        console.log("node: ", node);
         var selected = new Region(node, node, 0, 0);
-        console.log("selectedFromSelectNode: ", selected);
         this.send("selectRegion", selected);
+      },
+
+      updateClassList: function updateClassList(node) {
+        var div = document.getElementById("classList");
+        div.innerHTML = "";
+        for (var i = 0; i < node.classList.length; i++) {
+          var el = document.createElement("span");
+          el.setAttribute("contenteditable", true);
+          el.classList.add("field");
+          el.textContent = node.classList[i];
+          div.appendChild(el);
+        }
       }
     },
 
     modelObserver: _ember["default"].observer('model', function () {
       var edit = document.getElementById("edit");
-      console.log(edit);
       if (edit != null) {
         edit.innerHTML = this.get("model");
-        console.log("changing edit's html");
       }
     })
   });
@@ -200,9 +202,6 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
     }
 
     // copy child nodes
-    console.log("new element", new_element);
-    console.log("element: ", element);
-    console.log("firstChild: ", element.firstChild);
     do {
       new_element.appendChild(element.firstChild);
     } while (element.firstChild);
@@ -213,14 +212,11 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
   }
 
   function insertNode(selectedNode) {
-    console.log("node inserted");
-    console.log(selectedNode);
     var new_element;
     // create a node after selectedNode
     if (selectedNode.extentNode.length <= selectedNode.extentOffset) {
       new_element = document.createElement("h6");
       new_element.textContent = "new element";
-      console.log("NEED TO CREATE NEW NODE");
       var nextSibling = selectedNode.extentNode.parentNode.nextSibling;
       nextSibling.parentNode.insertBefore(new_element, nextSibling);
       // create a node before selectedNode
@@ -232,9 +228,7 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
         // create a node inside selectedNode
       } else {
           var selectedAnchor = selectedNode.anchorNode;
-          console.log("YO LETS NEST THESE NODES INSIDE EACHOTHER");
           if (selectedNode.extentNode == selectedNode.anchorNode) {
-            console.log("easy peasy");
             var textNode1Content = selectedAnchor.textContent.slice(0, selectedNode.anchorOffset);
             var newNodeContent = selectedAnchor.textContent.slice(selectedNode.anchorOffset, selectedNode.extentOffset);
             var textNode2Content = selectedAnchor.textContent.slice(selectedNode.extentOffset);
@@ -250,7 +244,6 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
             selectedAnchor.remove();
           }
         }
-    console.log("New_element: ", new_element);
     document.getElementById("tagName").focus();
     return new_element;
   }
@@ -275,7 +268,6 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
     } else {
       this.extentElement = extentNode;
     }
-    console.log("new Region", this);
   }
 
   var Caret = {
@@ -615,6 +607,48 @@ define("page/templates/about", ["exports"], function (exports) {
         return morphs;
       },
       statements: [["content", "nav-bar", ["loc", [null, [2, 0], [2, 11]]], 0, 0, 0, 0], ["content", "outlet", ["loc", [null, [3, 0], [3, 10]]], 0, 0, 0, 0]],
+      locals: [],
+      templates: []
+    };
+  })());
+});
+define("page/templates/components/class-list-item", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "revision": "Ember@2.8.2",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 0
+          }
+        },
+        "moduleName": "page/templates/components/class-list-item.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]], 0, 0, 0, 0]],
       locals: [],
       templates: []
     };
@@ -980,7 +1014,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 42,
+            "line": 43,
             "column": 0
           }
         },
@@ -1079,6 +1113,11 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
         var el4 = dom.createTextNode("+");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3, "id", "classList");
+        dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
@@ -1149,7 +1188,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["element", "action", ["deselect"], [], ["loc", [null, [2, 18], [2, 39]]], 0, 0], ["element", "action", ["newNode"], ["bubbles", false], ["loc", [null, [6, 25], [6, 59]]], 0, 0], ["attribute", "onkeyup", ["subexpr", "action", ["changeTag"], [], ["loc", [null, [null, null], [9, 40]]], 0, 0], 0, 0, 0, 0], ["attribute", "onfocus", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [null, null], [10, 43]]], 0, 0], 0, 0, 0, 0], ["attribute", "onblur", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [null, null], [11, 42]]], 0, 0], 0, 0, 0, 0], ["element", "action", ["noBubble"], ["bubbles", false], ["loc", [null, [8, 10], [8, 45]]], 0, 0], ["content", "selectedTag.anchorNode.parentNode.nodeName", ["loc", [null, [12, 6], [12, 52]]], 0, 0, 0, 0], ["attribute", "onkeyup", ["subexpr", "action", ["changeId"], [], ["loc", [null, [null, null], [20, 43]]], 0, 0], 0, 0, 0, 0], ["attribute", "onfocus", ["subexpr", "action", ["parentFieldFocused"], [], ["loc", [null, [null, null], [21, 53]]], 0, 0], 0, 0, 0, 0], ["attribute", "onblur", ["subexpr", "action", ["parentFieldBlurred"], [], ["loc", [null, [null, null], [22, 52]]], 0, 0], 0, 0, 0, 0], ["content", "selectedTag.anchorNode.parentNode.id", ["loc", [null, [23, 10], [23, 50]]], 0, 0, 0, 0], ["element", "action", ["newClass"], ["bubbles", false], ["loc", [null, [28, 40], [28, 75]]], 0, 0], ["element", "action", ["mouseUpOnEdits"], [], ["loc", [null, [35, 23], [35, 50]]], 0, 0], ["content", "model", ["loc", [null, [38, 6], [38, 17]]], 0, 0, 0, 0]],
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["element", "action", ["deselect"], [], ["loc", [null, [2, 18], [2, 39]]], 0, 0], ["element", "action", ["newNode"], ["bubbles", false], ["loc", [null, [6, 25], [6, 59]]], 0, 0], ["attribute", "onkeyup", ["subexpr", "action", ["changeTag"], [], ["loc", [null, [null, null], [9, 40]]], 0, 0], 0, 0, 0, 0], ["attribute", "onfocus", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [null, null], [10, 43]]], 0, 0], 0, 0, 0, 0], ["attribute", "onblur", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [null, null], [11, 42]]], 0, 0], 0, 0, 0, 0], ["element", "action", ["noBubble"], ["bubbles", false], ["loc", [null, [8, 10], [8, 45]]], 0, 0], ["content", "selectedTag.anchorNode.parentNode.nodeName", ["loc", [null, [12, 6], [12, 52]]], 0, 0, 0, 0], ["attribute", "onkeyup", ["subexpr", "action", ["changeId"], [], ["loc", [null, [null, null], [20, 43]]], 0, 0], 0, 0, 0, 0], ["attribute", "onfocus", ["subexpr", "action", ["parentFieldFocused"], [], ["loc", [null, [null, null], [21, 53]]], 0, 0], 0, 0, 0, 0], ["attribute", "onblur", ["subexpr", "action", ["parentFieldBlurred"], [], ["loc", [null, [null, null], [22, 52]]], 0, 0], 0, 0, 0, 0], ["content", "selectedTag.anchorNode.parentNode.id", ["loc", [null, [23, 10], [23, 50]]], 0, 0, 0, 0], ["element", "action", ["newClass"], ["bubbles", false], ["loc", [null, [28, 40], [28, 75]]], 0, 0], ["element", "action", ["mouseUpOnEdits"], [], ["loc", [null, [36, 23], [36, 50]]], 0, 0], ["content", "model", ["loc", [null, [39, 6], [39, 17]]], 0, 0, 0, 0]],
       locals: [],
       templates: []
     };
