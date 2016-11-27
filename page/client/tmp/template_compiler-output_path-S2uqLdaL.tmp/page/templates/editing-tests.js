@@ -9,7 +9,7 @@ export default Ember.HTMLBars.template((function() {
           "column": 0
         },
         "end": {
-          "line": 36,
+          "line": 42,
           "column": 0
         }
       },
@@ -159,7 +159,7 @@ export default Ember.HTMLBars.template((function() {
       var element4 = dom.childAt(element1, [9, 3]);
       var element5 = dom.childAt(element0, [3, 1]);
       var element6 = dom.childAt(fragment, [4]);
-      var morphs = new Array(14);
+      var morphs = new Array(15);
       morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
       morphs[1] = dom.createElementMorph(element0);
       morphs[2] = dom.createElementMorph(element2);
@@ -168,12 +168,13 @@ export default Ember.HTMLBars.template((function() {
       morphs[5] = dom.createAttrMorph(element3, 'onblur');
       morphs[6] = dom.createElementMorph(element3);
       morphs[7] = dom.createMorphAt(element3,1,1);
-      morphs[8] = dom.createAttrMorph(element4, 'onfocus');
-      morphs[9] = dom.createAttrMorph(element4, 'onblur');
-      morphs[10] = dom.createMorphAt(element4,1,1);
-      morphs[11] = dom.createElementMorph(element5);
-      morphs[12] = dom.createElementMorph(element6);
-      morphs[13] = dom.createUnsafeMorphAt(dom.childAt(element6, [1, 1]),1,1);
+      morphs[8] = dom.createAttrMorph(element4, 'onkeyup');
+      morphs[9] = dom.createAttrMorph(element4, 'onfocus');
+      morphs[10] = dom.createAttrMorph(element4, 'onblur');
+      morphs[11] = dom.createMorphAt(element4,1,1);
+      morphs[12] = dom.createElementMorph(element5);
+      morphs[13] = dom.createElementMorph(element6);
+      morphs[14] = dom.createUnsafeMorphAt(dom.childAt(element6, [1, 1]),1,1);
       dom.insertBoundary(fragment, 0);
       return morphs;
     },
@@ -186,12 +187,13 @@ export default Ember.HTMLBars.template((function() {
       ["attribute","onblur",["subexpr","action",["fieldBlurred"],[],["loc",[null,[null,null],[11,42]]],0,0],0,0,0,0],
       ["element","action",["noBubble"],["bubbles",false],["loc",[null,[8,10],[8,45]]],0,0],
       ["content","selectedTag.anchorNode.parentNode.nodeName",["loc",[null,[12,6],[12,52]]],0,0,0,0],
-      ["attribute","onfocus",["subexpr","action",["parentFieldFocused"],[],["loc",[null,[null,null],[16,141]]],0,0],0,0,0,0],
-      ["attribute","onblur",["subexpr","action",["parentFieldBlurred"],[],["loc",[null,[null,null],[16,180]]],0,0],0,0,0,0],
-      ["content","selectedTag.anchorNode.parentNode.id",["loc",[null,[17,10],[17,50]]],0,0,0,0],
-      ["element","action",["newClass"],["bubbles",false],["loc",[null,[22,40],[22,75]]],0,0],
-      ["element","action",["mouseUpOnEdits"],[],["loc",[null,[29,23],[29,50]]],0,0],
-      ["content","model",["loc",[null,[32,6],[32,17]]],0,0,0,0]
+      ["attribute","onkeyup",["subexpr","action",["changeId"],[],["loc",[null,[null,null],[20,43]]],0,0],0,0,0,0],
+      ["attribute","onfocus",["subexpr","action",["parentFieldFocused"],[],["loc",[null,[null,null],[21,53]]],0,0],0,0,0,0],
+      ["attribute","onblur",["subexpr","action",["parentFieldBlurred"],[],["loc",[null,[null,null],[22,52]]],0,0],0,0,0,0],
+      ["content","selectedTag.anchorNode.parentNode.id",["loc",[null,[23,10],[23,50]]],0,0,0,0],
+      ["element","action",["newClass"],["bubbles",false],["loc",[null,[28,40],[28,75]]],0,0],
+      ["element","action",["mouseUpOnEdits"],[],["loc",[null,[35,23],[35,50]]],0,0],
+      ["content","model",["loc",[null,[38,6],[38,17]]],0,0,0,0]
     ],
     locals: [],
     templates: []

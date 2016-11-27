@@ -13,7 +13,13 @@
     </span>
     <span id="tagId" class="field" contenteditable="false">
       <span class="no-padding">#</span>
-        <span id="tagId-unfocusable" tabindex="-1" class="no-padding no-focus" contenteditable="true" onfocus={{action "parentFieldFocused"}} onblur={{action "parentFieldBlurred"}}>
+        <span id="tagId-unfocusable"
+              tabindex="-1"
+              class="no-padding no-focus"
+              contenteditable="true"
+              onkeyup={{action "changeId"}}
+              onfocus={{action "parentFieldFocused"}}
+              onblur={{action "parentFieldBlurred"}}>
           {{selectedTag.anchorNode.parentNode.id}}
         </span>
       </span>

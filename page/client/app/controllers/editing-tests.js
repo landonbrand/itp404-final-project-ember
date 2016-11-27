@@ -10,17 +10,17 @@ export default Ember.Controller.extend({
       [].forEach.call(elems, function(el) {
           el.classList.remove("selected-region");
       });
-      console.log("deselecting. SelectedTag: ", this.get("selectedTag"));
+      console.log("deselecting. selectedRegion: ", this.get("selectedRegion"));
       return false;
     },
 
     mouseUpOnEdits: function() {
       var selected = window.getSelection();
       console.log("Selected: ", selected);
-      selected = new SelectedRegion(selected.anchorNode, selected.extentNode,
+      selected = new Region(selected.anchorNode, selected.extentNode,
           selected.anchorOffset, selected.extentOffset);
-      console.log("SelectedRegion: ", selected);
-      this.send("selectNode", selected);
+      console.log("selectedRegion: ", selected);
+      this.send("selectRegion", selected);
     },
 
     save: function(){
@@ -51,20 +51,37 @@ export default Ember.Controller.extend({
     },
 
     newNode: function(){
-      insertNode(this.get("selectedTag"));
+      var node = insertNode(this.get("selectedRegion"));
+      console.log("newNode's node: ", node);
+      this.send("selectNode", node);
     },
 
     changeTag: function(){
-      var selectedTag = this.get("selectedTag");
-      console.log("selectedTag from onChange: ", selectedTag);
-      changeNodeType(selectedTag.anchorNode.parentNode, document.getElementById("tagName").innerHTML.replace(/&nbsp;/gi,'').trim());
+      var selectedRegion = this.get("selectedRegion");
+      var tagNameElement = document.getElementById("tagName");
+      tagNameElement.focus();
+      console.log("selectedRegion from onChange: ", selectedRegion);
+      var newNode = changeNodeType(selectedRegion.anchorElement, tagNameElement.innerHTML.replace(/&nbsp;/gi,'').trim());
+      this.send("selectNode", newNode);
+      console.log("onChange fired. selectedRegion: ", selectedRegion);
+      setWindowSelection(tagNameElement, 1, 1);
+      return false;
+    },
 
-      console.log("onChange fired. SelectedTag: ", selectedTag);
+    changeId: function(){
+      var selectedRegion = this.get("selectedRegion");
+      var tagIdElement = document.getElementById("tagId-unfocusable");
+      tagIdElement.focus();
+      console.log("selectedRegion from changeId: ", selectedRegion);
+      selectedRegion.anchorElement.setAttribute("id", tagIdElement.innerHTML.replace(/&nbsp;/gi,'').trim());
+      setWindowSelection(tagNameElement, 1, 1);
       return false;
     },
 
     fieldFocused: function(event){
       event.target.classList.add("selected");
+      console.log(event.target);
+      setWindowSelection(event.target, 0, event.target.textContent.length);
       return false;
     },
 
@@ -75,6 +92,7 @@ export default Ember.Controller.extend({
 
     parentFieldFocused: function(event){
       event.target.parentNode.classList.add("selected");
+      setWindowSelection(event.target, 0, event.target.textContent.length);
       return false;
     },
 
@@ -83,28 +101,31 @@ export default Ember.Controller.extend({
       return false;
     },
 
-    selectNode: function(selection){
-      if(selection.anchorNode.nodeName == "#text"){
-        var node = selection.anchorNode.parentNode;
-      } else {
-        var node = selection.anchorNode;
-      }
-      var parent = node.parentNode;
-      var grandParent = node.parentNode.parentNode;
-
-      // remove .selected-region from all elements
+    selectRegion: function(region){
+      console.log("region: ", region);
       var elems = document.querySelectorAll(".selected-region");
       [].forEach.call(elems, function(el) {
           el.classList.remove("selected-region");
       });
 
-      node.classList.add("selected-region");
-      parent.classList.add("selected-region");
-      grandParent.classList.add("selected-region");
+      region.anchorElement.classList.add("selected-region");
+      region.anchorElement.parentNode.classList.add("selected-region");
+      region.anchorElement.parentNode.parentNode.classList.add("selected-region");
 
-      document.getElementById("tagName").innerHTML = node.nodeName;
+      this.set("selectedRegion", region);
+
+      document.getElementById("tagName").innerHTML = region.anchorElement.nodeName;
+      document.getElementById("tagId-unfocusable").innerHTML = region.anchorElement.id;
+    },
+
+    selectNode: function(node){
+      console.log("node: ", node);
+      var selected = new Region(node, node, 0, 0);
+      console.log("selectedFromSelectNode: ", selected);
+      this.send("selectRegion", selected);
     }
   },
+
 
   modelObserver: Ember.observer('model', function() {
     var edit = document.getElementById("edit");
@@ -118,8 +139,7 @@ export default Ember.Controller.extend({
 
 // useful functions
 
-function changeNodeType(selectedNode, newType){
-  var element = selectedNode;
+function changeNodeType(element, newType){
   var new_element = document.createElement(newType),
     old_attributes = element.attributes,
     new_attributes = new_element.attributes;
@@ -133,7 +153,8 @@ function changeNodeType(selectedNode, newType){
 
   // copy child nodes
   console.log("new element", new_element);
-  console.log("changeNodeType firing. element: ", element);
+  console.log("element: ", element);
+  console.log("firstChild: ", element.firstChild);
   do {
     new_element.appendChild(element.firstChild);
   }
@@ -141,21 +162,24 @@ function changeNodeType(selectedNode, newType){
 
   // replace element
   element.parentNode.replaceChild(new_element, element);
+  return new_element;
 }
 
 function insertNode(selectedNode){
   console.log("node inserted");
   console.log(selectedNode);
-  var new_element = document.createElement("h6");
-  new_element.textContent = "new element";
-
+  var new_element;
   // create a node after selectedNode
   if(selectedNode.extentNode.length <= selectedNode.extentOffset){
+    new_element = document.createElement("h6");
+    new_element.textContent = "new element";
     console.log("NEED TO CREATE NEW NODE");
     var nextSibling = selectedNode.extentNode.parentNode.nextSibling;
     nextSibling.parentNode.insertBefore(new_element, nextSibling);
   // create a node before selectedNode
   } else if (selectedNode.extentOffset == 0){
+    new_element = document.createElement("h6");
+    new_element.textContent = "new element";
     var parent = selectedNode.extentNode.parentNode;
     parent.parentNode.insertBefore(new_element, parent);
   // create a node inside selectedNode
@@ -174,21 +198,17 @@ function insertNode(selectedNode){
       var textNode1 = document.createTextNode(textNode1Content);
       var newTextNode = document.createTextNode(newNodeContent);
       var textNode2 = document.createTextNode(textNode2Content);
-      var newNode = document.createElement("b");
-      newNode.appendChild(newTextNode);
+      new_element = document.createElement("b");
+      new_element.appendChild(newTextNode);
       selectedAnchor.parentNode.insertBefore(textNode1, selectedAnchor);
-      selectedAnchor.parentNode.insertBefore(newNode, selectedAnchor);
+      selectedAnchor.parentNode.insertBefore(new_element, selectedAnchor);
       selectedAnchor.parentNode.insertBefore(textNode2, selectedAnchor);
       selectedAnchor.remove();
-    } else {
-      console.log("this looks tough...");
     }
-
-    document.getElementById("tagName").focus();
   }
-
-  // create a node as a sibling of selectedNode
-
+  console.log("New_element: ", new_element);
+  document.getElementById("tagName").focus();
+  return new_element;
 }
 
 function byValue(obj){
@@ -196,9 +216,33 @@ function byValue(obj){
   return clonedObj;
 }
 
-function SelectedRegion(anchorNode, extentNode, anchorOffset, extentOffset){
+function Region(anchorNode, extentNode, anchorOffset, extentOffset){
   this.anchorNode = anchorNode;
   this.extentNode = extentNode;
   this.anchorOffset = anchorOffset;
   this.extentOffset = extentOffset;
+  if(anchorNode.nodeName == "#text"){
+    this.anchorElement = anchorNode.parentNode;
+  } else {
+    this.anchorElement = anchorNode;
+  }
+  if(extentNode.nodeName == "#text"){
+    this.extentElement = extentNode.parentNode;
+  } else {
+    this.extentElement = extentNode;
+  }
+  console.log("new Region", this);
+}
+
+function setWindowSelection(el, start, end){
+  setTimeout(function(){
+    var range = document.createRange();
+    var sel = window.getSelection();
+    range.setStart(el, start);
+    range.collapse(true);
+    range.setEndAfter(el, end);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    console.log("changed range");
+  }, 10);
 }
