@@ -110,12 +110,11 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
       changeTag: function changeTag() {
         var selectedRegion = this.get("selectedRegion");
         var tagNameElement = document.getElementById("tagName");
-        tagNameElement.focus();
         console.log("selectedRegion from onChange: ", selectedRegion);
         var newNode = changeNodeType(selectedRegion.anchorElement, tagNameElement.innerHTML.replace(/&nbsp;/gi, '').trim());
         this.send("selectNode", newNode);
         console.log("onChange fired. selectedRegion: ", selectedRegion);
-        setWindowSelection(tagNameElement, 1, 1);
+        Caret.goToEndOfNode(event.target);
         return false;
       },
 
@@ -125,14 +124,13 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
         tagIdElement.focus();
         console.log("selectedRegion from changeId: ", selectedRegion);
         selectedRegion.anchorElement.setAttribute("id", tagIdElement.innerHTML.replace(/&nbsp;/gi, '').trim());
-        setWindowSelection(tagNameElement, 1, 1);
         return false;
       },
 
       fieldFocused: function fieldFocused(event) {
         event.target.classList.add("selected");
         console.log(event.target);
-        setWindowSelection(event.target, 0, event.target.textContent.length);
+        Caret.highlightNodeContents(event.target);
         return false;
       },
 
@@ -143,7 +141,7 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
 
       parentFieldFocused: function parentFieldFocused(event) {
         event.target.parentNode.classList.add("selected");
-        setWindowSelection(event.target, 0, event.target.textContent.length);
+        Caret.highlightNodeContents(event.target);
         return false;
       },
 
@@ -280,18 +278,27 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
     console.log("new Region", this);
   }
 
-  function setWindowSelection(el, start, end) {
-    setTimeout(function () {
-      var range = document.createRange();
-      var sel = window.getSelection();
-      range.setStart(el, start);
-      range.collapse(true);
-      range.setEndAfter(el, end);
-      sel.removeAllRanges();
-      sel.addRange(range);
-      console.log("changed range");
-    }, 10);
-  }
+  var Caret = {
+    highlightNodeContents: function highlightNodeContents(el) {
+      setTimeout(function () {
+        var range = document.createRange();
+        var sel = window.getSelection();
+        range.selectNodeContents(el);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      });
+    },
+    goToEndOfNode: function goToEndOfNode(el) {
+      setTimeout(function () {
+        var range = document.createRange();
+        var sel = window.getSelection();
+        range.selectNodeContents(el);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      });
+    }
+  };
 });
 define('page/helpers/pluralize', ['exports', 'ember-inflector/lib/helpers/pluralize'], function (exports, _emberInflectorLibHelpersPluralize) {
   exports['default'] = _emberInflectorLibHelpersPluralize['default'];

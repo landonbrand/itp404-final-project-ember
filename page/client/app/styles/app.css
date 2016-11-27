@@ -15,6 +15,10 @@ body {
   font-size: 14px;
 }
 
+.big {
+  font-size: 2em;
+}
+
 .container {
   max-width: 1100px;
   text-align: center;
