@@ -111,8 +111,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        dom.setAttribute(el3, "id", "classList");
+        var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
@@ -163,9 +162,10 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
         var element2 = dom.childAt(element1, [5]);
         var element3 = dom.childAt(element1, [7]);
         var element4 = dom.childAt(element1, [9, 3]);
-        var element5 = dom.childAt(element0, [3, 1]);
-        var element6 = dom.childAt(fragment, [4]);
-        var morphs = new Array(15);
+        var element5 = dom.childAt(element0, [3]);
+        var element6 = dom.childAt(element5, [1]);
+        var element7 = dom.childAt(fragment, [4]);
+        var morphs = new Array(16);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
         morphs[1] = dom.createElementMorph(element0);
         morphs[2] = dom.createElementMorph(element2);
@@ -178,13 +178,14 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
         morphs[9] = dom.createAttrMorph(element4, 'onfocus');
         morphs[10] = dom.createAttrMorph(element4, 'onblur');
         morphs[11] = dom.createMorphAt(element4, 1, 1);
-        morphs[12] = dom.createElementMorph(element5);
-        morphs[13] = dom.createElementMorph(element6);
-        morphs[14] = dom.createUnsafeMorphAt(dom.childAt(element6, [1, 1]), 1, 1);
+        morphs[12] = dom.createElementMorph(element6);
+        morphs[13] = dom.createMorphAt(element5, 3, 3);
+        morphs[14] = dom.createElementMorph(element7);
+        morphs[15] = dom.createUnsafeMorphAt(dom.childAt(element7, [1, 1]), 1, 1);
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["element", "action", ["deselect"], [], ["loc", [null, [2, 18], [2, 39]]], 0, 0], ["element", "action", ["newNode"], ["bubbles", false], ["loc", [null, [6, 25], [6, 59]]], 0, 0], ["attribute", "onkeyup", ["subexpr", "action", ["changeTag"], [], ["loc", [null, [null, null], [9, 40]]], 0, 0], 0, 0, 0, 0], ["attribute", "onfocus", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [null, null], [10, 43]]], 0, 0], 0, 0, 0, 0], ["attribute", "onblur", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [null, null], [11, 42]]], 0, 0], 0, 0, 0, 0], ["element", "action", ["noBubble"], ["bubbles", false], ["loc", [null, [8, 10], [8, 45]]], 0, 0], ["content", "selectedTag.anchorNode.parentNode.nodeName", ["loc", [null, [12, 6], [12, 52]]], 0, 0, 0, 0], ["attribute", "onkeyup", ["subexpr", "action", ["changeId"], [], ["loc", [null, [null, null], [20, 43]]], 0, 0], 0, 0, 0, 0], ["attribute", "onfocus", ["subexpr", "action", ["parentFieldFocused"], [], ["loc", [null, [null, null], [21, 53]]], 0, 0], 0, 0, 0, 0], ["attribute", "onblur", ["subexpr", "action", ["parentFieldBlurred"], [], ["loc", [null, [null, null], [22, 52]]], 0, 0], 0, 0, 0, 0], ["content", "selectedTag.anchorNode.parentNode.id", ["loc", [null, [23, 10], [23, 50]]], 0, 0, 0, 0], ["element", "action", ["newClass"], ["bubbles", false], ["loc", [null, [28, 40], [28, 75]]], 0, 0], ["element", "action", ["mouseUpOnEdits"], [], ["loc", [null, [36, 23], [36, 50]]], 0, 0], ["content", "model", ["loc", [null, [39, 6], [39, 17]]], 0, 0, 0, 0]],
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["element", "action", ["deselect"], [], ["loc", [null, [2, 18], [2, 39]]], 0, 0], ["element", "action", ["newNode"], ["bubbles", false], ["loc", [null, [6, 25], [6, 59]]], 0, 0], ["attribute", "onkeyup", ["subexpr", "action", ["changeTag"], [], ["loc", [null, [null, null], [9, 40]]], 0, 0], 0, 0, 0, 0], ["attribute", "onfocus", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [null, null], [10, 43]]], 0, 0], 0, 0, 0, 0], ["attribute", "onblur", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [null, null], [11, 42]]], 0, 0], 0, 0, 0, 0], ["element", "action", ["noBubble"], ["bubbles", false], ["loc", [null, [8, 10], [8, 45]]], 0, 0], ["content", "selectedTag.anchorNode.parentNode.nodeName", ["loc", [null, [12, 6], [12, 52]]], 0, 0, 0, 0], ["attribute", "onkeyup", ["subexpr", "action", ["changeId"], [], ["loc", [null, [null, null], [20, 43]]], 0, 0], 0, 0, 0, 0], ["attribute", "onfocus", ["subexpr", "action", ["parentFieldFocused"], [], ["loc", [null, [null, null], [21, 53]]], 0, 0], 0, 0, 0, 0], ["attribute", "onblur", ["subexpr", "action", ["parentFieldBlurred"], [], ["loc", [null, [null, null], [22, 52]]], 0, 0], 0, 0, 0, 0], ["content", "selectedTag.anchorNode.parentNode.id", ["loc", [null, [23, 10], [23, 50]]], 0, 0, 0, 0], ["element", "action", ["newClass"], ["bubbles", false], ["loc", [null, [28, 40], [28, 75]]], 0, 0], ["content", "class-list", ["loc", [null, [29, 4], [29, 18]]], 0, 0, 0, 0], ["element", "action", ["mouseUpOnEdits"], [], ["loc", [null, [36, 23], [36, 50]]], 0, 0], ["content", "model", ["loc", [null, [39, 6], [39, 17]]], 0, 0, 0, 0]],
       locals: [],
       templates: []
     };

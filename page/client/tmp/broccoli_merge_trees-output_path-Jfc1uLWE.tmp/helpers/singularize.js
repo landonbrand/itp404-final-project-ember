@@ -1,0 +1,1 @@
+/Users/Landon/Desktop/itp404/itp404-final-project-ember/page/client/tmp/broccoli_merge_trees-input_base_path-o4cwN6Vn.tmp/3/helpers/singularize.js

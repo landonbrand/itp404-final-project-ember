@@ -1,5 +1,5 @@
-define("page/controllers/editing-tests", ["exports", "ember"], function (exports, _ember) {
-  exports["default"] = _ember["default"].Controller.extend({
+define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/class-list-item'], function (exports, _ember, _pageComponentsClassListItem) {
+  exports['default'] = _ember['default'].Controller.extend({
     selectedRegion: {},
 
     actions: {
@@ -115,15 +115,13 @@ define("page/controllers/editing-tests", ["exports", "ember"], function (exports
         div.innerHTML = "";
         for (var i = 0; i < node.classList.length; i++) {
           var el = document.createElement("span");
-          el.setAttribute("contenteditable", true);
-          el.classList.add("field");
-          el.textContent = node.classList[i];
-          div.appendChild(el);
+          console.log(Page);
+          _pageComponentsClassListItem['default'].create().appendTo($('#classList'));
         }
       }
     },
 
-    modelObserver: _ember["default"].observer('model', function () {
+    modelObserver: _ember['default'].observer('model', function () {
       var edit = document.getElementById("edit");
       if (edit != null) {
         edit.innerHTML = this.get("model");

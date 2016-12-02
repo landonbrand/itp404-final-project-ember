@@ -110,8 +110,7 @@ export default Ember.HTMLBars.template((function() {
       dom.appendChild(el2, el3);
       var el3 = dom.createTextNode("\n    ");
       dom.appendChild(el2, el3);
-      var el3 = dom.createElement("div");
-      dom.setAttribute(el3,"id","classList");
+      var el3 = dom.createComment("");
       dom.appendChild(el2, el3);
       var el3 = dom.createTextNode("\n  ");
       dom.appendChild(el2, el3);
@@ -162,9 +161,10 @@ export default Ember.HTMLBars.template((function() {
       var element2 = dom.childAt(element1, [5]);
       var element3 = dom.childAt(element1, [7]);
       var element4 = dom.childAt(element1, [9, 3]);
-      var element5 = dom.childAt(element0, [3, 1]);
-      var element6 = dom.childAt(fragment, [4]);
-      var morphs = new Array(15);
+      var element5 = dom.childAt(element0, [3]);
+      var element6 = dom.childAt(element5, [1]);
+      var element7 = dom.childAt(fragment, [4]);
+      var morphs = new Array(16);
       morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
       morphs[1] = dom.createElementMorph(element0);
       morphs[2] = dom.createElementMorph(element2);
@@ -177,9 +177,10 @@ export default Ember.HTMLBars.template((function() {
       morphs[9] = dom.createAttrMorph(element4, 'onfocus');
       morphs[10] = dom.createAttrMorph(element4, 'onblur');
       morphs[11] = dom.createMorphAt(element4,1,1);
-      morphs[12] = dom.createElementMorph(element5);
-      morphs[13] = dom.createElementMorph(element6);
-      morphs[14] = dom.createUnsafeMorphAt(dom.childAt(element6, [1, 1]),1,1);
+      morphs[12] = dom.createElementMorph(element6);
+      morphs[13] = dom.createMorphAt(element5,3,3);
+      morphs[14] = dom.createElementMorph(element7);
+      morphs[15] = dom.createUnsafeMorphAt(dom.childAt(element7, [1, 1]),1,1);
       dom.insertBoundary(fragment, 0);
       return morphs;
     },
@@ -197,6 +198,7 @@ export default Ember.HTMLBars.template((function() {
       ["attribute","onblur",["subexpr","action",["parentFieldBlurred"],[],["loc",[null,[null,null],[22,52]]],0,0],0,0,0,0],
       ["content","selectedTag.anchorNode.parentNode.id",["loc",[null,[23,10],[23,50]]],0,0,0,0],
       ["element","action",["newClass"],["bubbles",false],["loc",[null,[28,40],[28,75]]],0,0],
+      ["content","class-list",["loc",[null,[29,4],[29,18]]],0,0,0,0],
       ["element","action",["mouseUpOnEdits"],[],["loc",[null,[36,23],[36,50]]],0,0],
       ["content","model",["loc",[null,[39,6],[39,17]]],0,0,0,0]
     ],

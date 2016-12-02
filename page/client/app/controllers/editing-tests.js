@@ -1,7 +1,10 @@
 import Ember from 'ember';
+import ClassListItemComponent from 'page/components/class-list-item';
+
 
 export default Ember.Controller.extend({
-  selectedRegion: {},
+  selectedRegion: false,
+  selectedClasses: [],
 
   actions: {
     deselect: function() {
@@ -9,6 +12,7 @@ export default Ember.Controller.extend({
       [].forEach.call(elems, function(el) {
           el.classList.remove("selected-region");
       });
+      this.set("selectedRegion", false);
       return false;
     },
 
@@ -69,7 +73,6 @@ export default Ember.Controller.extend({
 
     fieldFocused: function(event){
       event.target.classList.add("selected");
-      console.log(event.target);
       Caret.highlightNodeContents(event.target);
       return false;
     },
@@ -102,8 +105,9 @@ export default Ember.Controller.extend({
 
       this.set("selectedRegion", region);
 
-      document.getElementById("tagName").innerHTML = region.anchorElement.nodeName;
-      document.getElementById("tagId-unfocusable").innerHTML = region.anchorElement.id;
+
+      // document.getElementById("tagName").innerHTML = region.anchorElement.nodeName;
+      // document.getElementById("tagId-unfocusable").innerHTML = region.anchorElement.id;
       this.send("updateClassList", region.anchorElement);
     },
 
@@ -113,15 +117,33 @@ export default Ember.Controller.extend({
     },
 
     updateClassList: function(node){
-      var div = document.getElementById("classList");
-      div.innerHTML = "";
-      for(var i = 0; i < node.classList.length; i++){
-        var el = document.createElement("span");
-        el.setAttribute("contenteditable", true);
-        el.classList.add("field");
-        el.textContent = node.classList[i];
-        div.appendChild(el);
+      var classList = [];
+      node.classList.forEach(function(val){
+        classList.push({
+          name: val
+        });
+      });
+      this.set("selectedClasses", classList);
+    },
+
+    changeClass: function(){
+      // console.log("change Class!!");
+      var region = this.get("selectedRegion");
+      // console.log(region);
+      var newClassList = [];
+      var classListItems = Ember.$(".class-list-item");
+      var cl = region.anchorElement.classList;
+      console.log(region.anchorElement.classList);
+      for(var i = 0; i < classListItems.length; i++){
+        // if(!(region.))
+        cl.remove(cl[i]);
+        console.log(cl[i].textContent);
+        cl.add(cl[i].textContent);
       }
+      // console.log()
+      this.set("selectedRegion", region);
+      console.log(region.anchorElement.classList);
+      return false;
     }
   },
 
@@ -239,5 +261,15 @@ var Caret = {
       sel.removeAllRanges();
       sel.addRange(range);
     });
+  }
+}
+
+document.onkeyup = function(e){
+  console.log("keyup: ", e.keyCode);
+  if(e.keyCode == 27){
+    console.log(Page);
+    var controller = Page.__container__.lookup("controller:editing-tests");
+    var boundSend = controller.send.bind(controller);
+    boundSend('deselect');
   }
 }

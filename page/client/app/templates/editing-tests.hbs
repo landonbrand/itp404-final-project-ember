@@ -1,36 +1,34 @@
 {{outlet}}
-<div id="sidebar" {{action 'deselect'}}>
-  <section id="sidebar-top">
-    <button id="viewRoot" class="up">up</button>
-    <br/>
-    <button id="newNode" {{action 'newNode' bubbles=false}}>+</button>
-    <span id="tagName" class="field big" contenteditable="true"
-          {{action "noBubble" bubbles=false}}
-          onkeyup={{action "changeTag"}}
-          onfocus={{action "fieldFocused"}}
-          onblur={{action "fieldBlurred"}}>
-      {{selectedTag.anchorNode.parentNode.nodeName}}
-    </span>
-    <span id="tagId" class="field" contenteditable="false">
-      <span class="no-padding">#</span>
-        <span id="tagId-unfocusable"
-              tabindex="-1"
-              class="no-padding no-focus"
-              contenteditable="true"
-              onkeyup={{action "changeId"}}
-              onfocus={{action "parentFieldFocused"}}
-              onblur={{action "parentFieldBlurred"}}>
-          {{selectedTag.anchorNode.parentNode.id}}
-        </span>
-      </span>
-  </section>
-  <section id="sidebar-classes">
-    <button id="newClass" class="class" {{action 'newClass' bubbles=false}}>+</button>
-    <div id="classList"></div>
-  </section>
-  <section id="sidebar-styles">
+<div id="sidebar">
+  {{#if selectedRegion}}
+    <section id="sidebar-top">
+      <button id="viewRoot" class="up">up</button>
+      <br/>
+      <button id="newNode" {{action 'newNode' bubbles=false}}>+</button>
+      {{tag-name  changeTagFunction=(action "changeTag")
+                  focusFunction=(action "fieldFocused")
+                  blurFunction=(action "fieldBlurred")
+                  region=selectedRegion
+      }}
+      {{tag-id    changeIdFunction=(action "changeId")
+                  focusFunction=(action "parentFieldFocused")
+                  blurFunction=(action "parentFieldBlurred")
+                  region=selectedRegion
+      }}
+    </section>
+    <section id="sidebar-classes">
+      <button id="newClass" class="class" {{action 'newClass' bubbles=false}}>+</button>
+      {{class-list  list=selectedClasses
+                    focusFunction=(action "fieldFocused")
+                    blurFunction=(action "fieldBlurred")
+                    changeClassFunction=(action "changeClass")
+      }}
+    </section>
+    <section id="sidebar-styles">
 
-  </section>
+    </section>
+  {{else}}
+  {{/if}}
 </div>
 
 <div class="container" {{action 'mouseUpOnEdits'}}>

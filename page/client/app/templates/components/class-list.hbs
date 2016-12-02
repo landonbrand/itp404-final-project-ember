@@ -1,0 +1,10 @@
+{{yield}}
+<div id="classlist">
+  {{#each list as |item|}}
+    {{class-list-item className=item.name
+                      focusFunction=focusFunction
+                      blurFunction=blurFunction
+                      changeClassFunction=changeClassFunction
+    }}
+  {{/each}}
+</div>

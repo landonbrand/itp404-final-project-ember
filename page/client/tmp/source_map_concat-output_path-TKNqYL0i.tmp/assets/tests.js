@@ -18,6 +18,15 @@ define('page/tests/components/class-list-item.jshint', ['exports'], function (ex
     assert.ok(true, 'components/class-list-item.js should pass jshint.');
   });
 });
+define('page/tests/components/class-list.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | components/class-list.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'components/class-list.js should pass jshint.');
+  });
+});
 define('page/tests/components/nav-bar.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -42,7 +51,7 @@ define('page/tests/controllers/editing-tests.jshint', ['exports'], function (exp
   QUnit.module('JSHint | controllers/editing-tests.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/editing-tests.js should pass jshint.\ncontrollers/editing-tests.js: line 170, col 42, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 178, col 34, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 202, col 47, The \'__proto__\' property is deprecated.\ncontrollers/editing-tests.js: line 211, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 216, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 243, col 2, Missing semicolon.\ncontrollers/editing-tests.js: line 28, col 22, \'$\' is not defined.\ncontrollers/editing-tests.js: line 201, col 10, \'byValue\' is defined but never used.\n\n8 errors');
+    assert.ok(false, 'controllers/editing-tests.js should pass jshint.\ncontrollers/editing-tests.js: line 121, col 13, \'el\' is defined but never used.\ncontrollers/editing-tests.js: line 170, col 42, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 178, col 34, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 202, col 47, The \'__proto__\' property is deprecated.\ncontrollers/editing-tests.js: line 211, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 216, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 243, col 2, Missing semicolon.\ncontrollers/editing-tests.js: line 30, col 22, \'$\' is not defined.\ncontrollers/editing-tests.js: line 123, col 50, \'$\' is not defined.\ncontrollers/editing-tests.js: line 122, col 21, \'Page\' is not defined.\ncontrollers/editing-tests.js: line 201, col 10, \'byValue\' is defined but never used.\n\n11 errors');
   });
 });
 define('page/tests/helpers/destroy-app', ['exports', 'ember'], function (exports, _ember) {
@@ -309,6 +318,146 @@ define('page/tests/integration/components/class-list-item-test.jshint', ['export
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'integration/components/class-list-item-test.js should pass jshint.');
+  });
+});
+define('page/tests/integration/components/class-list-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleForComponent)('class-list', 'Integration | Component | class list', {
+    integration: true
+  });
+
+  (0, _emberQunit.test)('it renders', function (assert) {
+    // Set any properties with this.set('myProperty', 'value');
+    // Handle any actions with this.on('myAction', function(val) { ... });
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@2.8.2',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 14
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['content', 'class-list', ['loc', [null, [1, 0], [1, 14]]], 0, 0, 0, 0]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), '');
+
+    // Template block usage:
+    this.render(Ember.HTMLBars.template((function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            'revision': 'Ember@2.8.2',
+            'loc': {
+              'source': null,
+              'start': {
+                'line': 2,
+                'column': 4
+              },
+              'end': {
+                'line': 4,
+                'column': 4
+              }
+            }
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode('      template block text\n');
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes() {
+            return [];
+          },
+          statements: [],
+          locals: [],
+          templates: []
+        };
+      })();
+
+      return {
+        meta: {
+          'revision': 'Ember@2.8.2',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 5,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['block', 'class-list', [], [], 0, null, ['loc', [null, [2, 4], [4, 19]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })()));
+
+    assert.equal(this.$().text().trim(), 'template block text');
+  });
+});
+define('page/tests/integration/components/class-list-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | integration/components/class-list-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'integration/components/class-list-test.js should pass jshint.');
   });
 });
 define('page/tests/integration/components/nav-bar-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {

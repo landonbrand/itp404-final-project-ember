@@ -1,0 +1,9 @@
+{{yield}}
+<span id="tagName"
+      class="field big"
+      contenteditable="true"
+      onkeyup={{action "keyUp"}}
+      onfocus={{action "fieldFocused"}}
+      onblur={{action "fieldBlurred"}}>
+  {{region.anchorElement.nodeName}}
+</span>

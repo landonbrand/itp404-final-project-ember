@@ -1,1 +1,8 @@
 {{yield}}
+<span class="field class-list-item"
+      contenteditable="true"
+      onkeyup={{action "changeClass"}}
+      onfocus={{action "fieldFocused"}}
+      onblur={{action "fieldBlurred"}}>
+  {{className}}
+</span>

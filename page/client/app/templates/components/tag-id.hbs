@@ -1,0 +1,13 @@
+{{yield}}
+<span id="tagId" class="field" contenteditable="false">
+  <span class="no-padding">#</span>
+    <span id="tagId-unfocusable"
+          tabindex="-1"
+          class="no-padding no-focus"
+          contenteditable="true"
+          onkeyup={{action "changeId"}}
+          onfocus={{action "fieldFocused"}}
+          onblur={{action "fieldBlurred"}}>
+      {{region.anchorElement.id}}
+    </span>
+  </span>

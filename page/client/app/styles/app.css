@@ -144,3 +144,8 @@ button:active {
 #apple {
   background-color: #00ff00;
 }
+
+#sidebar .class-list-item {
+  margin: 2px;
+  float: left;
+}
