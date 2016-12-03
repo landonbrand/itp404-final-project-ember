@@ -5,6 +5,7 @@ import ClassListItemComponent from 'page/components/class-list-item';
 export default Ember.Controller.extend({
   selectedRegion: false,
   selectedClasses: [],
+  stylesheet: {},
 
   actions: {
     deselect: function() {
@@ -33,9 +34,17 @@ export default Ember.Controller.extend({
       console.log("selectedNodes", selectedNodes);
 
       var pageContent = pageNodes.innerHTML;
+      var styleSheet = document.styleSheets[2]
+      var cssArray = [];
+      for(var i = 0; i < styleSheet.cssRules.length; i++){
+        cssArray.push(styleSheet.cssRules[i].cssText);
+      }
+      var pageCSS = cssArray.join(" ");
+      console.log("pageCSS: ", pageCSS);
 
       var htmlData = {
-        html: pageContent
+        html: pageContent,
+        css: pageCSS
       };
       var promise =  $.post({
         url: "http://localhost:3000/api/saveTest",
@@ -114,6 +123,7 @@ export default Ember.Controller.extend({
       this.set("selectedRegion", region);
 
       this.send("updateClassList", region.anchorElement);
+      this.send("updateCssRules", region.anchorElement);
     },
 
     selectNode: function(node){
@@ -131,6 +141,31 @@ export default Ember.Controller.extend({
       this.set("selectedClasses", classList);
     },
 
+    updateCssRules: function(node){
+      console.log("styleSheets ", document.styleSheets);
+      var newRules = css(node);
+      console.log("css of node", newRules);
+      var formattedNewRules = newRules.map(function(val){
+        if(val.selectorText !== ".selected-region"){
+          var obj = {};
+          obj.selector = val.selectorText;
+          obj.rules = [];
+          for(var i = 0; i < val.style.length; i++){
+            obj.rules.push({name: val.style[i]});
+            console.log("value's style at position rules", val.style);
+            console.log("obj.rules[i].value", obj.rules[i].value);
+            obj.rules[i].value = val.style[obj.rules[i].name];
+          }
+          return obj;
+          console.log("in map", val);
+        }
+      });
+
+      formattedNewRules = formattedNewRules.filter(function(n){ return n != undefined });
+      console.log("formattedNewRules: ", formattedNewRules);
+      this.set("selectedCssRules", formattedNewRules);
+    },
+
     changeClass: function(){
       var region = this.get("selectedRegion");
       var classListItems = Ember.$(".class-list-item");
@@ -142,11 +177,35 @@ export default Ember.Controller.extend({
       return false;
     },
 
+    changeCssRules: function(ruleName, ruleValue){
+      console.log("changing css rules");
+      console.log("document's stylesheet", document.styleSheets);
+      var styleSheet = document.styleSheets[2];
+      console.log("camelcased rulename", camelCase(ruleName));
+      styleSheet.cssRules[0].style[camelCase(ruleName)] = ruleValue;
+      console.log("relevant thing: ", document.styleSheets[2].cssRules[0]);
+
+    },
+
     addClass: function(){
       var region = this.get("selectedRegion");
       region.anchorElement.className = region.anchorElement.className + " new-class";
       this.set("selectedRegion", region);
       this.send("updateClassList", this.get("selectedRegion").anchorElement);
+    },
+
+    selectParentNode: function(){
+      var region = this.get("selectedRegion");
+      if(region.anchorElement.parentNode.id != "edit"){
+        this.send("selectNode", region.anchorElement.parentNode);
+      }
+    },
+
+    deleteCurrentNode: function(){
+      var region = this.get("selectedRegion")
+      var element = region.anchorElement;
+      this.send("selectNode", region.anchorElement.parentNode);
+      element.outerHTML = "";
     }
   },
 
@@ -285,3 +344,41 @@ document.addEventListener("keydown", function(e) {
     console.log("saved");
   }
 }, false);
+
+
+var CssPage = function () {
+    var styleElement = document.createElement('style');
+    document.head.appendChild(styleElement);
+    this.setDocument = function(string){
+        styleElement.innerHTML = string;
+    };
+};
+
+var cssPage = new CssPage();
+
+var promise =  $.ajax({
+  url: "http://localhost:3000/api/spoofhtml",
+  type: 'get'
+});
+promise.then(function(response){
+  console.log("response's css: ", response);
+  cssPage.setDocument(response.css);
+});
+
+function css(a) {
+  var sheets = document.styleSheets, o = [];
+  a.matches = a.matches || a.webkitMatchesSelector || a.mozMatchesSelector || a.msMatchesSelector || a.oMatchesSelector;
+  for (var i in sheets) {
+    var rules = sheets[i].rules || sheets[i].cssRules;
+    for (var r in rules) {
+      if (a.matches(rules[r].selectorText)) {
+        o.push(rules[r]);
+      }
+    }
+  }
+  return o;
+}
+
+var camelCase = function(str){
+  return str.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+}

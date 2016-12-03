@@ -1,0 +1,23 @@
+{{yield}}
+<section>
+  <br/>
+  <br/>
+  {{#each list as |style|}}
+    <div class="field-group">
+      <span><b>{{style.selector}}</b></span>
+      <br/>
+      {{#each style.rules as |rule|}}
+        <span>{{rule.name}}:</span>
+        <span class="field"
+              contenteditable="true"
+              onkeyup={{action "change"}}
+              onfocus={{action "focus"}}
+              onblur={{action "blur"}}>
+          {{rule.value}}
+        </span>
+        <br/>
+      {{/each}}
+    </div>
+    <br/>
+  {{/each}}
+</section>

@@ -2,7 +2,8 @@
 <div id="sidebar">
   {{#if selectedRegion}}
     <section id="sidebar-top">
-      <button id="viewRoot" class="up">up</button>
+      <button id="viewRoot" class="up" {{action "selectParentNode"}}>up</button>
+      <button id="viewRoot" class="up" {{action "deleteCurrentNode"}}>deleteNode</button>
       <br/>
       <button id="newNode" {{action 'newNode' bubbles=false}}>+</button>
       {{tag-name  changeTagFunction=(action "changeTag")
@@ -24,12 +25,12 @@
                     changeClassFunction=(action "changeClass")
       }}
     </section>
-    <section id="sidebar-styles">
-
-    </section>
   {{else}}
   {{/if}}
-  {{!-- <button class="centered-and-bottomed" {{action "save"}}>save</button> --}}
+  {{css-rules list=selectedCssRules 
+              focusFunction=(action "fieldFocused")
+              blurFunction=(action "fieldBlurred")
+              changeCssFunction=(action "changeCssRules")}}
 </div>
 
 <div class="container" {{action 'mouseUpOnEdits'}}>

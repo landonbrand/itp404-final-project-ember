@@ -68,6 +68,24 @@ define('page/components/content-editable', ['exports', 'ember-content-editable/c
     }
   });
 });
+define("page/components/css-rules", ["exports", "ember"], function (exports, _ember) {
+  exports["default"] = _ember["default"].Component.extend({
+    actions: {
+      change: function change(event) {
+        var ruleName = event.target.parentNode.children[2].textContent;
+        ruleName = ruleName.slice(0, -1);
+        var ruleValue = event.target.textContent;
+        this.get("changeCssFunction")(ruleName, ruleValue);
+      },
+      focus: function focus(event) {
+        this.get("focusFunction")(event);
+      },
+      blur: function blur(event) {
+        this.get("blurFunction")(event);
+      }
+    }
+  });
+});
 define('page/components/nav-bar', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({});
 });
@@ -140,6 +158,7 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
   exports['default'] = _ember['default'].Controller.extend({
     selectedRegion: false,
     selectedClasses: [],
+    stylesheet: {},
 
     actions: {
       deselect: function deselect() {
@@ -167,9 +186,17 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         console.log("selectedNodes", selectedNodes);
 
         var pageContent = pageNodes.innerHTML;
+        var styleSheet = document.styleSheets[2];
+        var cssArray = [];
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+          cssArray.push(styleSheet.cssRules[i].cssText);
+        }
+        var pageCSS = cssArray.join(" ");
+        console.log("pageCSS: ", pageCSS);
 
         var htmlData = {
-          html: pageContent
+          html: pageContent,
+          css: pageCSS
         };
         var promise = $.post({
           url: "http://localhost:3000/api/saveTest",
@@ -248,6 +275,7 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         this.set("selectedRegion", region);
 
         this.send("updateClassList", region.anchorElement);
+        this.send("updateCssRules", region.anchorElement);
       },
 
       selectNode: function selectNode(node) {
@@ -265,6 +293,33 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         this.set("selectedClasses", classList);
       },
 
+      updateCssRules: function updateCssRules(node) {
+        console.log("styleSheets ", document.styleSheets);
+        var newRules = css(node);
+        console.log("css of node", newRules);
+        var formattedNewRules = newRules.map(function (val) {
+          if (val.selectorText !== ".selected-region") {
+            var obj = {};
+            obj.selector = val.selectorText;
+            obj.rules = [];
+            for (var i = 0; i < val.style.length; i++) {
+              obj.rules.push({ name: val.style[i] });
+              console.log("value's style at position rules", val.style);
+              console.log("obj.rules[i].value", obj.rules[i].value);
+              obj.rules[i].value = val.style[obj.rules[i].name];
+            }
+            return obj;
+            console.log("in map", val);
+          }
+        });
+
+        formattedNewRules = formattedNewRules.filter(function (n) {
+          return n != undefined;
+        });
+        console.log("formattedNewRules: ", formattedNewRules);
+        this.set("selectedCssRules", formattedNewRules);
+      },
+
       changeClass: function changeClass() {
         var region = this.get("selectedRegion");
         var classListItems = _ember['default'].$(".class-list-item");
@@ -276,11 +331,34 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         return false;
       },
 
+      changeCssRules: function changeCssRules(ruleName, ruleValue) {
+        console.log("changing css rules");
+        console.log("document's stylesheet", document.styleSheets);
+        var styleSheet = document.styleSheets[2];
+        console.log("camelcased rulename", camelCase(ruleName));
+        styleSheet.cssRules[0].style[camelCase(ruleName)] = ruleValue;
+        console.log("relevant thing: ", document.styleSheets[2].cssRules[0]);
+      },
+
       addClass: function addClass() {
         var region = this.get("selectedRegion");
         region.anchorElement.className = region.anchorElement.className + " new-class";
         this.set("selectedRegion", region);
         this.send("updateClassList", this.get("selectedRegion").anchorElement);
+      },
+
+      selectParentNode: function selectParentNode() {
+        var region = this.get("selectedRegion");
+        if (region.anchorElement.parentNode.id != "edit") {
+          this.send("selectNode", region.anchorElement.parentNode);
+        }
+      },
+
+      deleteCurrentNode: function deleteCurrentNode() {
+        var region = this.get("selectedRegion");
+        var element = region.anchorElement;
+        this.send("selectNode", region.anchorElement.parentNode);
+        element.outerHTML = "";
       }
     },
 
@@ -415,6 +493,46 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
       console.log("saved");
     }
   }, false);
+
+  var CssPage = function CssPage() {
+    var styleElement = document.createElement('style');
+    document.head.appendChild(styleElement);
+    this.setDocument = function (string) {
+      styleElement.innerHTML = string;
+    };
+  };
+
+  var cssPage = new CssPage();
+
+  var promise = $.ajax({
+    url: "http://localhost:3000/api/spoofhtml",
+    type: 'get'
+  });
+  promise.then(function (response) {
+    console.log("response's css: ", response);
+    cssPage.setDocument(response.css);
+  });
+
+  function css(a) {
+    var sheets = document.styleSheets,
+        o = [];
+    a.matches = a.matches || a.webkitMatchesSelector || a.mozMatchesSelector || a.msMatchesSelector || a.oMatchesSelector;
+    for (var i in sheets) {
+      var rules = sheets[i].rules || sheets[i].cssRules;
+      for (var r in rules) {
+        if (a.matches(rules[r].selectorText)) {
+          o.push(rules[r]);
+        }
+      }
+    }
+    return o;
+  }
+
+  var camelCase = function camelCase(str) {
+    return str.replace(/-([a-z])/g, function (g) {
+      return g[1].toUpperCase();
+    });
+  };
 });
 define("page/helpers/class-id", ["exports", "ember"], function (exports, _ember) {
   exports.classId = classId;
@@ -899,7 +1017,7 @@ define("page/templates/components/class-list", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 11,
+            "line": 12,
             "column": 0
           }
         },
@@ -924,6 +1042,10 @@ define("page/templates/components/class-list", ["exports"], function (exports) {
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
+        var el1 = dom.createElement("br");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
@@ -934,6 +1056,197 @@ define("page/templates/components/class-list", ["exports"], function (exports) {
         return morphs;
       },
       statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]], 0, 0, 0, 0], ["block", "each", [["get", "list", ["loc", [null, [3, 10], [3, 14]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [3, 2], [9, 11]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
+});
+define("page/templates/components/css-rules", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@2.8.2",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 9,
+                "column": 6
+              },
+              "end": {
+                "line": 19,
+                "column": 6
+              }
+            },
+            "moduleName": "page/templates/components/css-rules.hbs"
+          },
+          isEmpty: false,
+          arity: 1,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("span");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode(":");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("span");
+            dom.setAttribute(el1, "class", "field");
+            dom.setAttribute(el1, "contenteditable", "true");
+            var el2 = dom.createTextNode("\n          ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n        ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("br");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var element0 = dom.childAt(fragment, [3]);
+            var morphs = new Array(5);
+            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 0, 0);
+            morphs[1] = dom.createAttrMorph(element0, 'onkeyup');
+            morphs[2] = dom.createAttrMorph(element0, 'onfocus');
+            morphs[3] = dom.createAttrMorph(element0, 'onblur');
+            morphs[4] = dom.createMorphAt(element0, 1, 1);
+            return morphs;
+          },
+          statements: [["content", "rule.name", ["loc", [null, [10, 14], [10, 27]]], 0, 0, 0, 0], ["attribute", "onkeyup", ["subexpr", "action", ["change"], [], ["loc", [null, [null, null], [13, 41]]], 0, 0], 0, 0, 0, 0], ["attribute", "onfocus", ["subexpr", "action", ["focus"], [], ["loc", [null, [null, null], [14, 40]]], 0, 0], 0, 0, 0, 0], ["attribute", "onblur", ["subexpr", "action", ["blur"], [], ["loc", [null, [null, null], [15, 38]]], 0, 0], 0, 0, 0, 0], ["content", "rule.value", ["loc", [null, [16, 10], [16, 24]]], 0, 0, 0, 0]],
+          locals: ["rule"],
+          templates: []
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@2.8.2",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 5,
+              "column": 2
+            },
+            "end": {
+              "line": 22,
+              "column": 2
+            }
+          },
+          "moduleName": "page/templates/components/css-rules.hbs"
+        },
+        isEmpty: false,
+        arity: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1, "class", "field-group");
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("span");
+          var el3 = dom.createElement("b");
+          var el4 = dom.createComment("");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("br");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("br");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element1 = dom.childAt(fragment, [1]);
+          var morphs = new Array(2);
+          morphs[0] = dom.createMorphAt(dom.childAt(element1, [1, 0]), 0, 0);
+          morphs[1] = dom.createMorphAt(element1, 5, 5);
+          return morphs;
+        },
+        statements: [["content", "style.selector", ["loc", [null, [7, 15], [7, 33]]], 0, 0, 0, 0], ["block", "each", [["get", "style.rules", ["loc", [null, [9, 14], [9, 25]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [9, 6], [19, 15]]]]],
+        locals: ["style"],
+        templates: [child0]
+      };
+    })();
+    return {
+      meta: {
+        "revision": "Ember@2.8.2",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 24,
+            "column": 0
+          }
+        },
+        "moduleName": "page/templates/components/css-rules.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("section");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("br");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("br");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(2);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]), 5, 5);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]], 0, 0, 0, 0], ["block", "each", [["get", "list", ["loc", [null, [5, 10], [5, 14]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [5, 2], [22, 11]]]]],
       locals: [],
       templates: [child0]
     };
@@ -1437,7 +1750,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
               "column": 2
             },
             "end": {
-              "line": 30,
+              "line": 28,
               "column": 2
             }
           },
@@ -1459,6 +1772,14 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
           dom.setAttribute(el2, "id", "viewRoot");
           dom.setAttribute(el2, "class", "up");
           var el3 = dom.createTextNode("up");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("button");
+          dom.setAttribute(el2, "id", "viewRoot");
+          dom.setAttribute(el2, "class", "up");
+          var el3 = dom.createTextNode("deleteNode");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n      ");
@@ -1502,31 +1823,28 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n    ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("section");
-          dom.setAttribute(el1, "id", "sidebar-styles");
-          var el2 = dom.createTextNode("\n\n    ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element0 = dom.childAt(fragment, [1]);
-          var element1 = dom.childAt(element0, [5]);
-          var element2 = dom.childAt(fragment, [3]);
-          var element3 = dom.childAt(element2, [1]);
-          var morphs = new Array(5);
+          var element1 = dom.childAt(element0, [1]);
+          var element2 = dom.childAt(element0, [3]);
+          var element3 = dom.childAt(element0, [7]);
+          var element4 = dom.childAt(fragment, [3]);
+          var element5 = dom.childAt(element4, [1]);
+          var morphs = new Array(7);
           morphs[0] = dom.createElementMorph(element1);
-          morphs[1] = dom.createMorphAt(element0, 7, 7);
-          morphs[2] = dom.createMorphAt(element0, 9, 9);
-          morphs[3] = dom.createElementMorph(element3);
-          morphs[4] = dom.createMorphAt(element2, 3, 3);
+          morphs[1] = dom.createElementMorph(element2);
+          morphs[2] = dom.createElementMorph(element3);
+          morphs[3] = dom.createMorphAt(element0, 9, 9);
+          morphs[4] = dom.createMorphAt(element0, 11, 11);
+          morphs[5] = dom.createElementMorph(element5);
+          morphs[6] = dom.createMorphAt(element4, 3, 3);
           return morphs;
         },
-        statements: [["element", "action", ["newNode"], ["bubbles", false], ["loc", [null, [7, 27], [7, 61]]], 0, 0], ["inline", "tag-name", [], ["changeTagFunction", ["subexpr", "action", ["changeTag"], [], ["loc", [null, [8, 36], [8, 56]]], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [9, 32], [9, 55]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [10, 31], [10, 54]]], 0, 0], "region", ["subexpr", "@mut", [["get", "selectedRegion", ["loc", [null, [11, 25], [11, 39]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [8, 6], [12, 8]]], 0, 0], ["inline", "tag-id", [], ["changeIdFunction", ["subexpr", "action", ["changeId"], [], ["loc", [null, [13, 35], [13, 54]]], 0, 0], "focusFunction", ["subexpr", "action", ["parentFieldFocused"], [], ["loc", [null, [14, 32], [14, 61]]], 0, 0], "blurFunction", ["subexpr", "action", ["parentFieldBlurred"], [], ["loc", [null, [15, 31], [15, 60]]], 0, 0], "region", ["subexpr", "@mut", [["get", "selectedRegion", ["loc", [null, [16, 25], [16, 39]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [13, 6], [17, 8]]], 0, 0], ["element", "action", ["addClass"], ["bubbles", false], ["loc", [null, [20, 42], [20, 77]]], 0, 0], ["inline", "class-list", [], ["list", ["subexpr", "@mut", [["get", "selectedClasses", ["loc", [null, [21, 25], [21, 40]]], 0, 0, 0, 0]], [], [], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [22, 34], [22, 57]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [23, 33], [23, 56]]], 0, 0], "changeClassFunction", ["subexpr", "action", ["changeClass"], [], ["loc", [null, [24, 40], [24, 62]]], 0, 0]], ["loc", [null, [21, 6], [25, 8]]], 0, 0]],
+        statements: [["element", "action", ["selectParentNode"], [], ["loc", [null, [5, 39], [5, 68]]], 0, 0], ["element", "action", ["deleteCurrentNode"], [], ["loc", [null, [6, 39], [6, 69]]], 0, 0], ["element", "action", ["newNode"], ["bubbles", false], ["loc", [null, [8, 27], [8, 61]]], 0, 0], ["inline", "tag-name", [], ["changeTagFunction", ["subexpr", "action", ["changeTag"], [], ["loc", [null, [9, 36], [9, 56]]], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [10, 32], [10, 55]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [11, 31], [11, 54]]], 0, 0], "region", ["subexpr", "@mut", [["get", "selectedRegion", ["loc", [null, [12, 25], [12, 39]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [9, 6], [13, 8]]], 0, 0], ["inline", "tag-id", [], ["changeIdFunction", ["subexpr", "action", ["changeId"], [], ["loc", [null, [14, 35], [14, 54]]], 0, 0], "focusFunction", ["subexpr", "action", ["parentFieldFocused"], [], ["loc", [null, [15, 32], [15, 61]]], 0, 0], "blurFunction", ["subexpr", "action", ["parentFieldBlurred"], [], ["loc", [null, [16, 31], [16, 60]]], 0, 0], "region", ["subexpr", "@mut", [["get", "selectedRegion", ["loc", [null, [17, 25], [17, 39]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [14, 6], [18, 8]]], 0, 0], ["element", "action", ["addClass"], ["bubbles", false], ["loc", [null, [21, 42], [21, 77]]], 0, 0], ["inline", "class-list", [], ["list", ["subexpr", "@mut", [["get", "selectedClasses", ["loc", [null, [22, 25], [22, 40]]], 0, 0, 0, 0]], [], [], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [23, 34], [23, 57]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [24, 33], [24, 56]]], 0, 0], "changeClassFunction", ["subexpr", "action", ["changeClass"], [], ["loc", [null, [25, 40], [25, 62]]], 0, 0]], ["loc", [null, [22, 6], [26, 8]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -1538,11 +1856,11 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 30,
+              "line": 28,
               "column": 2
             },
             "end": {
-              "line": 31,
+              "line": 29,
               "column": 2
             }
           },
@@ -1574,7 +1892,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 42,
+            "line": 43,
             "column": 0
           }
         },
@@ -1595,6 +1913,12 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
@@ -1628,16 +1952,18 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element4 = dom.childAt(fragment, [4]);
-        var morphs = new Array(4);
+        var element6 = dom.childAt(fragment, [2]);
+        var element7 = dom.childAt(fragment, [4]);
+        var morphs = new Array(5);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]), 1, 1);
-        morphs[2] = dom.createElementMorph(element4);
-        morphs[3] = dom.createUnsafeMorphAt(dom.childAt(element4, [1, 1]), 1, 1);
+        morphs[1] = dom.createMorphAt(element6, 1, 1);
+        morphs[2] = dom.createMorphAt(element6, 3, 3);
+        morphs[3] = dom.createElementMorph(element7);
+        morphs[4] = dom.createUnsafeMorphAt(dom.childAt(element7, [1, 1]), 1, 1);
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["block", "if", [["get", "selectedRegion", ["loc", [null, [3, 8], [3, 22]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [3, 2], [31, 9]]]], ["element", "action", ["mouseUpOnEdits"], [], ["loc", [null, [35, 23], [35, 50]]], 0, 0], ["content", "model", ["loc", [null, [38, 6], [38, 17]]], 0, 0, 0, 0]],
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["block", "if", [["get", "selectedRegion", ["loc", [null, [3, 8], [3, 22]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [3, 2], [29, 9]]]], ["inline", "css-rules", [], ["list", ["subexpr", "@mut", [["get", "selectedCssRules", ["loc", [null, [30, 19], [30, 35]]], 0, 0, 0, 0]], [], [], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [31, 28], [31, 51]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [32, 27], [32, 50]]], 0, 0], "changeCssFunction", ["subexpr", "action", ["changeCssRules"], [], ["loc", [null, [33, 32], [33, 57]]], 0, 0]], ["loc", [null, [30, 2], [33, 59]]], 0, 0], ["element", "action", ["mouseUpOnEdits"], [], ["loc", [null, [36, 23], [36, 50]]], 0, 0], ["content", "model", ["loc", [null, [39, 6], [39, 17]]], 0, 0, 0, 0]],
       locals: [],
       templates: [child0, child1]
     };

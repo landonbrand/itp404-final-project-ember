@@ -127,7 +127,7 @@ button:active {
 }
 
 #sidebar .up{
-  position: absolute;
+  position: relative;
   right: 0; left: auto;
   top: 0;
   padding: 16px;
@@ -148,4 +148,11 @@ button:active {
 #sidebar .class-list-item {
   margin: 2px;
   float: left;
+}
+
+.field-group {
+  background-color: rgba(100, 100, 255, 0.2);
+  border-radius: 3px;
+  border: 2px solid rgba(100, 100, 255, 0.5);
+  padding: 8px;
 }
