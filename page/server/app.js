@@ -1,5 +1,10 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var db = require('./model/db');
+var account = require('./model/accounts');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/usersdb');
+
 var app = express();
 app.use(bodyParser.text({type:"*/*"}));
 
@@ -39,6 +44,16 @@ app.post('/api/saveTest', function (req, res) {
       body: req.body || null
   }));
   // console.log("response", response);
+});
+
+app.get('/api/users', function(request, response) {
+  mongoose.model('User').find({}, function (err, blobs) {
+    if (err) {
+      return console.error(err);
+    } else {
+      console.log(blobs);
+    }
+  });
 });
 
 app.listen(3000, function () {
