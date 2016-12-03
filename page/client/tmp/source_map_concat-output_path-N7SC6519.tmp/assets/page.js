@@ -76,7 +76,6 @@ define("page/components/css-rules", ["exports", "ember"], function (exports, _em
         var selector = event.target.parentNode.children[0].textContent;
         var ruleValue = event.target.textContent;
         ruleName = ruleName.slice(0, -1);
-        console.log("ruleName:", ruleName);
         this.get("changeCssFunction")(selector, ruleName, ruleValue);
       },
       focus: function focus(event) {
@@ -85,9 +84,16 @@ define("page/components/css-rules", ["exports", "ember"], function (exports, _em
       blur: function blur(event) {
         this.get("blurFunction")(event);
       },
-      click: function click(event) {
+      addRuleClicked: function addRuleClicked(event) {
         var selector = event.target.parentNode.children[0].textContent;
         this.get("addCssRuleFunction")(selector);
+      },
+      addStyleClicked: function addStyleClicked(event) {
+        this.get("addCssStyleFunction")();
+      },
+      removeStyleClicked: function removeStyleClicked(event) {
+        var selector = event.target.parentNode.children[0].textContent;
+        this.get("removeCssStyleFunction")(selector);
       }
     }
   });
@@ -275,8 +281,6 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         });
 
         region.anchorElement.classList.add("selected-region");
-        region.anchorElement.parentNode.classList.add("selected-region");
-        region.anchorElement.parentNode.parentNode.classList.add("selected-region");
 
         this.set("selectedRegion", region);
 
@@ -300,9 +304,7 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
       },
 
       updateCssRules: function updateCssRules(node) {
-        console.log("styleSheets ", document.styleSheets);
         var newRules = css(node);
-        console.log("css of node", newRules);
         var formattedNewRules = newRules.map(function (val) {
           if (val.selectorText !== ".selected-region") {
             var obj = {};
@@ -310,19 +312,15 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
             obj.rules = [];
             for (var i = 0; i < val.style.length; i++) {
               obj.rules.push({ name: val.style[i] });
-              console.log("value's style at position rules", val.style);
-              console.log("obj.rules[i].value", obj.rules[i].value);
               obj.rules[i].value = val.style[obj.rules[i].name];
             }
             return obj;
-            console.log("in map", val);
           }
         });
 
         formattedNewRules = formattedNewRules.filter(function (n) {
           return n != undefined;
         });
-        console.log("formattedNewRules: ", formattedNewRules);
         this.set("selectedCssRules", formattedNewRules);
       },
 
@@ -361,7 +359,16 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
 
       addCssRule: function addCssRule(selector) {
         var styleSheet = document.styleSheets[2];
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+          if (styleSheet.cssRules[i].selectorText == selector) {
+            styleSheet.cssRules[i].style.setProperty("counter-reset", "value");
+            console.log("style: ", styleSheet.cssRules[i].style);
+            break;
+          }
+        }
 
+        console.log("cssRules: ", styleSheet.cssRules);
+        this.send("updateCssRules", this.get("selectedRegion").anchorElement);
         console.log("adding Css Rule!");
       },
 
@@ -370,6 +377,35 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         if (region.anchorElement.parentNode.id != "edit") {
           this.send("selectNode", region.anchorElement.parentNode);
         }
+      },
+
+      addCssStyle: function addCssStyle() {
+        console.log("adding CSS Style!!!");
+        var sheet = document.styleSheets[2];
+        var region = this.get("selectedRegion");
+        var selector = region.anchorElement.nodeName;
+        for (var i = 0; i < region.anchorElement.classList.length; i++) {
+          if (!(region.anchorElement.classList[i] == 'selected-region')) {
+            selector += ".";
+            selector += region.anchorElement.classList[i];
+          }
+        }
+        console.log("selector: ", selector);
+        sheet.addRule(selector, "color: red", 1);
+        this.send("updateCssRules", this.get("selectedRegion").anchorElement);
+        console.log("Sheet:", document.styleSheets[2]);
+      },
+
+      removeCssStyle: function removeCssStyle(selector) {
+        console.log('removing!');
+        var styleSheet = document.styleSheets[2];
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+          if (styleSheet.cssRules[i].selectorText == selector) {
+            console.log("styleSheet from remove:", styleSheet);
+            styleSheet.deleteRule(i);
+          }
+        }
+        this.send("updateCssRules", this.get("selectedRegion").anchorElement);
       },
 
       deleteCurrentNode: function deleteCurrentNode() {
@@ -1167,7 +1203,7 @@ define("page/templates/components/css-rules", ["exports"], function (exports) {
               "column": 2
             },
             "end": {
-              "line": 29,
+              "line": 30,
               "column": 2
             }
           },
@@ -1206,6 +1242,13 @@ define("page/templates/components/css-rules", ["exports"], function (exports) {
           var el3 = dom.createTextNode("add rule");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("button");
+          dom.setAttribute(el2, "class", "add-css-rule bg-red");
+          var el3 = dom.createTextNode("remove this style");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
@@ -1220,13 +1263,15 @@ define("page/templates/components/css-rules", ["exports"], function (exports) {
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element2 = dom.childAt(fragment, [1]);
           var element3 = dom.childAt(element2, [7]);
-          var morphs = new Array(3);
+          var element4 = dom.childAt(element2, [9]);
+          var morphs = new Array(4);
           morphs[0] = dom.createMorphAt(dom.childAt(element2, [1, 0]), 0, 0);
           morphs[1] = dom.createMorphAt(element2, 5, 5);
-          morphs[2] = dom.createElementMorph(element3);
+          morphs[2] = dom.createAttrMorph(element3, 'onclick');
+          morphs[3] = dom.createAttrMorph(element4, 'onclick');
           return morphs;
         },
-        statements: [["content", "style.selector", ["loc", [null, [7, 15], [7, 33]]], 0, 0, 0, 0], ["block", "each", [["get", "style.rules", ["loc", [null, [9, 14], [9, 25]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [9, 6], [25, 15]]]], ["element", "action", ["click"], [], ["loc", [null, [26, 35], [26, 53]]], 0, 0]],
+        statements: [["content", "style.selector", ["loc", [null, [7, 15], [7, 33]]], 0, 0, 0, 0], ["block", "each", [["get", "style.rules", ["loc", [null, [9, 14], [9, 25]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [9, 6], [25, 15]]]], ["attribute", "onclick", ["subexpr", "action", ["addRuleClicked"], [], ["loc", [null, [null, null], [26, 70]]], 0, 0], 0, 0, 0, 0], ["attribute", "onclick", ["subexpr", "action", ["removeStyleClicked"], [], ["loc", [null, [null, null], [27, 81]]], 0, 0], 0, 0, 0, 0]],
         locals: ["style"],
         templates: [child0]
       };
@@ -1241,7 +1286,7 @@ define("page/templates/components/css-rules", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 31,
+            "line": 33,
             "column": 0
           }
         },
@@ -1270,19 +1315,31 @@ define("page/templates/components/css-rules", ["exports"], function (exports) {
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        dom.setAttribute(el2, "class", "add-css-rule padding-6");
+        var el3 = dom.createTextNode("add style");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(2);
+        var element5 = dom.childAt(fragment, [2]);
+        var element6 = dom.childAt(element5, [7]);
+        var morphs = new Array(3);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]), 5, 5);
+        morphs[1] = dom.createMorphAt(element5, 5, 5);
+        morphs[2] = dom.createAttrMorph(element6, 'onclick');
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]], 0, 0, 0, 0], ["block", "each", [["get", "list", ["loc", [null, [5, 10], [5, 14]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [5, 2], [29, 11]]]]],
+      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]], 0, 0, 0, 0], ["block", "each", [["get", "list", ["loc", [null, [5, 10], [5, 14]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [5, 2], [30, 11]]]], ["attribute", "onclick", ["subexpr", "action", ["addStyleClicked"], [], ["loc", [null, [null, null], [31, 77]]], 0, 0], 0, 0, 0, 0]],
       locals: [],
       templates: [child0]
     };
@@ -1786,7 +1843,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
               "column": 2
             },
             "end": {
-              "line": 34,
+              "line": 36,
               "column": 2
             }
           },
@@ -1826,7 +1883,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("button");
           dom.setAttribute(el2, "id", "newNode");
-          var el3 = dom.createTextNode("+");
+          var el3 = dom.createTextNode("create tag");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n      ");
@@ -1849,7 +1906,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
           var el2 = dom.createElement("button");
           dom.setAttribute(el2, "id", "newClass");
           dom.setAttribute(el2, "class", "class");
-          var el3 = dom.createTextNode("+");
+          var el3 = dom.createTextNode("add class");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n      ");
@@ -1885,7 +1942,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
           morphs[7] = dom.createMorphAt(fragment, 5, 5, contextualElement);
           return morphs;
         },
-        statements: [["element", "action", ["selectParentNode"], [], ["loc", [null, [5, 39], [5, 68]]], 0, 0], ["element", "action", ["deleteCurrentNode"], [], ["loc", [null, [6, 39], [6, 69]]], 0, 0], ["element", "action", ["newNode"], ["bubbles", false], ["loc", [null, [8, 27], [8, 61]]], 0, 0], ["inline", "tag-name", [], ["changeTagFunction", ["subexpr", "action", ["changeTag"], [], ["loc", [null, [9, 36], [9, 56]]], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [10, 32], [10, 55]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [11, 31], [11, 54]]], 0, 0], "region", ["subexpr", "@mut", [["get", "selectedRegion", ["loc", [null, [12, 25], [12, 39]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [9, 6], [13, 8]]], 0, 0], ["inline", "tag-id", [], ["changeIdFunction", ["subexpr", "action", ["changeId"], [], ["loc", [null, [14, 35], [14, 54]]], 0, 0], "focusFunction", ["subexpr", "action", ["parentFieldFocused"], [], ["loc", [null, [15, 32], [15, 61]]], 0, 0], "blurFunction", ["subexpr", "action", ["parentFieldBlurred"], [], ["loc", [null, [16, 31], [16, 60]]], 0, 0], "region", ["subexpr", "@mut", [["get", "selectedRegion", ["loc", [null, [17, 25], [17, 39]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [14, 6], [18, 8]]], 0, 0], ["element", "action", ["addClass"], ["bubbles", false], ["loc", [null, [21, 42], [21, 77]]], 0, 0], ["inline", "class-list", [], ["list", ["subexpr", "@mut", [["get", "selectedClasses", ["loc", [null, [22, 25], [22, 40]]], 0, 0, 0, 0]], [], [], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [23, 34], [23, 57]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [24, 33], [24, 56]]], 0, 0], "changeClassFunction", ["subexpr", "action", ["changeClass"], [], ["loc", [null, [25, 40], [25, 62]]], 0, 0]], ["loc", [null, [22, 6], [26, 8]]], 0, 0], ["inline", "css-rules", [], ["list", ["subexpr", "@mut", [["get", "selectedCssRules", ["loc", [null, [28, 21], [28, 37]]], 0, 0, 0, 0]], [], [], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [29, 30], [29, 53]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [30, 29], [30, 52]]], 0, 0], "changeCssFunction", ["subexpr", "action", ["changeCssRules"], [], ["loc", [null, [31, 34], [31, 59]]], 0, 0], "addCssRuleFunction", ["subexpr", "action", ["addCssRule"], [], ["loc", [null, [32, 35], [32, 56]]], 0, 0]], ["loc", [null, [28, 4], [33, 6]]], 0, 0]],
+        statements: [["element", "action", ["selectParentNode"], [], ["loc", [null, [5, 39], [5, 68]]], 0, 0], ["element", "action", ["deleteCurrentNode"], [], ["loc", [null, [6, 39], [6, 69]]], 0, 0], ["element", "action", ["newNode"], ["bubbles", false], ["loc", [null, [8, 27], [8, 61]]], 0, 0], ["inline", "tag-name", [], ["changeTagFunction", ["subexpr", "action", ["changeTag"], [], ["loc", [null, [9, 36], [9, 56]]], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [10, 32], [10, 55]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [11, 31], [11, 54]]], 0, 0], "region", ["subexpr", "@mut", [["get", "selectedRegion", ["loc", [null, [12, 25], [12, 39]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [9, 6], [13, 8]]], 0, 0], ["inline", "tag-id", [], ["changeIdFunction", ["subexpr", "action", ["changeId"], [], ["loc", [null, [14, 35], [14, 54]]], 0, 0], "focusFunction", ["subexpr", "action", ["parentFieldFocused"], [], ["loc", [null, [15, 32], [15, 61]]], 0, 0], "blurFunction", ["subexpr", "action", ["parentFieldBlurred"], [], ["loc", [null, [16, 31], [16, 60]]], 0, 0], "region", ["subexpr", "@mut", [["get", "selectedRegion", ["loc", [null, [17, 25], [17, 39]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [14, 6], [18, 8]]], 0, 0], ["element", "action", ["addClass"], ["bubbles", false], ["loc", [null, [21, 42], [21, 77]]], 0, 0], ["inline", "class-list", [], ["list", ["subexpr", "@mut", [["get", "selectedClasses", ["loc", [null, [22, 25], [22, 40]]], 0, 0, 0, 0]], [], [], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [23, 34], [23, 57]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [24, 33], [24, 56]]], 0, 0], "changeClassFunction", ["subexpr", "action", ["changeClass"], [], ["loc", [null, [25, 40], [25, 62]]], 0, 0]], ["loc", [null, [22, 6], [26, 8]]], 0, 0], ["inline", "css-rules", [], ["list", ["subexpr", "@mut", [["get", "selectedCssRules", ["loc", [null, [28, 21], [28, 37]]], 0, 0, 0, 0]], [], [], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [29, 30], [29, 53]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [30, 29], [30, 52]]], 0, 0], "changeCssFunction", ["subexpr", "action", ["changeCssRules"], [], ["loc", [null, [31, 34], [31, 59]]], 0, 0], "addCssRuleFunction", ["subexpr", "action", ["addCssRule"], [], ["loc", [null, [32, 35], [32, 56]]], 0, 0], "addCssStyleFunction", ["subexpr", "action", ["addCssStyle"], [], ["loc", [null, [33, 36], [33, 58]]], 0, 0], "removeCssStyleFunction", ["subexpr", "action", ["removeCssStyle"], [], ["loc", [null, [34, 39], [34, 64]]], 0, 0]], ["loc", [null, [28, 4], [35, 6]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -1897,11 +1954,11 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 34,
+              "line": 36,
               "column": 2
             },
             "end": {
-              "line": 35,
+              "line": 37,
               "column": 2
             }
           },
@@ -1933,7 +1990,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 45,
+            "line": 47,
             "column": 0
           }
         },
@@ -1996,7 +2053,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["block", "if", [["get", "selectedRegion", ["loc", [null, [3, 8], [3, 22]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [3, 2], [35, 9]]]], ["element", "action", ["mouseUpOnEdits"], [], ["loc", [null, [38, 23], [38, 50]]], 0, 0], ["content", "model", ["loc", [null, [41, 6], [41, 17]]], 0, 0, 0, 0]],
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["block", "if", [["get", "selectedRegion", ["loc", [null, [3, 8], [3, 22]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [3, 2], [37, 9]]]], ["element", "action", ["mouseUpOnEdits"], [], ["loc", [null, [40, 23], [40, 50]]], 0, 0], ["content", "model", ["loc", [null, [43, 6], [43, 17]]], 0, 0, 0, 0]],
       locals: [],
       templates: [child0, child1]
     };

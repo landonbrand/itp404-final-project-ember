@@ -117,8 +117,6 @@ export default Ember.Controller.extend({
       });
 
       region.anchorElement.classList.add("selected-region");
-      region.anchorElement.parentNode.classList.add("selected-region");
-      region.anchorElement.parentNode.parentNode.classList.add("selected-region");
 
       this.set("selectedRegion", region);
 
@@ -142,9 +140,7 @@ export default Ember.Controller.extend({
     },
 
     updateCssRules: function(node){
-      console.log("styleSheets ", document.styleSheets);
       var newRules = css(node);
-      console.log("css of node", newRules);
       var formattedNewRules = newRules.map(function(val){
         if(val.selectorText !== ".selected-region"){
           var obj = {};
@@ -152,17 +148,13 @@ export default Ember.Controller.extend({
           obj.rules = [];
           for(var i = 0; i < val.style.length; i++){
             obj.rules.push({name: val.style[i]});
-            console.log("value's style at position rules", val.style);
-            console.log("obj.rules[i].value", obj.rules[i].value);
             obj.rules[i].value = val.style[obj.rules[i].name];
           }
           return obj;
-          console.log("in map", val);
         }
       });
 
       formattedNewRules = formattedNewRules.filter(function(n){ return n != undefined });
-      console.log("formattedNewRules: ", formattedNewRules);
       this.set("selectedCssRules", formattedNewRules);
     },
 
@@ -201,7 +193,16 @@ export default Ember.Controller.extend({
 
     addCssRule: function(selector){
       var styleSheet = document.styleSheets[2];
+      for(var i = 0; i < styleSheet.cssRules.length; i++){
+        if(styleSheet.cssRules[i].selectorText == selector){
+          styleSheet.cssRules[i].style.setProperty("counter-reset", "value");
+          console.log("style: ", styleSheet.cssRules[i].style);
+          break;
+        }
+      }
 
+      console.log("cssRules: ", styleSheet.cssRules);
+      this.send("updateCssRules", this.get("selectedRegion").anchorElement);
       console.log("adding Css Rule!");
     },
 
@@ -210,6 +211,35 @@ export default Ember.Controller.extend({
       if(region.anchorElement.parentNode.id != "edit"){
         this.send("selectNode", region.anchorElement.parentNode);
       }
+    },
+
+    addCssStyle: function(){
+      console.log("adding CSS Style!!!");
+      var sheet = document.styleSheets[2];
+      var region = this.get("selectedRegion");
+      var selector = region.anchorElement.nodeName;
+      for(var i = 0 ; i < region.anchorElement.classList.length; i++){
+        if(!(region.anchorElement.classList[i] == 'selected-region')){
+          selector += ".";
+          selector += region.anchorElement.classList[i];
+        }
+      }
+      console.log("selector: ", selector);
+      sheet.addRule(selector, "color: red", 1);
+      this.send("updateCssRules", this.get("selectedRegion").anchorElement);
+      console.log("Sheet:", document.styleSheets[2]);
+    },
+
+    removeCssStyle: function(selector){
+      console.log('removing!');
+      var styleSheet = document.styleSheets[2];
+      for(var i = 0; i < styleSheet.cssRules.length; i++){
+        if(styleSheet.cssRules[i].selectorText == selector){
+          console.log("styleSheet from remove:", styleSheet);
+          styleSheet.deleteRule(i)
+        }
+      }
+      this.send("updateCssRules", this.get("selectedRegion").anchorElement);
     },
 
     deleteCurrentNode: function(){

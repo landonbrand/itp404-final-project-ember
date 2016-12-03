@@ -23,8 +23,10 @@
         </span>
         <br/>
       {{/each}}
-      <button class="add-css-rule" {{action "click"}}>add rule</button>
+      <button class="add-css-rule" onclick={{action "addRuleClicked"}}>add rule</button>
+      <button class="add-css-rule bg-red" onclick={{action "removeStyleClicked"}}>remove this style</button>
     </div>
     <br/>
   {{/each}}
+  <button class="add-css-rule padding-6" onclick={{action "addStyleClicked"}}>add style</button>
 </section>

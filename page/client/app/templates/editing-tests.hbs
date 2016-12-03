@@ -5,7 +5,7 @@
       <button id="viewRoot" class="up" {{action "selectParentNode"}}>up</button>
       <button id="viewRoot" class="up" {{action "deleteCurrentNode"}}>deleteNode</button>
       <br/>
-      <button id="newNode" {{action 'newNode' bubbles=false}}>+</button>
+      <button id="newNode" {{action 'newNode' bubbles=false}}>create tag</button>
       {{tag-name  changeTagFunction=(action "changeTag")
                   focusFunction=(action "fieldFocused")
                   blurFunction=(action "fieldBlurred")
@@ -18,7 +18,7 @@
       }}
     </section>
     <section id="sidebar-classes">
-      <button id="newClass" class="class" {{action 'addClass' bubbles=false}}>+</button>
+      <button id="newClass" class="class" {{action 'addClass' bubbles=false}}>add class</button>
       {{class-list  list=selectedClasses
                     focusFunction=(action "fieldFocused")
                     blurFunction=(action "fieldBlurred")
@@ -30,6 +30,8 @@
                 blurFunction=(action "fieldBlurred")
                 changeCssFunction=(action "changeCssRules")
                 addCssRuleFunction=(action "addCssRule")
+                addCssStyleFunction=(action "addCssStyle")
+                removeCssStyleFunction=(action "removeCssStyle")
     }}
   {{else}}
   {{/if}}

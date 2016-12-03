@@ -7,7 +7,6 @@ export default Ember.Component.extend({
       var selector = event.target.parentNode.children[0].textContent;
       var ruleValue = event.target.textContent;
       ruleName = ruleName.slice(0, -1);
-      console.log("ruleName:", ruleName);
       this.get("changeCssFunction")(selector, ruleName, ruleValue);
     },
     focus: function(event){
@@ -16,9 +15,16 @@ export default Ember.Component.extend({
     blur: function(event){
       this.get("blurFunction")(event);
     },
-    click: function(event){
+    addRuleClicked: function(event){
       var selector = event.target.parentNode.children[0].textContent;
       this.get("addCssRuleFunction")(selector);
+    },
+    addStyleClicked: function(event){
+      this.get("addCssStyleFunction")();
+    },
+    removeStyleClicked: function(event){
+      var selector = event.target.parentNode.children[0].textContent;
+      this.get("removeCssStyleFunction")(selector);
     }
   }
 });

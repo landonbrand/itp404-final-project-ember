@@ -85,7 +85,7 @@ define("page/templates/components/css-rules", ["exports"], function (exports) {
               "column": 2
             },
             "end": {
-              "line": 29,
+              "line": 30,
               "column": 2
             }
           },
@@ -124,6 +124,13 @@ define("page/templates/components/css-rules", ["exports"], function (exports) {
           var el3 = dom.createTextNode("add rule");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("button");
+          dom.setAttribute(el2, "class", "add-css-rule bg-red");
+          var el3 = dom.createTextNode("remove this style");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n    ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
@@ -138,13 +145,15 @@ define("page/templates/components/css-rules", ["exports"], function (exports) {
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element2 = dom.childAt(fragment, [1]);
           var element3 = dom.childAt(element2, [7]);
-          var morphs = new Array(3);
+          var element4 = dom.childAt(element2, [9]);
+          var morphs = new Array(4);
           morphs[0] = dom.createMorphAt(dom.childAt(element2, [1, 0]), 0, 0);
           morphs[1] = dom.createMorphAt(element2, 5, 5);
-          morphs[2] = dom.createElementMorph(element3);
+          morphs[2] = dom.createAttrMorph(element3, 'onclick');
+          morphs[3] = dom.createAttrMorph(element4, 'onclick');
           return morphs;
         },
-        statements: [["content", "style.selector", ["loc", [null, [7, 15], [7, 33]]], 0, 0, 0, 0], ["block", "each", [["get", "style.rules", ["loc", [null, [9, 14], [9, 25]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [9, 6], [25, 15]]]], ["element", "action", ["click"], [], ["loc", [null, [26, 35], [26, 53]]], 0, 0]],
+        statements: [["content", "style.selector", ["loc", [null, [7, 15], [7, 33]]], 0, 0, 0, 0], ["block", "each", [["get", "style.rules", ["loc", [null, [9, 14], [9, 25]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [9, 6], [25, 15]]]], ["attribute", "onclick", ["subexpr", "action", ["addRuleClicked"], [], ["loc", [null, [null, null], [26, 70]]], 0, 0], 0, 0, 0, 0], ["attribute", "onclick", ["subexpr", "action", ["removeStyleClicked"], [], ["loc", [null, [null, null], [27, 81]]], 0, 0], 0, 0, 0, 0]],
         locals: ["style"],
         templates: [child0]
       };
@@ -159,7 +168,7 @@ define("page/templates/components/css-rules", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 31,
+            "line": 33,
             "column": 0
           }
         },
@@ -188,19 +197,31 @@ define("page/templates/components/css-rules", ["exports"], function (exports) {
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        dom.setAttribute(el2, "class", "add-css-rule padding-6");
+        var el3 = dom.createTextNode("add style");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(2);
+        var element5 = dom.childAt(fragment, [2]);
+        var element6 = dom.childAt(element5, [7]);
+        var morphs = new Array(3);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2]), 5, 5);
+        morphs[1] = dom.createMorphAt(element5, 5, 5);
+        morphs[2] = dom.createAttrMorph(element6, 'onclick');
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]], 0, 0, 0, 0], ["block", "each", [["get", "list", ["loc", [null, [5, 10], [5, 14]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [5, 2], [29, 11]]]]],
+      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]], 0, 0, 0, 0], ["block", "each", [["get", "list", ["loc", [null, [5, 10], [5, 14]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [5, 2], [30, 11]]]], ["attribute", "onclick", ["subexpr", "action", ["addStyleClicked"], [], ["loc", [null, [null, null], [31, 77]]], 0, 0], 0, 0, 0, 0]],
       locals: [],
       templates: [child0]
     };

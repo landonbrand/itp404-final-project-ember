@@ -10,7 +10,7 @@ export default Ember.HTMLBars.template((function() {
             "column": 2
           },
           "end": {
-            "line": 34,
+            "line": 36,
             "column": 2
           }
         },
@@ -50,7 +50,7 @@ export default Ember.HTMLBars.template((function() {
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("button");
         dom.setAttribute(el2,"id","newNode");
-        var el3 = dom.createTextNode("+");
+        var el3 = dom.createTextNode("create tag");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n      ");
@@ -73,7 +73,7 @@ export default Ember.HTMLBars.template((function() {
         var el2 = dom.createElement("button");
         dom.setAttribute(el2,"id","newClass");
         dom.setAttribute(el2,"class","class");
-        var el3 = dom.createTextNode("+");
+        var el3 = dom.createTextNode("add class");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n      ");
@@ -117,7 +117,7 @@ export default Ember.HTMLBars.template((function() {
         ["inline","tag-id",[],["changeIdFunction",["subexpr","action",["changeId"],[],["loc",[null,[14,35],[14,54]]],0,0],"focusFunction",["subexpr","action",["parentFieldFocused"],[],["loc",[null,[15,32],[15,61]]],0,0],"blurFunction",["subexpr","action",["parentFieldBlurred"],[],["loc",[null,[16,31],[16,60]]],0,0],"region",["subexpr","@mut",[["get","selectedRegion",["loc",[null,[17,25],[17,39]]],0,0,0,0]],[],[],0,0]],["loc",[null,[14,6],[18,8]]],0,0],
         ["element","action",["addClass"],["bubbles",false],["loc",[null,[21,42],[21,77]]],0,0],
         ["inline","class-list",[],["list",["subexpr","@mut",[["get","selectedClasses",["loc",[null,[22,25],[22,40]]],0,0,0,0]],[],[],0,0],"focusFunction",["subexpr","action",["fieldFocused"],[],["loc",[null,[23,34],[23,57]]],0,0],"blurFunction",["subexpr","action",["fieldBlurred"],[],["loc",[null,[24,33],[24,56]]],0,0],"changeClassFunction",["subexpr","action",["changeClass"],[],["loc",[null,[25,40],[25,62]]],0,0]],["loc",[null,[22,6],[26,8]]],0,0],
-        ["inline","css-rules",[],["list",["subexpr","@mut",[["get","selectedCssRules",["loc",[null,[28,21],[28,37]]],0,0,0,0]],[],[],0,0],"focusFunction",["subexpr","action",["fieldFocused"],[],["loc",[null,[29,30],[29,53]]],0,0],"blurFunction",["subexpr","action",["fieldBlurred"],[],["loc",[null,[30,29],[30,52]]],0,0],"changeCssFunction",["subexpr","action",["changeCssRules"],[],["loc",[null,[31,34],[31,59]]],0,0],"addCssRuleFunction",["subexpr","action",["addCssRule"],[],["loc",[null,[32,35],[32,56]]],0,0]],["loc",[null,[28,4],[33,6]]],0,0]
+        ["inline","css-rules",[],["list",["subexpr","@mut",[["get","selectedCssRules",["loc",[null,[28,21],[28,37]]],0,0,0,0]],[],[],0,0],"focusFunction",["subexpr","action",["fieldFocused"],[],["loc",[null,[29,30],[29,53]]],0,0],"blurFunction",["subexpr","action",["fieldBlurred"],[],["loc",[null,[30,29],[30,52]]],0,0],"changeCssFunction",["subexpr","action",["changeCssRules"],[],["loc",[null,[31,34],[31,59]]],0,0],"addCssRuleFunction",["subexpr","action",["addCssRule"],[],["loc",[null,[32,35],[32,56]]],0,0],"addCssStyleFunction",["subexpr","action",["addCssStyle"],[],["loc",[null,[33,36],[33,58]]],0,0],"removeCssStyleFunction",["subexpr","action",["removeCssStyle"],[],["loc",[null,[34,39],[34,64]]],0,0]],["loc",[null,[28,4],[35,6]]],0,0]
       ],
       locals: [],
       templates: []
@@ -130,11 +130,11 @@ export default Ember.HTMLBars.template((function() {
         "loc": {
           "source": null,
           "start": {
-            "line": 34,
+            "line": 36,
             "column": 2
           },
           "end": {
-            "line": 35,
+            "line": 37,
             "column": 2
           }
         },
@@ -166,7 +166,7 @@ export default Ember.HTMLBars.template((function() {
           "column": 0
         },
         "end": {
-          "line": 45,
+          "line": 47,
           "column": 0
         }
       },
@@ -231,9 +231,9 @@ export default Ember.HTMLBars.template((function() {
     },
     statements: [
       ["content","outlet",["loc",[null,[1,0],[1,10]]],0,0,0,0],
-      ["block","if",[["get","selectedRegion",["loc",[null,[3,8],[3,22]]],0,0,0,0]],[],0,1,["loc",[null,[3,2],[35,9]]]],
-      ["element","action",["mouseUpOnEdits"],[],["loc",[null,[38,23],[38,50]]],0,0],
-      ["content","model",["loc",[null,[41,6],[41,17]]],0,0,0,0]
+      ["block","if",[["get","selectedRegion",["loc",[null,[3,8],[3,22]]],0,0,0,0]],[],0,1,["loc",[null,[3,2],[37,9]]]],
+      ["element","action",["mouseUpOnEdits"],[],["loc",[null,[40,23],[40,50]]],0,0],
+      ["content","model",["loc",[null,[43,6],[43,17]]],0,0,0,0]
     ],
     locals: [],
     templates: [child0, child1]
