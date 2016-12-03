@@ -36,7 +36,7 @@ define("page/components/class-list-item", ["exports", "ember"], function (export
   exports["default"] = _ember["default"].Component.extend({
     actions: {
       changeClass: function changeClass() {
-        this.get("changeClassFunction")();
+        this.get("changeClassFunction")(this.get("className"));
       },
       fieldFocused: function fieldFocused(event) {
         this.get("focusFunction")(event);
@@ -231,8 +231,6 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
 
         this.set("selectedRegion", region);
 
-        // document.getElementById("tagName").innerHTML = region.anchorElement.nodeName;
-        // document.getElementById("tagId-unfocusable").innerHTML = region.anchorElement.id;
         this.send("updateClassList", region.anchorElement);
       },
 
@@ -251,23 +249,14 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         this.set("selectedClasses", classList);
       },
 
-      changeClass: function changeClass() {
-        // console.log("change Class!!");
+      changeClass: function changeClass(className) {
         var region = this.get("selectedRegion");
-        // console.log(region);
-        var newClassList = [];
         var classListItems = _ember['default'].$(".class-list-item");
-        var cl = region.anchorElement.classList;
-        console.log(region.anchorElement.classList);
+        var newClass = [];
         for (var i = 0; i < classListItems.length; i++) {
-          // if(!(region.))
-          cl.remove(cl[i]);
-          console.log(cl[i].textContent);
-          cl.add(cl[i].textContent);
+          newClass.push(classListItems[i].textContent.trim());
         }
-        // console.log()
-        this.set("selectedRegion", region);
-        console.log(region.anchorElement.classList);
+        region.anchorElement.className = newClass.join(" ");
         return false;
       }
     },
@@ -394,6 +383,16 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
       boundSend('deselect');
     }
   };
+});
+define("page/helpers/class-id", ["exports", "ember"], function (exports, _ember) {
+  exports.classId = classId;
+
+  function classId(params) {
+
+    return "class-id-" + params;
+  }
+
+  exports["default"] = _ember["default"].Helper.helper(classId);
 });
 define('page/helpers/pluralize', ['exports', 'ember-inflector/lib/helpers/pluralize'], function (exports, _emberInflectorLibHelpersPluralize) {
   exports['default'] = _emberInflectorLibHelpersPluralize['default'];
@@ -727,7 +726,7 @@ define("page/templates/components/class-list-item", ["exports"], function (expor
             "column": 0
           },
           "end": {
-            "line": 9,
+            "line": 10,
             "column": 0
           }
         },
@@ -759,16 +758,17 @@ define("page/templates/components/class-list-item", ["exports"], function (expor
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [2]);
-        var morphs = new Array(5);
+        var morphs = new Array(6);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createAttrMorph(element0, 'onkeyup');
-        morphs[2] = dom.createAttrMorph(element0, 'onfocus');
-        morphs[3] = dom.createAttrMorph(element0, 'onblur');
-        morphs[4] = dom.createMorphAt(element0, 1, 1);
+        morphs[1] = dom.createAttrMorph(element0, 'id');
+        morphs[2] = dom.createAttrMorph(element0, 'onkeyup');
+        morphs[3] = dom.createAttrMorph(element0, 'onfocus');
+        morphs[4] = dom.createAttrMorph(element0, 'onblur');
+        morphs[5] = dom.createMorphAt(element0, 1, 1);
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]], 0, 0, 0, 0], ["attribute", "onkeyup", ["subexpr", "action", ["changeClass"], [], ["loc", [null, [null, null], [4, 38]]], 0, 0], 0, 0, 0, 0], ["attribute", "onfocus", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [null, null], [5, 39]]], 0, 0], 0, 0, 0, 0], ["attribute", "onblur", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [null, null], [6, 38]]], 0, 0], 0, 0, 0, 0], ["content", "className", ["loc", [null, [7, 2], [7, 15]]], 0, 0, 0, 0]],
+      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]], 0, 0, 0, 0], ["attribute", "id", ["subexpr", "class-id", [["get", "className", ["loc", [null, [3, 20], [3, 29]]], 0, 0, 0, 0]], [], ["loc", [null, [null, null], [3, 31]]], 0, 0], 0, 0, 0, 0], ["attribute", "onkeyup", ["subexpr", "action", ["changeClass"], [], ["loc", [null, [null, null], [5, 38]]], 0, 0], 0, 0, 0, 0], ["attribute", "onfocus", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [null, null], [6, 39]]], 0, 0], 0, 0, 0, 0], ["attribute", "onblur", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [null, null], [7, 38]]], 0, 0], 0, 0, 0, 0], ["content", "className", ["loc", [null, [8, 2], [8, 15]]], 0, 0, 0, 0]],
       locals: [],
       templates: []
     };

@@ -105,9 +105,6 @@ export default Ember.Controller.extend({
 
       this.set("selectedRegion", region);
 
-
-      // document.getElementById("tagName").innerHTML = region.anchorElement.nodeName;
-      // document.getElementById("tagId-unfocusable").innerHTML = region.anchorElement.id;
       this.send("updateClassList", region.anchorElement);
     },
 
@@ -126,23 +123,14 @@ export default Ember.Controller.extend({
       this.set("selectedClasses", classList);
     },
 
-    changeClass: function(){
-      // console.log("change Class!!");
+    changeClass: function(className){
       var region = this.get("selectedRegion");
-      // console.log(region);
-      var newClassList = [];
       var classListItems = Ember.$(".class-list-item");
-      var cl = region.anchorElement.classList;
-      console.log(region.anchorElement.classList);
+      var newClass = [];
       for(var i = 0; i < classListItems.length; i++){
-        // if(!(region.))
-        cl.remove(cl[i]);
-        console.log(cl[i].textContent);
-        cl.add(cl[i].textContent);
+        newClass.push(classListItems[i].textContent.trim());
       }
-      // console.log()
-      this.set("selectedRegion", region);
-      console.log(region.anchorElement.classList);
+      region.anchorElement.className = newClass.join(" ");
       return false;
     }
   },

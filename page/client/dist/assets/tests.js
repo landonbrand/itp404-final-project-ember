@@ -69,7 +69,16 @@ define('page/tests/controllers/editing-tests.jshint', ['exports'], function (exp
   QUnit.module('JSHint | controllers/editing-tests.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/editing-tests.js should pass jshint.\ncontrollers/editing-tests.js: line 133, col 11, \'newClassList\' is defined but never used.\ncontrollers/editing-tests.js: line 192, col 42, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 200, col 34, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 224, col 47, The \'__proto__\' property is deprecated.\ncontrollers/editing-tests.js: line 233, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 238, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 265, col 2, Missing semicolon.\ncontrollers/editing-tests.js: line 269, col 18, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 275, col 2, Missing semicolon.\ncontrollers/editing-tests.js: line 32, col 22, \'$\' is not defined.\ncontrollers/editing-tests.js: line 270, col 17, \'Page\' is not defined.\ncontrollers/editing-tests.js: line 271, col 22, \'Page\' is not defined.\ncontrollers/editing-tests.js: line 2, col 8, \'ClassListItemComponent\' is defined but never used.\ncontrollers/editing-tests.js: line 223, col 10, \'byValue\' is defined but never used.\n\n14 errors');
+    assert.ok(false, 'controllers/editing-tests.js should pass jshint.\ncontrollers/editing-tests.js: line 126, col 27, \'className\' is defined but never used.\ncontrollers/editing-tests.js: line 180, col 42, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 188, col 34, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 212, col 47, The \'__proto__\' property is deprecated.\ncontrollers/editing-tests.js: line 221, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 226, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 253, col 2, Missing semicolon.\ncontrollers/editing-tests.js: line 257, col 18, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 263, col 2, Missing semicolon.\ncontrollers/editing-tests.js: line 32, col 22, \'$\' is not defined.\ncontrollers/editing-tests.js: line 258, col 17, \'Page\' is not defined.\ncontrollers/editing-tests.js: line 259, col 22, \'Page\' is not defined.\ncontrollers/editing-tests.js: line 2, col 8, \'ClassListItemComponent\' is defined but never used.\ncontrollers/editing-tests.js: line 211, col 10, \'byValue\' is defined but never used.\n\n14 errors');
+  });
+});
+define('page/tests/helpers/class-id.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | helpers/class-id.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'helpers/class-id.js should pass jshint.');
   });
 });
 define('page/tests/helpers/destroy-app', ['exports', 'ember'], function (exports, _ember) {
@@ -1143,6 +1152,25 @@ define('page/tests/unit/controllers/editing-tests-test.jshint', ['exports'], fun
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/controllers/editing-tests-test.js should pass jshint.');
+  });
+});
+define('page/tests/unit/helpers/class-id-test', ['exports', 'page/helpers/class-id', 'qunit'], function (exports, _pageHelpersClassId, _qunit) {
+
+  (0, _qunit.module)('Unit | Helper | class id');
+
+  // Replace this with your real tests.
+  (0, _qunit.test)('it works', function (assert) {
+    var result = (0, _pageHelpersClassId.classId)([42]);
+    assert.ok(result);
+  });
+});
+define('page/tests/unit/helpers/class-id-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/helpers/class-id-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/helpers/class-id-test.js should pass jshint.');
   });
 });
 define('page/tests/unit/helpers/tag-start-test', ['exports', 'page/helpers/tag-start', 'qunit'], function (exports, _pageHelpersTagStart, _qunit) {
