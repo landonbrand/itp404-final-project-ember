@@ -24,8 +24,16 @@ export default Ember.Controller.extend({
     },
 
     save: function(){
-      var pageContent = document.getElementById("edit").innerHTML;
-      console.log(pageContent);
+      var pageNodes = document.getElementById("edit");
+      var selectedNodes = pageNodes.getElementsByClassName("selected-region");
+
+      for(var i = 0; i < selectedNodes.length; i++){
+        selectedNodes[i].classList.remove("selected-region");
+      }
+      console.log("selectedNodes", selectedNodes);
+
+      var pageContent = pageNodes.innerHTML;
+
       var htmlData = {
         html: pageContent
       };

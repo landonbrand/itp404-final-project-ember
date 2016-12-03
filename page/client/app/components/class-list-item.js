@@ -1,6 +1,14 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  shouldBeShown: Ember.computed('className', function() {
+    if(this.get("className") == 'selected-region'){
+      return false;
+    } else {
+      return true;
+    }
+    return true;
+  }),
   actions: {
     changeClass: function(){
       this.get("changeClassFunction")();

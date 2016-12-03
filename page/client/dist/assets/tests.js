@@ -15,7 +15,7 @@ define('page/tests/components/class-list-item.jshint', ['exports'], function (ex
   QUnit.module('JSHint | components/class-list-item.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'components/class-list-item.js should pass jshint.');
+    assert.ok(false, 'components/class-list-item.js should pass jshint.\ncomponents/class-list-item.js: line 5, col 32, Expected \'===\' and instead saw \'==\'.\n\n1 error');
   });
 });
 define('page/tests/components/class-list.jshint', ['exports'], function (exports) {
@@ -69,7 +69,7 @@ define('page/tests/controllers/editing-tests.jshint', ['exports'], function (exp
   QUnit.module('JSHint | controllers/editing-tests.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/editing-tests.js should pass jshint.\ncontrollers/editing-tests.js: line 187, col 42, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 195, col 34, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 219, col 47, The \'__proto__\' property is deprecated.\ncontrollers/editing-tests.js: line 228, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 233, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 260, col 2, Missing semicolon.\ncontrollers/editing-tests.js: line 264, col 18, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 269, col 2, Missing semicolon.\ncontrollers/editing-tests.js: line 272, col 19, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 32, col 22, \'$\' is not defined.\ncontrollers/editing-tests.js: line 265, col 22, \'Page\' is not defined.\ncontrollers/editing-tests.js: line 274, col 22, \'Page\' is not defined.\ncontrollers/editing-tests.js: line 2, col 8, \'ClassListItemComponent\' is defined but never used.\ncontrollers/editing-tests.js: line 218, col 10, \'byValue\' is defined but never used.\n\n14 errors');
+    assert.ok(false, 'controllers/editing-tests.js should pass jshint.\ncontrollers/editing-tests.js: line 195, col 42, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 203, col 34, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 227, col 47, The \'__proto__\' property is deprecated.\ncontrollers/editing-tests.js: line 236, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 241, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 268, col 2, Missing semicolon.\ncontrollers/editing-tests.js: line 272, col 18, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 277, col 2, Missing semicolon.\ncontrollers/editing-tests.js: line 280, col 19, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 40, col 22, \'$\' is not defined.\ncontrollers/editing-tests.js: line 273, col 22, \'Page\' is not defined.\ncontrollers/editing-tests.js: line 282, col 22, \'Page\' is not defined.\ncontrollers/editing-tests.js: line 2, col 8, \'ClassListItemComponent\' is defined but never used.\ncontrollers/editing-tests.js: line 226, col 10, \'byValue\' is defined but never used.\n\n14 errors');
   });
 });
 define('page/tests/helpers/class-id.jshint', ['exports'], function (exports) {

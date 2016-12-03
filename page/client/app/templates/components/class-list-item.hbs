@@ -1,9 +1,11 @@
 {{yield}}
-<span class="field class-list-item"
-      id={{class-id className}}
-      contenteditable="true"
-      onkeyup={{action "changeClass"}}
-      onfocus={{action "fieldFocused"}}
-      onblur={{action "fieldBlurred"}}>
-  {{className}}
-</span>
+{{#if shouldBeShown}}
+  <span class="field class-list-item"
+        id={{class-id className}}
+        contenteditable="true"
+        onkeyup={{action "changeClass"}}
+        onfocus={{action "fieldFocused"}}
+        onblur={{action "fieldBlurred"}}>
+    {{className}}
+  </span>
+{{/if}}
