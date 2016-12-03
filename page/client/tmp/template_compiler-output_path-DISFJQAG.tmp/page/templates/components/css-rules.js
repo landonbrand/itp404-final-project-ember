@@ -11,7 +11,7 @@ export default Ember.HTMLBars.template((function() {
               "column": 6
             },
             "end": {
-              "line": 19,
+              "line": 25,
               "column": 6
             }
           },
@@ -26,9 +26,12 @@ export default Ember.HTMLBars.template((function() {
           var el1 = dom.createTextNode("        ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("span");
+          dom.setAttribute(el1,"contenteditable","true");
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
           var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode(":");
+          var el2 = dom.createTextNode(":\n        ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n        ");
@@ -52,21 +55,30 @@ export default Ember.HTMLBars.template((function() {
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [3]);
-          var morphs = new Array(5);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),0,0);
+          var element0 = dom.childAt(fragment, [1]);
+          var element1 = dom.childAt(fragment, [3]);
+          var morphs = new Array(9);
+          morphs[0] = dom.createAttrMorph(element0, 'id');
           morphs[1] = dom.createAttrMorph(element0, 'onkeyup');
           morphs[2] = dom.createAttrMorph(element0, 'onfocus');
           morphs[3] = dom.createAttrMorph(element0, 'onblur');
           morphs[4] = dom.createMorphAt(element0,1,1);
+          morphs[5] = dom.createAttrMorph(element1, 'onkeyup');
+          morphs[6] = dom.createAttrMorph(element1, 'onfocus');
+          morphs[7] = dom.createAttrMorph(element1, 'onblur');
+          morphs[8] = dom.createMorphAt(element1,1,1);
           return morphs;
         },
         statements: [
-          ["content","rule.name",["loc",[null,[10,14],[10,27]]],0,0,0,0],
-          ["attribute","onkeyup",["subexpr","action",["change"],[],["loc",[null,[null,null],[13,41]]],0,0],0,0,0,0],
-          ["attribute","onfocus",["subexpr","action",["focus"],[],["loc",[null,[null,null],[14,40]]],0,0],0,0,0,0],
-          ["attribute","onblur",["subexpr","action",["blur"],[],["loc",[null,[null,null],[15,38]]],0,0],0,0,0,0],
-          ["content","rule.value",["loc",[null,[16,10],[16,24]]],0,0,0,0]
+          ["attribute","id",["subexpr","class-id",[["get","rule.name",["loc",[null,[10,28],[10,37]]],0,0,0,0]],[],["loc",[null,[null,null],[10,39]]],0,0],0,0,0,0],
+          ["attribute","onkeyup",["subexpr","action",["change"],[],["loc",[null,[null,null],[12,41]]],0,0],0,0,0,0],
+          ["attribute","onfocus",["subexpr","action",["focus"],[],["loc",[null,[null,null],[13,40]]],0,0],0,0,0,0],
+          ["attribute","onblur",["subexpr","action",["blur"],[],["loc",[null,[null,null],[14,38]]],0,0],0,0,0,0],
+          ["content","rule.name",["loc",[null,[15,10],[15,23]]],0,0,0,0],
+          ["attribute","onkeyup",["subexpr","action",["change"],[],["loc",[null,[null,null],[19,41]]],0,0],0,0,0,0],
+          ["attribute","onfocus",["subexpr","action",["focus"],[],["loc",[null,[null,null],[20,40]]],0,0],0,0,0,0],
+          ["attribute","onblur",["subexpr","action",["blur"],[],["loc",[null,[null,null],[21,38]]],0,0],0,0,0,0],
+          ["content","rule.value",["loc",[null,[22,10],[22,24]]],0,0,0,0]
         ],
         locals: ["rule"],
         templates: []
@@ -82,7 +94,7 @@ export default Ember.HTMLBars.template((function() {
             "column": 2
           },
           "end": {
-            "line": 22,
+            "line": 29,
             "column": 2
           }
         },
@@ -114,7 +126,14 @@ export default Ember.HTMLBars.template((function() {
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("    ");
+        var el2 = dom.createTextNode("      ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        dom.setAttribute(el2,"class","add-css-rule");
+        var el3 = dom.createTextNode("add rule");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n    ");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n    ");
@@ -126,15 +145,18 @@ export default Ember.HTMLBars.template((function() {
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element1 = dom.childAt(fragment, [1]);
-        var morphs = new Array(2);
-        morphs[0] = dom.createMorphAt(dom.childAt(element1, [1, 0]),0,0);
-        morphs[1] = dom.createMorphAt(element1,5,5);
+        var element2 = dom.childAt(fragment, [1]);
+        var element3 = dom.childAt(element2, [7]);
+        var morphs = new Array(3);
+        morphs[0] = dom.createMorphAt(dom.childAt(element2, [1, 0]),0,0);
+        morphs[1] = dom.createMorphAt(element2,5,5);
+        morphs[2] = dom.createElementMorph(element3);
         return morphs;
       },
       statements: [
         ["content","style.selector",["loc",[null,[7,15],[7,33]]],0,0,0,0],
-        ["block","each",[["get","style.rules",["loc",[null,[9,14],[9,25]]],0,0,0,0]],[],0,null,["loc",[null,[9,6],[19,15]]]]
+        ["block","each",[["get","style.rules",["loc",[null,[9,14],[9,25]]],0,0,0,0]],[],0,null,["loc",[null,[9,6],[25,15]]]],
+        ["element","action",["click"],[],["loc",[null,[26,35],[26,53]]],0,0]
       ],
       locals: ["style"],
       templates: [child0]
@@ -150,7 +172,7 @@ export default Ember.HTMLBars.template((function() {
           "column": 0
         },
         "end": {
-          "line": 24,
+          "line": 31,
           "column": 0
         }
       },
@@ -193,7 +215,7 @@ export default Ember.HTMLBars.template((function() {
     },
     statements: [
       ["content","yield",["loc",[null,[1,0],[1,9]]],0,0,0,0],
-      ["block","each",[["get","list",["loc",[null,[5,10],[5,14]]],0,0,0,0]],[],0,null,["loc",[null,[5,2],[22,11]]]]
+      ["block","each",[["get","list",["loc",[null,[5,10],[5,14]]],0,0,0,0]],[],0,null,["loc",[null,[5,2],[29,11]]]]
     ],
     locals: [],
     templates: [child0]

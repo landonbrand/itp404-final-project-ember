@@ -175,13 +175,19 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         return false;
       },
 
-      changeCssRules: function changeCssRules(ruleName, ruleValue) {
-        console.log("changing css rules");
-        console.log("document's stylesheet", document.styleSheets);
+      changeCssRules: function changeCssRules(selector, ruleName, ruleValue) {
         var styleSheet = document.styleSheets[2];
-        console.log("camelcased rulename", camelCase(ruleName));
-        styleSheet.cssRules[0].style[camelCase(ruleName)] = ruleValue;
-        console.log("relevant thing: ", document.styleSheets[2].cssRules[0]);
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+          if (styleSheet.cssRules[i].selectorText == selector) {
+            if (ruleName == "" || ruleValue == "") {
+              styleSheet.cssRules[i].style[camelCase(ruleName)] = "";
+              styleSheet.cssRules[i].style.removeProperty(camelCase(ruleName));
+              console.log("tryna delete this shi");
+            } else {
+              styleSheet.cssRules[i].style[camelCase(ruleName)] = ruleValue;
+            }
+          }
+        }
       },
 
       addClass: function addClass() {
@@ -189,6 +195,12 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         region.anchorElement.className = region.anchorElement.className + " new-class";
         this.set("selectedRegion", region);
         this.send("updateClassList", this.get("selectedRegion").anchorElement);
+      },
+
+      addCssRule: function addCssRule(selector) {
+        var styleSheet = document.styleSheets[2];
+
+        console.log("adding Css Rule!");
       },
 
       selectParentNode: function selectParentNode() {
@@ -373,6 +385,7 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
   }
 
   var camelCase = function camelCase(str) {
+    console.log("str: ", str);
     return str.replace(/-([a-z])/g, function (g) {
       return g[1].toUpperCase();
     });

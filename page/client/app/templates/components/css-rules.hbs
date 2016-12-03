@@ -7,7 +7,13 @@
       <span><b>{{style.selector}}</b></span>
       <br/>
       {{#each style.rules as |rule|}}
-        <span>{{rule.name}}:</span>
+        <span id={{class-id rule.name}}
+              contenteditable="true"
+              onkeyup={{action "change"}}
+              onfocus={{action "focus"}}
+              onblur={{action "blur"}}>
+          {{rule.name}}:
+        </span>
         <span class="field"
               contenteditable="true"
               onkeyup={{action "change"}}
@@ -17,6 +23,7 @@
         </span>
         <br/>
       {{/each}}
+      <button class="add-css-rule" {{action "click"}}>add rule</button>
     </div>
     <br/>
   {{/each}}

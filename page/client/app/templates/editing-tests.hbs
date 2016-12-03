@@ -25,12 +25,14 @@
                     changeClassFunction=(action "changeClass")
       }}
     </section>
+    {{css-rules list=selectedCssRules
+                focusFunction=(action "fieldFocused")
+                blurFunction=(action "fieldBlurred")
+                changeCssFunction=(action "changeCssRules")
+                addCssRuleFunction=(action "addCssRule")
+    }}
   {{else}}
   {{/if}}
-  {{css-rules list=selectedCssRules 
-              focusFunction=(action "fieldFocused")
-              blurFunction=(action "fieldBlurred")
-              changeCssFunction=(action "changeCssRules")}}
 </div>
 
 <div class="container" {{action 'mouseUpOnEdits'}}>

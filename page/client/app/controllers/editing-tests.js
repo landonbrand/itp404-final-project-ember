@@ -177,14 +177,19 @@ export default Ember.Controller.extend({
       return false;
     },
 
-    changeCssRules: function(ruleName, ruleValue){
-      console.log("changing css rules");
-      console.log("document's stylesheet", document.styleSheets);
+    changeCssRules: function(selector, ruleName, ruleValue){
       var styleSheet = document.styleSheets[2];
-      console.log("camelcased rulename", camelCase(ruleName));
-      styleSheet.cssRules[0].style[camelCase(ruleName)] = ruleValue;
-      console.log("relevant thing: ", document.styleSheets[2].cssRules[0]);
-
+      for(var i = 0; i < styleSheet.cssRules.length; i++){
+        if(styleSheet.cssRules[i].selectorText == selector){
+          if(ruleName == "" || ruleValue == ""){
+            styleSheet.cssRules[i].style[camelCase(ruleName)] = "";
+            styleSheet.cssRules[i].style.removeProperty(camelCase(ruleName));
+            console.log("tryna delete this shi");
+          } else {
+            styleSheet.cssRules[i].style[camelCase(ruleName)] = ruleValue;
+          }
+        }
+      }
     },
 
     addClass: function(){
@@ -192,6 +197,12 @@ export default Ember.Controller.extend({
       region.anchorElement.className = region.anchorElement.className + " new-class";
       this.set("selectedRegion", region);
       this.send("updateClassList", this.get("selectedRegion").anchorElement);
+    },
+
+    addCssRule: function(selector){
+      var styleSheet = document.styleSheets[2];
+
+      console.log("adding Css Rule!");
     },
 
     selectParentNode: function(){
@@ -380,5 +391,6 @@ function css(a) {
 }
 
 var camelCase = function(str){
+  console.log("str: ", str);
   return str.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
 }

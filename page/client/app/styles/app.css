@@ -1,21 +1,21 @@
 
 
-a {
+#sidebar a {
   text-decoration: none;
   padding: 4px;
 }
 
-nav {
+#sidebar nav {
   text-align: center;
 }
 
-body {
+#sidebar {
   text-align: center;
   font-family: helvetica;
   font-size: 14px;
 }
 
-.big {
+#sidebar .big {
   font-size: 2em;
 }
 
@@ -44,20 +44,6 @@ body {
   text-align: left;
 }
 
-.tree-view-box {
-  background-color: rgba(255, 255, 255, 0.4);
-  border-color: rgb(220, 70, 70);
-  border-width: 2px;
-  border-style: solid;
-  border-radius: 4px;
-  padding: 10px;
-  min-height: 16px;
-}
-
-.tree-view-box:focus {
-  outline: none;
-}
-
 #sidebar button {
   margin-top: 10px;
   font-size: 1em;
@@ -69,7 +55,7 @@ body {
 }
 
 
-button {
+#sidebar button {
   font-size: 1.25em;
   padding: 8px;
   background-color: #33c;
@@ -80,11 +66,11 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+#sidebar button:hover {
   background-color: #66f;
 }
 
-button:active {
+#sidebar button:active {
   background-color: #11a;
 }
 
@@ -150,9 +136,15 @@ button:active {
   float: left;
 }
 
-.field-group {
+#sidebar .field-group {
   background-color: rgba(100, 100, 255, 0.2);
   border-radius: 3px;
   border: 2px solid rgba(100, 100, 255, 0.5);
   padding: 8px;
+}
+
+#sidebar .add-css-rule {
+  font-size: 12px;
+  width: 100%;
+  padding: 2px;
 }
