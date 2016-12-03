@@ -36,7 +36,7 @@ define("page/components/class-list-item", ["exports", "ember"], function (export
   exports["default"] = _ember["default"].Component.extend({
     actions: {
       changeClass: function changeClass() {
-        this.get("changeClassFunction")(this.get("className"));
+        this.get("changeClassFunction")();
       },
       fieldFocused: function fieldFocused(event) {
         this.get("focusFunction")(event);
@@ -249,7 +249,7 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         this.set("selectedClasses", classList);
       },
 
-      changeClass: function changeClass(className) {
+      changeClass: function changeClass() {
         var region = this.get("selectedRegion");
         var classListItems = _ember['default'].$(".class-list-item");
         var newClass = [];
@@ -258,6 +258,13 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         }
         region.anchorElement.className = newClass.join(" ");
         return false;
+      },
+
+      addClass: function addClass() {
+        var region = this.get("selectedRegion");
+        region.anchorElement.className = region.anchorElement.className + " new-class";
+        this.set("selectedRegion", region);
+        this.send("updateClassList", this.get("selectedRegion").anchorElement);
       }
     },
 
@@ -377,12 +384,21 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
   document.onkeyup = function (e) {
     console.log("keyup: ", e.keyCode);
     if (e.keyCode == 27) {
-      console.log(Page);
       var controller = Page.__container__.lookup("controller:editing-tests");
       var boundSend = controller.send.bind(controller);
       boundSend('deselect');
     }
   };
+
+  document.addEventListener("keydown", function (e) {
+    if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+      e.preventDefault();
+      var controller = Page.__container__.lookup("controller:editing-tests");
+      var boundSend = controller.send.bind(controller);
+      boundSend('save');
+      console.log("saved");
+    }
+  }, false);
 });
 define("page/helpers/class-id", ["exports", "ember"], function (exports, _ember) {
   exports.classId = classId;
@@ -1454,7 +1470,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
           morphs[4] = dom.createMorphAt(element2, 3, 3);
           return morphs;
         },
-        statements: [["element", "action", ["newNode"], ["bubbles", false], ["loc", [null, [7, 27], [7, 61]]], 0, 0], ["inline", "tag-name", [], ["changeTagFunction", ["subexpr", "action", ["changeTag"], [], ["loc", [null, [8, 36], [8, 56]]], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [9, 32], [9, 55]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [10, 31], [10, 54]]], 0, 0], "region", ["subexpr", "@mut", [["get", "selectedRegion", ["loc", [null, [11, 25], [11, 39]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [8, 6], [12, 8]]], 0, 0], ["inline", "tag-id", [], ["changeIdFunction", ["subexpr", "action", ["changeId"], [], ["loc", [null, [13, 35], [13, 54]]], 0, 0], "focusFunction", ["subexpr", "action", ["parentFieldFocused"], [], ["loc", [null, [14, 32], [14, 61]]], 0, 0], "blurFunction", ["subexpr", "action", ["parentFieldBlurred"], [], ["loc", [null, [15, 31], [15, 60]]], 0, 0], "region", ["subexpr", "@mut", [["get", "selectedRegion", ["loc", [null, [16, 25], [16, 39]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [13, 6], [17, 8]]], 0, 0], ["element", "action", ["newClass"], ["bubbles", false], ["loc", [null, [20, 42], [20, 77]]], 0, 0], ["inline", "class-list", [], ["list", ["subexpr", "@mut", [["get", "selectedClasses", ["loc", [null, [21, 25], [21, 40]]], 0, 0, 0, 0]], [], [], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [22, 34], [22, 57]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [23, 33], [23, 56]]], 0, 0], "changeClassFunction", ["subexpr", "action", ["changeClass"], [], ["loc", [null, [24, 40], [24, 62]]], 0, 0]], ["loc", [null, [21, 6], [25, 8]]], 0, 0]],
+        statements: [["element", "action", ["newNode"], ["bubbles", false], ["loc", [null, [7, 27], [7, 61]]], 0, 0], ["inline", "tag-name", [], ["changeTagFunction", ["subexpr", "action", ["changeTag"], [], ["loc", [null, [8, 36], [8, 56]]], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [9, 32], [9, 55]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [10, 31], [10, 54]]], 0, 0], "region", ["subexpr", "@mut", [["get", "selectedRegion", ["loc", [null, [11, 25], [11, 39]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [8, 6], [12, 8]]], 0, 0], ["inline", "tag-id", [], ["changeIdFunction", ["subexpr", "action", ["changeId"], [], ["loc", [null, [13, 35], [13, 54]]], 0, 0], "focusFunction", ["subexpr", "action", ["parentFieldFocused"], [], ["loc", [null, [14, 32], [14, 61]]], 0, 0], "blurFunction", ["subexpr", "action", ["parentFieldBlurred"], [], ["loc", [null, [15, 31], [15, 60]]], 0, 0], "region", ["subexpr", "@mut", [["get", "selectedRegion", ["loc", [null, [16, 25], [16, 39]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [13, 6], [17, 8]]], 0, 0], ["element", "action", ["addClass"], ["bubbles", false], ["loc", [null, [20, 42], [20, 77]]], 0, 0], ["inline", "class-list", [], ["list", ["subexpr", "@mut", [["get", "selectedClasses", ["loc", [null, [21, 25], [21, 40]]], 0, 0, 0, 0]], [], [], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [22, 34], [22, 57]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [23, 33], [23, 56]]], 0, 0], "changeClassFunction", ["subexpr", "action", ["changeClass"], [], ["loc", [null, [24, 40], [24, 62]]], 0, 0]], ["loc", [null, [21, 6], [25, 8]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -1502,7 +1518,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 41,
+            "line": 42,
             "column": 0
           }
         },
@@ -1565,7 +1581,7 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["block", "if", [["get", "selectedRegion", ["loc", [null, [3, 8], [3, 22]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [3, 2], [31, 9]]]], ["element", "action", ["mouseUpOnEdits"], [], ["loc", [null, [34, 23], [34, 50]]], 0, 0], ["content", "model", ["loc", [null, [37, 6], [37, 17]]], 0, 0, 0, 0]],
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["block", "if", [["get", "selectedRegion", ["loc", [null, [3, 8], [3, 22]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [3, 2], [31, 9]]]], ["element", "action", ["mouseUpOnEdits"], [], ["loc", [null, [35, 23], [35, 50]]], 0, 0], ["content", "model", ["loc", [null, [38, 6], [38, 17]]], 0, 0, 0, 0]],
       locals: [],
       templates: [child0, child1]
     };

@@ -119,7 +119,7 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         this.set("selectedClasses", classList);
       },
 
-      changeClass: function changeClass(className) {
+      changeClass: function changeClass() {
         var region = this.get("selectedRegion");
         var classListItems = _ember['default'].$(".class-list-item");
         var newClass = [];
@@ -128,6 +128,13 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         }
         region.anchorElement.className = newClass.join(" ");
         return false;
+      },
+
+      addClass: function addClass() {
+        var region = this.get("selectedRegion");
+        region.anchorElement.className = region.anchorElement.className + " new-class";
+        this.set("selectedRegion", region);
+        this.send("updateClassList", this.get("selectedRegion").anchorElement);
       }
     },
 
@@ -247,10 +254,19 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
   document.onkeyup = function (e) {
     console.log("keyup: ", e.keyCode);
     if (e.keyCode == 27) {
-      console.log(Page);
       var controller = Page.__container__.lookup("controller:editing-tests");
       var boundSend = controller.send.bind(controller);
       boundSend('deselect');
     }
   };
+
+  document.addEventListener("keydown", function (e) {
+    if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+      e.preventDefault();
+      var controller = Page.__container__.lookup("controller:editing-tests");
+      var boundSend = controller.send.bind(controller);
+      boundSend('save');
+      console.log("saved");
+    }
+  }, false);
 });

@@ -2,7 +2,7 @@ define("page/components/class-list-item", ["exports", "ember"], function (export
   exports["default"] = _ember["default"].Component.extend({
     actions: {
       changeClass: function changeClass() {
-        this.get("changeClassFunction")(this.get("className"));
+        this.get("changeClassFunction")();
       },
       fieldFocused: function fieldFocused(event) {
         this.get("focusFunction")(event);
