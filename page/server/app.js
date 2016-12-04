@@ -17,7 +17,19 @@ db.once('open', function() {
   console.log("we're connected to the database!");
 });
 
-var testDocument = new account.UserModel({ login: "ladnonbnard"});
+var userSchema = new mongoose.Schema({
+  login: String,
+  // sites: [
+  //   name: String,
+  //   data: {
+  //     html: String,
+  //     css: String
+  //   }
+  // ]
+});
+var UserModel = mongoose.model('User', userSchema);
+
+var testDocument = new UserModel({ login: "ladnonbnard"});
 console.log(testDocumet);
 
 testDocument.save(function(err, testDoc){
