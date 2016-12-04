@@ -109,7 +109,7 @@ app.get('/auth/github/callback',
   });
 
 app.get("/api/getuser", function(req, res){
-  res.json(req.user);
+  res.send(req.user);
 });
 
 app.get("/failed", function(req, res){

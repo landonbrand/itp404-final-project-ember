@@ -9,7 +9,7 @@ export default Ember.HTMLBars.template((function() {
           "column": 0
         },
         "end": {
-          "line": 18,
+          "line": 20,
           "column": 0
         }
       },
@@ -79,6 +79,18 @@ export default Ember.HTMLBars.template((function() {
       var el6 = dom.createTextNode("Sign Up with Github");
       dom.appendChild(el5, el6);
       dom.appendChild(el4, el5);
+      var el5 = dom.createTextNode("\n        ");
+      dom.appendChild(el4, el5);
+      var el5 = dom.createElement("br");
+      dom.appendChild(el4, el5);
+      var el5 = dom.createTextNode("\n        ");
+      dom.appendChild(el4, el5);
+      var el5 = dom.createElement("span");
+      var el6 = dom.createTextNode("User: ");
+      dom.appendChild(el5, el6);
+      var el6 = dom.createComment("");
+      dom.appendChild(el5, el6);
+      dom.appendChild(el4, el5);
       var el5 = dom.createTextNode("\n      ");
       dom.appendChild(el4, el5);
       dom.appendChild(el3, el4);
@@ -97,18 +109,21 @@ export default Ember.HTMLBars.template((function() {
     },
     buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
       var element0 = dom.childAt(fragment, [2, 1]);
-      var element1 = dom.childAt(element0, [3, 3, 11]);
-      var morphs = new Array(3);
+      var element1 = dom.childAt(element0, [3, 3]);
+      var element2 = dom.childAt(element1, [11]);
+      var morphs = new Array(4);
       morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
       morphs[1] = dom.createMorphAt(element0,1,1);
-      morphs[2] = dom.createElementMorph(element1);
+      morphs[2] = dom.createElementMorph(element2);
+      morphs[3] = dom.createMorphAt(dom.childAt(element1, [15]),1,1);
       dom.insertBoundary(fragment, 0);
       return morphs;
     },
     statements: [
       ["content","outlet",["loc",[null,[1,0],[1,10]]],0,0,0,0],
       ["content","nav-bar",["loc",[null,[4,4],[4,15]]],0,0,0,0],
-      ["element","action",["authenticateUser"],[],["loc",[null,[13,16],[13,45]]],0,0]
+      ["element","action",["authenticateUser"],[],["loc",[null,[13,16],[13,45]]],0,0],
+      ["content","model",["loc",[null,[15,20],[15,29]]],0,0,0,0]
     ],
     locals: [],
     templates: []
