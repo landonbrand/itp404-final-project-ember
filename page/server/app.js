@@ -55,7 +55,7 @@ passport.use(new GitHubStrategy({
     //   console.log("findOrCreate running!");
     //   return done(err, user);
     // });
-    done(err, user);
+    done();
   }
 ));
 
