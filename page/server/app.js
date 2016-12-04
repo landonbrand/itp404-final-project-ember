@@ -104,7 +104,7 @@ app.get("/auth/handle", function(request, response){
   }, (res) => {
     return res;
   });
-  res.send(dataToRespondWith);
+  response.send(dataToRespondWith);
 });
 
 app.get("/page", function(req, res){
