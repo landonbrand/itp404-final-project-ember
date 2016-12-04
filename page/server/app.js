@@ -20,13 +20,13 @@ db.once('open', function() {
 
 var userSchema = new mongoose.Schema({
   githubId: String,
-  sites: [
+  sites: [{
     name: String,
     data: {
       html: String,
       css: String
     }
-  ]
+  }]
 });
 
 userSchema.plugin(findOrCreate);
