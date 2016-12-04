@@ -1,4 +1,7 @@
-
+body {
+  margin: 0;
+  padding: 0;
+}
 
 #sidebar a {
   text-decoration: none;
@@ -154,4 +157,80 @@
 
 #sidebar .bg-red:hover {
   background-color: rgb(255, 110, 110);
+}
+
+
+#main-site {
+  font-family: Helvetica;
+}
+
+#main-site {
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  font-family: "open sans", "Helvetica", sans-serif;
+}
+
+#main-site nav {
+  background-color: #333;
+  padding: 15px;
+  color: white;
+}
+
+#main-site nav a {
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-decoration: none;
+}
+
+#main-site nav a:hover {
+  color: rgb(150, 255, 150);
+}
+
+#main-site section {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  padding: 25px;
+}
+
+#main-site .limit-width {
+  max-width: 400px;
+}
+
+#main-site h1.main-heading {
+  font-size: 4em;
+  font-family: 'Cutive Mono', monospace;
+  letter-spacing: -4px;
+  margin: 0;
+  margin-top: 16vh;
+  text-align: center;
+}
+
+#main-site .centerizer {
+  text-align: center;
+}
+
+#main-site .pad-top {
+  padding-top: 20px;
+}
+
+#main-site button {
+  background-color: rgb(100, 170, 60);
+  border: none;
+  border-radius: 3px;
+  font-size: 0.8em;
+  padding: 18px;
+  padding-left: 25px;
+  padding-right: 25px;
+  color: white;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+#main-site button:hover {
+  background-color: rgb(120, 190, 80);
+  cursor: pointer;
 }

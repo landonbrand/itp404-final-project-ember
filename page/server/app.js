@@ -3,9 +3,24 @@ var bodyParser = require('body-parser');
 var db = require('./model/db');
 var account = require('./model/accounts');
 var mongoose = require('mongoose');
+
+var passport = require('passport');
+var util = require('util');
+var session = require('express-session');
+var methodOverride = require('method-override');
+var GitHubStrategy = require('passport-github2').Strategy;
 mongoose.connect('mongodb://localhost/usersdb');
 
+
+var GITHUB_CLIENT_ID = "90c810f2ae9f6b8c1a9e";
+var GITHUB_CLIENT_SECRET = "56acd69b369c551e85a624fd9b48249ff9bbfc85";
+
 var app = express();
+
+app.use(session({secret: 'mySecretKey'}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(bodyParser.text({type:"*/*"}));
 
 var spoofHTML = {
@@ -20,15 +35,53 @@ var allowCrossDomain = function(req, res, next) {
     next();
 }
 
-// app.configure(function() {
-//
-// });
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+// config
+passport.use(new GitHubStrategy({
+    clientID: "90c810f2ae9f6b8c1a9e",
+    clientSecret: "56acd69b369c551e85a624fd9b48249ff9bbfc85",
+    callbackURL: "http://127.0.0.1:3000/auth/github/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    console.log("passport.use running");
+    User.findOrCreate({ githubId: profile.id }, function (err, user) {
+      console.log("findOrCreate running!");
+      return done(err, user);
+    });
+    done(err, user);
+  }
+));
+
 app.use(allowCrossDomain);
 app.get('/api/spoofnodes', function (request, response) {
   response.json(spoofNodes);
 });
 app.get('/api/spoofhtml', function (request, response) {
   response.json(spoofHTML);
+});
+
+app.get('/auth/github',
+  passport.authenticate('github', { scope: [ 'user:email' ] }));
+
+app.get('/auth/github/callback',
+  passport.authenticate('github', { failureRedirect: '/failure' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/success');
+  });
+
+app.get("/page", function(req, res){
+  res.send({});
+});
+
+app.get("/failed", function(req, res){
+  res.send({});
 });
 
 app.post('/api/saveTest', function (req, res) {
@@ -56,6 +109,11 @@ app.get('/api/users', function(request, response) {
   });
 });
 
-app.listen(3000, function () {
-  console.log('Pages listening on port 3000!');
+app.listen(80, function () {
+  console.log('Pages listening on port 80!');
 });
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/');
+}

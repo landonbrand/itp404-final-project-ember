@@ -1250,6 +1250,15 @@ define('page/tests/routes/home.jshint', ['exports'], function (exports) {
     assert.ok(true, 'routes/home.js should pass jshint.');
   });
 });
+define('page/tests/routes/login.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | routes/login.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'routes/login.js should pass jshint.');
+  });
+});
 define('page/tests/routes/navtest.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -1257,6 +1266,15 @@ define('page/tests/routes/navtest.jshint', ['exports'], function (exports) {
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'routes/navtest.js should pass jshint.');
+  });
+});
+define('page/tests/routes/signup.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | routes/signup.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'routes/signup.js should pass jshint.');
   });
 });
 define('page/tests/routes/template-tests.jshint', ['exports'], function (exports) {
@@ -1425,6 +1443,27 @@ define('page/tests/unit/routes/home-test.jshint', ['exports'], function (exports
     assert.ok(true, 'unit/routes/home-test.js should pass jshint.');
   });
 });
+define('page/tests/unit/routes/login-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleFor)('route:login', 'Unit | Route | login', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+});
+define('page/tests/unit/routes/login-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/routes/login-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/routes/login-test.js should pass jshint.');
+  });
+});
 define('page/tests/unit/routes/navtest-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
 
   (0, _emberQunit.moduleFor)('route:navtest', 'Unit | Route | navtest', {
@@ -1444,6 +1483,27 @@ define('page/tests/unit/routes/navtest-test.jshint', ['exports'], function (expo
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/routes/navtest-test.js should pass jshint.');
+  });
+});
+define('page/tests/unit/routes/signup-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleFor)('route:signup', 'Unit | Route | signup', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+});
+define('page/tests/unit/routes/signup-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/routes/signup-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/routes/signup-test.js should pass jshint.');
   });
 });
 define('page/tests/unit/routes/template-tests-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {

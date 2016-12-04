@@ -7,11 +7,12 @@ define('page/router', ['exports', 'ember', 'page/config/environment'], function 
 
   Router.map(function () {
     this.route('navtest');
-    this.route('home');
-    this.route('about');
+    this.route('home', { path: "/" });
     this.route('create');
     this.route('template-tests');
     this.route('editing-tests');
+    this.route('login');
+    this.route('signup');
   });
 
   exports['default'] = Router;

@@ -46,7 +46,7 @@ export default Ember.HTMLBars.template((function() {
           },
           "end": {
             "line": 4,
-            "column": 27
+            "column": 30
           }
         },
         "moduleName": "page/templates/components/nav-bar.hbs"
@@ -57,7 +57,7 @@ export default Ember.HTMLBars.template((function() {
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("About");
+        var el1 = dom.createTextNode("Sign Up");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -81,7 +81,7 @@ export default Ember.HTMLBars.template((function() {
           },
           "end": {
             "line": 5,
-            "column": 29
+            "column": 27
           }
         },
         "moduleName": "page/templates/components/nav-bar.hbs"
@@ -92,7 +92,7 @@ export default Ember.HTMLBars.template((function() {
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("Create");
+        var el1 = dom.createTextNode("login");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -163,8 +163,8 @@ export default Ember.HTMLBars.template((function() {
     statements: [
       ["content","yield",["loc",[null,[1,0],[1,9]]],0,0,0,0],
       ["block","link-to",["home"],[],0,null,["loc",[null,[3,2],[3,37]]]],
-      ["block","link-to",["about"],[],1,null,["loc",[null,[4,2],[4,39]]]],
-      ["block","link-to",["create"],[],2,null,["loc",[null,[5,2],[5,41]]]]
+      ["block","link-to",["signup"],[],1,null,["loc",[null,[4,2],[4,42]]]],
+      ["block","link-to",["login"],[],2,null,["loc",[null,[5,2],[5,39]]]]
     ],
     locals: [],
     templates: [child0, child1, child2]
