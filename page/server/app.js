@@ -17,7 +17,7 @@ db.once('open', function() {
   console.log("we're connected to the database!");
 });
 
-var testDocument = new UserModel({ login: "ladnonbnard"});
+var testDocument = new account.UserModel({ login: "ladnonbnard"});
 console.log(testDocumet);
 
 testDocument.save(function(err, testDoc){
