@@ -77,7 +77,7 @@ passport.use(new GitHubStrategy({
   function(accessToken, refreshToken, profile, done) {
     console.log("passport.use running");
     console.log("profile: ", profile);
-    UserModel.findOrCreate({ githubId: profile.login }, function (err, user) {
+    UserModel.findOrCreate({ githubId: profile.username }, function (err, user) {
       console.log("findOrCreate running!");
       return done(err, user);
     });
