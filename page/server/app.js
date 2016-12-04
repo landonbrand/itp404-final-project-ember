@@ -30,7 +30,7 @@ var userSchema = new mongoose.Schema({
 var UserModel = mongoose.model('User', userSchema);
 
 var testDocument = new UserModel({ login: "ladnonbnard"});
-console.log(testDocumet);
+// console.log(testDocumet);
 
 testDocument.save(function(err, testDoc){
   console.log("just saved ", testDoc);
