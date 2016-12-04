@@ -111,10 +111,10 @@ app.get("/auth/handle", function(request, response){
       // var parsed = JSON.parse(body);
       return body;
     });
-  }).then(){
+  }).then(function(){
     console.log("dataToRespondWith: ", dataToRespondWith);
     response.send(dataToRespondWith);
-  };
+  });
 });
 
 app.get("/page", function(req, res){
