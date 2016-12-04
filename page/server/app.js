@@ -20,6 +20,10 @@ db.once('open', function() {
 var testDocument = new UserModel({ login: "ladnonbnard"});
 console.log(testDocumet);
 
+testDocument.save(function(err, testDoc){
+  console.log("just saved ", testDoc);
+});
+
 var GITHUB_CLIENT_ID = "90c810f2ae9f6b8c1a9e";
 var GITHUB_CLIENT_SECRET = "56acd69b369c551e85a624fd9b48249ff9bbfc85";
 
