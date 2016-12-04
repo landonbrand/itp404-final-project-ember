@@ -12,7 +12,6 @@ export default Ember.Route.extend({
       Ember.$.ajax({
         url: "http://192.241.235.59:1111/auth/github",
         method: "GET",
-        dataType: "jsonp",
         crossDomain: true,
         success: function (response) {
           console.log(response);

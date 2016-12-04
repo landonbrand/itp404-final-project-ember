@@ -55,6 +55,7 @@ var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
 }
+app.use(allowCrossDomain);
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -77,7 +78,7 @@ passport.use(new GitHubStrategy({
   }
 ));
 
-app.use(allowCrossDomain);
+
 app.get('/api/spoofnodes', function (request, response) {
   response.json(spoofNodes);
 });
@@ -92,7 +93,7 @@ app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/failure' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.jsonp(req.user);
+    res.json(req.user);
   });
 
 app.get("/page", function(req, res){
