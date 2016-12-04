@@ -97,9 +97,9 @@ app.get('/auth/github/callback',
 
 app.get("/auth/handle", function(request, response){
   var dataToRespondWith = http.get({
-      host: 'personatestuser.org',
-      path: '/email'
-    }, function(response) {
+    host: 'personatestuser.org',
+    path: '/email'
+  }, function(response) {
     // Continuously update stream with data
     var body = '';
     response.on('data', function(d) {
@@ -107,7 +107,8 @@ app.get("/auth/handle", function(request, response){
     });
     response.on('end', function() {
       // Data reception is done, do whatever with it!
-      var parsed = JSON.parse(body);
+      // var parsed = JSON.parse(body);
+      return body;
     });
   });
   console.log("dataToRespondWith: ", dataToRespondWith);
