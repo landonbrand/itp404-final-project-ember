@@ -96,14 +96,19 @@ app.get('/auth/github/callback',
   });
 
 app.get("/auth/handle", function(request, response){
-  var dataToRespondWith = login = http.get({
-    hostname: '192.241.235.59',
-    port: 1111,
-    path: '/auth/github',
-    agent: false  // create a new agent just for this one request
-  }, (res) => {
-    // console.log("responding with ", res);
-    return res.body;
+  var dataToRespondWith = http.get({
+      host: 'personatestuser.org',
+      path: '/email'
+    }, function(response) {
+    // Continuously update stream with data
+    var body = '';
+    response.on('data', function(d) {
+        body += d;
+    });
+    response.on('end', function() {
+      // Data reception is done, do whatever with it!
+      var parsed = JSON.parse(body);
+    });
   });
   console.log("dataToRespondWith: ", dataToRespondWith);
   response.send(dataToRespondWith);
