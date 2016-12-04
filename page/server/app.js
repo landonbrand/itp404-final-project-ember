@@ -105,7 +105,7 @@ app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/failure' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.json(req.user);
+    res.redirect('http://localhost:4200/signup');
   });
 
 app.get("/page", function(req, res){

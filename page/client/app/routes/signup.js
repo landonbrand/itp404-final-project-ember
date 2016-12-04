@@ -9,19 +9,20 @@ export default Ember.Route.extend({
       //   console.log(res);
       // });
 
-      Ember.$.ajax({
-        url: "http://192.241.235.59:1111/auth/github",
-        method: "GET",
-        // crossDomain: true,
-        xhrFields: {withCredentials: true},
-        success: function (response) {
-          console.log(response);
-        },
-        error: function (xhr, status) {
-          console.log("XHR: ", xhr);
-          console.log("status: ", status);
-        }
-      });
+      // Ember.$.ajax({
+      //   url: "http://192.241.235.59:1111/auth/github",
+      //   method: "GET",
+      //   // crossDomain: true,
+      //   xhrFields: {withCredentials: true},
+      //   success: function (response) {
+      //     console.log(response);
+      //   },
+      //   error: function (xhr, status) {
+      //     console.log("XHR: ", xhr);
+      //     console.log("status: ", status);
+      //   }
+      // });
+      window.open("http://192.241.235.59:1111/auth/github");
     },
   }
 });
