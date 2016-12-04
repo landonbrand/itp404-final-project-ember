@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var db = require('./model/db');
 var account = require('./model/accounts');
 var mongoose = require('mongoose');
+var findOrCreate = require('mongoose-findorcreate');
 
 var passport = require('passport');
 var util = require('util');
@@ -18,7 +19,7 @@ db.once('open', function() {
 });
 
 var userSchema = new mongoose.Schema({
-  login: String,
+  githubId: String
   // sites: [
   //   name: String,
   //   data: {
@@ -27,9 +28,10 @@ var userSchema = new mongoose.Schema({
   //   }
   // ]
 });
+userSchema.plugin(findOrCreate);
 var UserModel = mongoose.model('User', userSchema);
 
-var testDocument = new UserModel({ login: "ladnonbnard"});
+var testDocument = new UserModel({ githubId: "ladnonbnard"});
 // console.log(testDocumet);
 
 testDocument.save(function(err, testDoc){
@@ -75,18 +77,18 @@ passport.use(new GitHubStrategy({
   function(accessToken, refreshToken, profile, done) {
     console.log("passport.use running");
     console.log("profile: ", profile);
-    // User.findOrCreate({ githubId: profile.id }, function (err, user) {
-    //   console.log("findOrCreate running!");
-    //   return done(err, user);
-    // });
-    process.nextTick(function () {
-
-      // To keep the example simple, the user's GitHub profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the GitHub account with a user record in your database,
-      // and return that user instead.
-      return done(null, profile);
+    UserModel.findOrCreate({ githubId: profile.id }, function (err, user) {
+      console.log("findOrCreate running!");
+      return done(err, user);
     });
+    // process.nextTick(function () {
+    //
+    //   // To keep the example simple, the user's GitHub profile is returned to
+    //   // represent the logged-in user.  In a typical application, you would want
+    //   // to associate the GitHub account with a user record in your database,
+    //   // and return that user instead.
+    //   return done(null, profile);
+    // });
   }
 ));
 
