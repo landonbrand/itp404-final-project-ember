@@ -96,25 +96,21 @@ app.get('/auth/github/callback',
   });
 
 app.get("/auth/handle", function(request, response){
-  var dataToRespondWith = http.get({
+  http.get({
     host: '192.241.235.59',
     path: '/auth/github',
     port: 1111
-  }, function(response) {
+  }, function(res) {
     // Continuously update stream with data
     var body = '';
-    response.on('data', function(d) {
+    res.on('data', function(d) {
         body += d;
     });
-    response.on('end', function() {
-      // Data reception is done, do whatever with it!
-      // var parsed = JSON.parse(body);
-      return body;
+    res.on('end', function() {
+      console.log("/auth/handle body: ", body);
+      response.send(body);
     });
-  }).then(function(){
-    console.log("dataToRespondWith: ", dataToRespondWith);
-    response.send(dataToRespondWith);
-  });
+  })
 });
 
 app.get("/page", function(req, res){
