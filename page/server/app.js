@@ -4,6 +4,7 @@ var db = require('./model/db');
 var account = require('./model/accounts');
 var mongoose = require('mongoose');
 var findOrCreate = require('mongoose-findorcreate');
+var http = require('http');
 
 var passport = require('passport');
 var util = require('util');
@@ -93,6 +94,18 @@ app.get('/auth/github/callback',
     // Successful authentication, redirect home.
     res.send(req.user);
   });
+
+app.get("/auth/handle", function(request, response){
+  var dataToRespondWith = login = http.get({
+    hostname: 'localhost',
+    port: 80,
+    path: '/',
+    agent: false  // create a new agent just for this one request
+  }, (res) => {
+    return res;
+  });
+  res.send(dataToRespondWith);
+});
 
 app.get("/page", function(req, res){
   res.send({});
