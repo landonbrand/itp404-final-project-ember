@@ -97,9 +97,9 @@ app.get('/auth/github/callback',
 
 app.get("/auth/handle", function(request, response){
   var dataToRespondWith = login = http.get({
-    hostname: 'localhost',
-    port: 80,
-    path: '/',
+    hostname: '192.241.235.59',
+    port: 1111,
+    path: '/auth/github',
     agent: false  // create a new agent just for this one request
   }, (res) => {
     return res;
