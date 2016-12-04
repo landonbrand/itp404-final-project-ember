@@ -97,8 +97,9 @@ app.get('/auth/github/callback',
 
 app.get("/auth/handle", function(request, response){
   var dataToRespondWith = http.get({
-    host: 'personatestuser.org',
-    path: '/email'
+    host: '192.241.235.59',
+    path: '/auth/github',
+    port: 1111
   }, function(response) {
     // Continuously update stream with data
     var body = '';
@@ -110,9 +111,10 @@ app.get("/auth/handle", function(request, response){
       // var parsed = JSON.parse(body);
       return body;
     });
-  });
-  console.log("dataToRespondWith: ", dataToRespondWith);
-  response.send(dataToRespondWith);
+  }).then(){
+    console.log("dataToRespondWith: ", dataToRespondWith);
+    response.send(dataToRespondWith);
+  };
 });
 
 app.get("/page", function(req, res){
