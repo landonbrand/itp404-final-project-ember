@@ -50,10 +50,11 @@ passport.use(new GitHubStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     console.log("passport.use running");
-    User.findOrCreate({ githubId: profile.id }, function (err, user) {
-      console.log("findOrCreate running!");
-      return done(err, user);
-    });
+    console.log("profile: ", profile);
+    // User.findOrCreate({ githubId: profile.id }, function (err, user) {
+    //   console.log("findOrCreate running!");
+    //   return done(err, user);
+    // });
     done(err, user);
   }
 ));
@@ -109,7 +110,7 @@ app.get('/api/users', function(request, response) {
 });
 
 app.listen(1111, function () {
-  console.log('Pages listening on port 80!');
+  console.log('Pages listening on port 1111!');
 });
 
 function ensureAuthenticated(req, res, next) {
