@@ -851,9 +851,15 @@ define("page/routes/signup", ["exports", "ember"], function (exports, _ember) {
     actions: {
       authenticateUser: function authenticateUser() {
         console.log("Authenticating...");
+
+        // Ember.$.getCORS("http://192.241.235.59:1111/auth/github", function(res){
+        //   console.log(res);
+        // });
+
         _ember["default"].$.ajax({
           url: "http://192.241.235.59:1111/auth/github",
           method: "GET",
+          dataType: "jsonp",
           crossDomain: true,
           success: function success(response) {
             console.log(response);
@@ -866,6 +872,24 @@ define("page/routes/signup", ["exports", "ember"], function (exports, _ember) {
       }
     }
   });
+
+  jQuery.getCORS = function (url, callback) {
+    if (callback == undefined) callback = function () {};
+    return $.ajax({
+      type: 'GET',
+      url: url,
+      contentType: 'application/x-www-form-urlencoded',
+      // xhrFields: {
+      //   withCredentials: true
+      // },
+      success: function success(res) {
+        callback(res);
+      }, error: function error() {
+        console.log("ERROR on jQuery.getCORS");
+        callback({});
+      }
+    });
+  };
 });
 define('page/routes/template-tests', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Route.extend({

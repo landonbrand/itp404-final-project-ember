@@ -92,25 +92,8 @@ app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/failure' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.send(req.user);
+    res.send(JSON.parse(req.user));
   });
-
-app.get("/auth/handle", function(request, response){
-  http.get({
-    host: '192.241.235.59:1111',
-    path: '/auth/github'
-  }, function(res) {
-    // Continuously update stream with data
-    var body = '';
-    res.on('data', function(d) {
-        body += d;
-    });
-    res.on('end', function() {
-      console.log("/auth/handle body: ", body);
-      response.send(body);
-    });
-  })
-});
 
 app.get("/page", function(req, res){
   res.send({});
