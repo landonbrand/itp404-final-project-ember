@@ -19,7 +19,7 @@ db.once('open', function() {
 });
 
 var userSchema = new mongoose.Schema({
-  githubId: String
+  githubId: String,
   sites: [
     name: String,
     data: {
