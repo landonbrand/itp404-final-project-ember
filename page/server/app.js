@@ -102,8 +102,10 @@ app.get("/auth/handle", function(request, response){
     path: '/auth/github',
     agent: false  // create a new agent just for this one request
   }, (res) => {
-    return res.body;
+    // console.log("responding with ", res);
+    return res;
   });
+  console.log("dataToRespondWith: ", dataToRespondWith);
   response.send(dataToRespondWith);
 });
 
