@@ -103,7 +103,7 @@ app.get("/auth/handle", function(request, response){
     agent: false  // create a new agent just for this one request
   }, (res) => {
     // console.log("responding with ", res);
-    return res;
+    return res.body;
   });
   console.log("dataToRespondWith: ", dataToRespondWith);
   response.send(dataToRespondWith);
