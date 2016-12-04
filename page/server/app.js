@@ -9,7 +9,7 @@ var util = require('util');
 var session = require('express-session');
 var methodOverride = require('method-override');
 var GitHubStrategy = require('passport-github2').Strategy;
-mongoose.connect('mongodb://http://192.241.235.59/db');
+mongoose.connect('mongodb://http://192.241.235.59/pagedb');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
