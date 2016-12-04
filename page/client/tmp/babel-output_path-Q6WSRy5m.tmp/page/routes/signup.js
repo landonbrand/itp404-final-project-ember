@@ -11,7 +11,8 @@ define("page/routes/signup", ["exports", "ember"], function (exports, _ember) {
         _ember["default"].$.ajax({
           url: "http://192.241.235.59:1111/auth/github",
           method: "GET",
-          crossDomain: true,
+          // crossDomain: true,
+          xhrFields: { withCredentials: true },
           success: function success(response) {
             console.log(response);
           },
