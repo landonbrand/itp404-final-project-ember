@@ -9,7 +9,13 @@ var util = require('util');
 var session = require('express-session');
 var methodOverride = require('method-override');
 var GitHubStrategy = require('passport-github2').Strategy;
-mongoose.connect('mongodb://localhost/usersdb');
+mongoose.connect('mongodb://http://192.241.235.59/data/db');
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("we're connected to the database!");
+});
 
 
 var GITHUB_CLIENT_ID = "90c810f2ae9f6b8c1a9e";
