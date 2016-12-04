@@ -108,8 +108,8 @@ app.get('/auth/github/callback',
     res.redirect('http://localhost:4200/signup');
   });
 
-app.get("/page", function(req, res){
-  res.send({});
+app.get("/api/getuser", function(req, res){
+  res.json(req.user);
 });
 
 app.get("/failed", function(req, res){
