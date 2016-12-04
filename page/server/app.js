@@ -97,9 +97,8 @@ app.get('/auth/github/callback',
 
 app.get("/auth/handle", function(request, response){
   http.get({
-    host: '192.241.235.59',
-    path: '/auth/github',
-    port: 1111
+    host: '192.241.235.59:1111',
+    path: '/auth/github'
   }, function(res) {
     // Continuously update stream with data
     var body = '';
