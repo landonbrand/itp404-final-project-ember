@@ -91,7 +91,7 @@ app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/failure' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('/success');
+    res.send(req);
   });
 
 app.get("/page", function(req, res){
