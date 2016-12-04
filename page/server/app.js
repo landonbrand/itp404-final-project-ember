@@ -109,6 +109,7 @@ app.get('/auth/github/callback',
   });
 
 app.get("/api/getuser", function(req, res){
+  console.log("/api/getuser's req.user", req.user);
   res.json(req.user || {no: "obj"});
 });
 
