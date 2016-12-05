@@ -36,18 +36,22 @@ export default Ember.Controller.extend({
       var pageContent = pageNodes.innerHTML;
       var styleSheet = document.styleSheets[2]
       var cssArray = [];
-      for(var i = 0; i < styleSheet.cssRules.length; i++){
-        cssArray.push(styleSheet.cssRules[i].cssText);
+      console.log(styleSheet.cssRules);
+      if(styleSheet.cssRules != null){
+        for(var i = 0; i < styleSheet.cssRules.length; i++){
+          cssArray.push(styleSheet.cssRules[i].cssText);
+        }
+        var pageCSS = cssArray.join(" ");
+        console.log("pageCSS: ", pageCSS);
       }
-      var pageCSS = cssArray.join(" ");
-      console.log("pageCSS: ", pageCSS);
 
       var htmlData = {
+        name: "Default",
         html: pageContent,
         css: pageCSS
       };
       var promise =  $.post({
-        url: "http://localhost:3000/api/saveTest",
+        url: "http://192.241.235.59:1111/api/setPage",
         data: JSON.stringify(htmlData),
         dataType: "text"
       });
@@ -398,7 +402,7 @@ var CssPage = function () {
 var cssPage = new CssPage();
 
 var promise =  $.ajax({
-  url: "http://localhost:3000/api/spoofhtml",
+  url: "http://192.241.235.59:1111/api/spoofhtml",
   type: 'get'
 });
 promise.then(function(response){
