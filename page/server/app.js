@@ -62,7 +62,7 @@ app.get('/api/getpage', function (request, response) {
 
 });
 
-app.POST('/api/setpage', function (request, response) {
+app.post('/api/setpage', function (request, response) {
   var newPage = new PageModel({
     name: "faked",
     html: "<h1>heading</h1>",
