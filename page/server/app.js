@@ -78,14 +78,14 @@ app.post('/api/setpage', function (request, response) {
       newDoc.save(function (err, updatedDoc) {
         if (err) return handleError(err);
         console.log("new updatedDoc", updatedDoc, "\n");
-        res.send(updatedDoc);
+        response.send(updatedDoc);
       });
       console.log("newDoc", newDoc, "\n");
     } else {
       doc.save(function (err, updatedDoc) {
         if (err) return handleError(err);
         console.log("updatedDoc", updatedDoc, "\n");
-        res.send(updatedDoc);
+        response.send(updatedDoc);
       });
       console.log("doc", doc, "\n");
     }
