@@ -72,6 +72,7 @@ app.post('/api/setpage', function (request, response) {
   // var newPage = new PageModel(JSON.parse(request.body));
   var obj = JSON.parse(request.body);
   var logged = PageModel.findOne({ 'name' : request.query.name }, function(err, doc){
+    if (err) return handleError(err);
     doc.save(function (err, updatedDoc) {
       if (err) return handleError(err);
       console.log("updatedDoc", updatedDoc, "\n");
