@@ -62,7 +62,7 @@ app.get('/api/getpage', function (request, response) {
   console.log("Request Body", request.query);
   var document = PageModel.findOne({ 'name' : request.query.name }, function(err, doc){
     console.log("doc", doc);
-    response.json(document);
+    response.json(doc);
   });
 });
 
