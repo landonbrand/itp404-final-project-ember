@@ -52,7 +52,7 @@ export default Ember.Controller.extend({
       };
       var promise =  $.post({
         url: "http://192.241.235.59:1111/api/setPage",
-        data: htmlData,
+        data: JSON.stringify(htmlData),
         dataType: "text"
       });
       promise.then(function(response){
