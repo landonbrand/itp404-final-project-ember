@@ -77,6 +77,7 @@ app.post('/api/setpage', function (request, response) {
       console.log("updatedDoc", updatedDoc, "\n");
       res.send(updatedDoc);
     });
+    console.log("doc", doc, "\n");
   });
   console.log("logged", logged, "\n");
 });
