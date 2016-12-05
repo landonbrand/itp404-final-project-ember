@@ -60,7 +60,7 @@ app.get('/api/spoofhtml', function (request, response) {
 
 app.get('/api/getpage', function (request, response) {
   console.log("Request Body", request.query);
-  var document = PageModel.find({ 'name' : request.query.name }, function(err, doc){
+  var document = PageModel.findOne({ 'name' : request.query.name }, function(err, doc){
     return doc;
   });
   console.log("Document", document);
