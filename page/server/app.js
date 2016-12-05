@@ -63,6 +63,7 @@ app.get('/api/getpage', function (request, response) {
 });
 
 app.post('/api/setpage', function (request, response) {
+  console.log(request.body);
   var newPage = new PageModel(request.body.data);
   console.log("New Page: ", newPage);
   newPage.save(function (err, fluffy) {
