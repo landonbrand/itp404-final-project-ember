@@ -70,7 +70,6 @@ app.get('/api/getpage', function (request, response) {
 app.post('/api/setpage', function (request, response) {
   console.log(JSON.parse(request.body));
   // var newPage = new PageModel(JSON.parse(request.body));
-  console.log("db.pages", db.collections.pages);
   var obj = JSON.parse(request.body);
   PageModel.update({ _id: obj.name }, { $set: obj}, function(err, doc){
     console.log("updated doc", doc);
