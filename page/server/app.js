@@ -68,8 +68,6 @@ app.get('/api/getpage', function (request, response) {
 });
 
 app.post('/api/setpage', function (request, response) {
-  console.log("Json body", JSON.parse(request.body), "\n\n");
-  // var newPage = new PageModel(JSON.parse(request.body));
   var obj = JSON.parse(request.body);
   PageModel.findOne({ 'name' : obj.name }, function(err, doc){
     if (err) return handleError(err);
@@ -80,20 +78,16 @@ app.post('/api/setpage', function (request, response) {
       newDoc.css = obj.css;
       newDoc.save(function (err, updatedDoc) {
         if (err) return handleError(err);
-        console.log("new updatedDoc", updatedDoc, "\n");
         response.send(updatedDoc);
       });
-      console.log("newDoc", newDoc, "\n");
     } else {
       doc.name = obj.name;
       doc.html = obj.html;
       doc.css = obj.css;
       doc.save(function (err, updatedDoc) {
         if (err) return handleError(err);
-        console.log("updatedDoc", updatedDoc, "\n");
         response.send(updatedDoc);
       });
-      console.log("doc", doc, "\n");
     }
   });
 });
