@@ -59,8 +59,9 @@ app.get('/api/spoofhtml', function (request, response) {
 });
 
 app.get('/api/getpage', function (request, response) {
+  console.log("Request Body", request.body);
   var document = PageModel.find(JSON.parse(request.body));
-  console.log(document);
+  console.log("Document", document);
   response.json(document);
 });
 
