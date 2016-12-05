@@ -816,13 +816,14 @@ define('page/routes/about', ['exports', 'ember'], function (exports, _ember) {
 define('page/routes/create', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Route.extend({});
 });
-define('page/routes/editing-tests', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Route.extend({
+define("page/routes/editing-tests", ["exports", "ember"], function (exports, _ember) {
+  exports["default"] = _ember["default"].Route.extend({
     model: function model() {
       var cursorPos = 0;
       var nodes;
-      var promise = _ember['default'].$.ajax({
-        url: "http://192.241.235.59:1111/api/spoofhtml",
+      var promise = _ember["default"].$.ajax({
+        url: "http://192.241.235.59:1111/api/getPage",
+        data: { name: "Default" },
         type: 'get'
       });
       return promise.then(function (response) {

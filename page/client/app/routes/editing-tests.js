@@ -5,7 +5,8 @@ export default Ember.Route.extend({
     var cursorPos = 0;
     var nodes;
     var promise =  Ember.$.ajax({
-      url: "http://192.241.235.59:1111/api/spoofhtml",
+      url: "http://192.241.235.59:1111/api/getPage",
+      data: {name: "Default"},
       type: 'get'
     });
     return promise.then(function(response){
