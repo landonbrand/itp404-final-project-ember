@@ -60,10 +60,19 @@ app.get('/api/spoofhtml', function (request, response) {
 });
 
 app.get('/api/getpage', function (request, response) {
-  console.log("Request Body", request.query);
-  var document = PageModel.findOne({ 'name' : request.query.name }, function(err, doc){
-    console.log("doc", doc);
-    response.json(doc);
+  var query = PageModel.findOne({ 'name' : request.query.name }, function(err, doc){
+    if (err) return handleError(err);
+    if(doc != null){
+      response.json(doc);
+    } else {
+      doc.name = request.query.name;
+      doc.html = "<h1>heading</h1>";
+      doc.css = "";
+      doc.save(function (err, updatedDoc) {
+        if (err) return handleError(err);
+        response.json(updatedDoc);
+      });
+    }
   });
 });
 
