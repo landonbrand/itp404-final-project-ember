@@ -42,8 +42,6 @@ app.use(function(req, res, next) {
 });
 
 app.use(session({secret: 'mySecretKey'}));
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(bodyParser.text({type:"*/*"}));
 
