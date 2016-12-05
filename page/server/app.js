@@ -59,7 +59,7 @@ app.get('/api/spoofhtml', function (request, response) {
 });
 
 app.get('/api/getpage', function (request, response) {
-  var document = PageModel.find(request.body);
+  var document = PageModel.find(JSON.parse(request.body));
   console.log(document);
   response.json(document);
 });

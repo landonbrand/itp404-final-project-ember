@@ -823,7 +823,7 @@ define("page/routes/editing-tests", ["exports", "ember"], function (exports, _em
       var nodes;
       var promise = _ember["default"].$.ajax({
         url: "http://192.241.235.59:1111/api/getPage",
-        data: { name: "Default" },
+        data: JSON.stringify({ name: "Default" }),
         type: 'get'
       });
       return promise.then(function (response) {
