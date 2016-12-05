@@ -72,7 +72,6 @@ app.post('/api/setpage', function (request, response) {
   // var newPage = new PageModel(JSON.parse(request.body));
   console.log("db.pages", db.collections.pages);
   var obj = JSON.parse(request.body);
-  db.pages.save({_id:obj.name}, obj);
   PageModel.update({ _id: obj.name }, { $set: obj}, function(err, doc){
     console.log("updated doc", doc);
     response.json(doc);
