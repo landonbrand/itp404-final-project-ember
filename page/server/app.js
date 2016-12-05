@@ -75,11 +75,11 @@ app.post('/api/setpage', function (request, response) {
     if (err) return handleError(err);
     if (doc == null){
       var newDoc = new PageModel({ name: request.query.name });
-      newdoc.save(function (err, updatedDoc) {
-        if (err) return handleError(err);
-        console.log("updatedDoc", updatedDoc, "\n");
-        res.send(updatedDoc);
-      });
+      // newDoc.save(function (err, updatedDoc) {
+      //   if (err) return handleError(err);
+      //   console.log("updatedDoc", updatedDoc, "\n");
+      //   res.send(updatedDoc);
+      // });
       console.log("newDoc", newDoc, "\n");
     } else {
       doc.save(function (err, updatedDoc) {
