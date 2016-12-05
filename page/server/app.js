@@ -13,7 +13,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("we're connected to the database!");
-  console.log(db);
+  // console.log(db);
 });
 
 var pageSchema = new mongoose.Schema({
@@ -73,14 +73,10 @@ app.post('/api/setpage', function (request, response) {
   console.log("db.pages", db.collections.pages);
   var obj = JSON.parse(request.body);
   db.pages.save({_id:obj.name}, obj);
-  console.log("db.pages2", db.collections.pages);
-
-  // console.log("New Page: ", newPage);
-  // newPage.save(function (err, fluffy) {
-  //   if (err) return console.error(err);
-  // });
-
-  response.json({result: "success"});
+  PageModel.update({ _id: obj.name }, { $set: obj}, function(err, doc){
+    console.log("updated doc", doc);
+    response.json(doc);
+  });
 });
 
 app.post('/api/saveTest', function (req, res) {
