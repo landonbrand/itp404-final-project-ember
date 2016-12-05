@@ -71,7 +71,7 @@ app.post('/api/setpage', function (request, response) {
   console.log("Json body", JSON.parse(request.body), "\n\n");
   // var newPage = new PageModel(JSON.parse(request.body));
   var obj = JSON.parse(request.body);
-  PageModel.findOne({ 'name' : request.query.name }, function(err, doc){
+  PageModel.findOne({ 'name' : obj.name }, function(err, doc){
     if (err) return handleError(err);
     if (doc == null){
       var newDoc = new PageModel({ name: request.query.name });
