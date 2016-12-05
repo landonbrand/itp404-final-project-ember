@@ -70,10 +70,10 @@ app.get('/api/getpage', function (request, response) {
 app.post('/api/setpage', function (request, response) {
   console.log(JSON.parse(request.body));
   // var newPage = new PageModel(JSON.parse(request.body));
-  console.log("db.pages", db.pages);
+  console.log("db.pages", db.collections.pages);
   var obj = JSON.parse(request.body);
   db.pages.save({_id:obj.name}, obj);
-  console.log("db.pages2", db.pages);
+  console.log("db.pages2", db.collections.pages);
 
   // console.log("New Page: ", newPage);
   // newPage.save(function (err, fluffy) {
