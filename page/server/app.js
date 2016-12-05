@@ -71,7 +71,7 @@ app.post('/api/setpage', function (request, response) {
   console.log("Json body", JSON.parse(request.body), "\n\n");
   // var newPage = new PageModel(JSON.parse(request.body));
   var obj = JSON.parse(request.body);
-  PageModel.update({ _id: obj.name }, { $set: obj}, function(err, doc){
+  PageModel.update({ _id: obj.name }, { $set: obj}, {upsert:true}, function(err, doc){
     console.log("updated doc", doc, "\n\n");
     response.json(doc);
   });
