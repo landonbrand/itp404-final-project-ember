@@ -9,7 +9,7 @@ export default Ember.HTMLBars.template((function() {
           "column": 0
         },
         "end": {
-          "line": 15,
+          "line": 18,
           "column": 0
         }
       },
@@ -31,11 +31,9 @@ export default Ember.HTMLBars.template((function() {
       dom.appendChild(el1, el2);
       var el2 = dom.createElement("div");
       dom.setAttribute(el2,"class","centerizer");
-      var el3 = dom.createTextNode("\n    ");
+      var el3 = dom.createTextNode("\n");
       dom.appendChild(el2, el3);
-      var el3 = dom.createComment("");
-      dom.appendChild(el2, el3);
-      var el3 = dom.createTextNode("\n    ");
+      var el3 = dom.createTextNode("    ");
       dom.appendChild(el2, el3);
       var el3 = dom.createElement("section");
       dom.setAttribute(el3,"class","limit-width centered");
@@ -64,6 +62,20 @@ export default Ember.HTMLBars.template((function() {
       dom.setAttribute(el4,"class","centerizer pad-top");
       var el5 = dom.createTextNode("\n        ");
       dom.appendChild(el4, el5);
+      var el5 = dom.createElement("input");
+      dom.setAttribute(el5,"id","pageName");
+      dom.setAttribute(el5,"value","page name");
+      dom.appendChild(el4, el5);
+      var el5 = dom.createTextNode("\n        ");
+      dom.appendChild(el4, el5);
+      var el5 = dom.createElement("br");
+      dom.appendChild(el4, el5);
+      var el5 = dom.createTextNode("\n        ");
+      dom.appendChild(el4, el5);
+      var el5 = dom.createElement("br");
+      dom.appendChild(el4, el5);
+      var el5 = dom.createTextNode("\n        ");
+      dom.appendChild(el4, el5);
       var el5 = dom.createElement("button");
       var el6 = dom.createTextNode("Get Started");
       dom.appendChild(el5, el6);
@@ -85,15 +97,16 @@ export default Ember.HTMLBars.template((function() {
       return el0;
     },
     buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+      var element0 = dom.childAt(fragment, [2, 1, 2, 7, 7]);
       var morphs = new Array(2);
       morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-      morphs[1] = dom.createMorphAt(dom.childAt(fragment, [2, 1]),1,1);
+      morphs[1] = dom.createElementMorph(element0);
       dom.insertBoundary(fragment, 0);
       return morphs;
     },
     statements: [
       ["content","outlet",["loc",[null,[1,0],[1,10]]],0,0,0,0],
-      ["content","nav-bar",["loc",[null,[4,4],[4,15]]],0,0,0,0]
+      ["element","action",["goToPage"],[],["loc",[null,[13,16],[13,37]]],0,0]
     ],
     locals: [],
     templates: []

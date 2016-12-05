@@ -14,6 +14,7 @@ Router.map(function() {
   this.route('editing-tests');
   this.route('login');
   this.route('signup');
+  this.route('page', { path: '/page/:page_name'});
 });
 
 export default Router;

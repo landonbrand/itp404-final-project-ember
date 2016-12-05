@@ -13,6 +13,7 @@ define('page/router', ['exports', 'ember', 'page/config/environment'], function 
     this.route('editing-tests');
     this.route('login');
     this.route('signup');
+    this.route('page', { path: '/page/:page_name' });
   });
 
   exports['default'] = Router;

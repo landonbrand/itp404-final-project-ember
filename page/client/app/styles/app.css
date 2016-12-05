@@ -234,3 +234,12 @@ body {
   background-color: rgb(120, 190, 80);
   cursor: pointer;
 }
+
+#main-site input {
+  font-size: 12px;
+  width: 300px;
+  margin: 10px;
+  padding: 4px;
+  border: 2px solid black;
+  border-radius: 3px;
+}
