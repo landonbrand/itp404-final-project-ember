@@ -42,7 +42,7 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         }
 
         var htmlData = {
-          name: "Default",
+          name: "newPage",
           html: pageContent,
           css: pageCSS
         };

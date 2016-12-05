@@ -210,7 +210,7 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         }
 
         var htmlData = {
-          name: "Default",
+          name: "newPage",
           html: pageContent,
           css: pageCSS
         };
@@ -823,7 +823,7 @@ define("page/routes/editing-tests", ["exports", "ember"], function (exports, _em
       var nodes;
       var promise = _ember["default"].$.ajax({
         url: "http://192.241.235.59:1111/api/getPage",
-        data: { name: "Default" },
+        data: { name: "newPage" },
         type: 'get'
       });
       return promise.then(function (response) {

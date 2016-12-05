@@ -6,7 +6,7 @@ export default Ember.Route.extend({
     var nodes;
     var promise =  Ember.$.ajax({
       url: "http://192.241.235.59:1111/api/getPage",
-      data: {name: "Default"},
+      data: {name: "newPage"},
       type: 'get'
     });
     return promise.then(function(response){

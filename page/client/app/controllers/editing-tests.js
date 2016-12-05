@@ -46,7 +46,7 @@ export default Ember.Controller.extend({
       }
 
       var htmlData = {
-        name: "Default",
+        name: "newPage",
         html: pageContent,
         css: pageCSS
       };

@@ -65,6 +65,7 @@ app.get('/api/getpage', function (request, response) {
     if(doc != null){
       response.json(doc);
     } else {
+      doc = new PageModel({ name: request.query.name });
       doc.name = request.query.name;
       doc.html = "<h1>heading</h1>";
       doc.css = "";
