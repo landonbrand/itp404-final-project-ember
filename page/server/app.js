@@ -71,15 +71,15 @@ app.post('/api/setpage', function (request, response) {
   console.log("Json body", JSON.parse(request.body), "\n\n");
   // var newPage = new PageModel(JSON.parse(request.body));
   var obj = JSON.parse(request.body);
-  var logged = PageModel.findOne({ 'name' : request.query.name }, function(err, doc){
+  PageModel.findOne({ 'name' : request.query.name }, function(err, doc){
     if (err) return handleError(err);
     if (doc == null){
       var newDoc = new PageModel({ name: request.query.name });
-      // newDoc.save(function (err, updatedDoc) {
-      //   if (err) return handleError(err);
-      //   console.log("updatedDoc", updatedDoc, "\n");
-      //   res.send(updatedDoc);
-      // });
+      newDoc.save(function (err, updatedDoc) {
+        if (err) return handleError(err);
+        console.log("new updatedDoc", updatedDoc, "\n");
+        res.send(updatedDoc);
+      });
       console.log("newDoc", newDoc, "\n");
     } else {
       doc.save(function (err, updatedDoc) {
@@ -90,7 +90,6 @@ app.post('/api/setpage', function (request, response) {
       console.log("doc", doc, "\n");
     }
   });
-  console.log("logged", logged, "\n");
 });
 
 app.post('/api/saveTest', function (req, res) {
