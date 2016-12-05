@@ -68,7 +68,7 @@ app.post('/api/setpage', function (request, response) {
   newPage.save(function (err, fluffy) {
     if (err) return console.error(err);
   });
-  res.json({result: "success"});
+  response.json({result: "success"});
 });
 
 app.post('/api/saveTest', function (req, res) {
