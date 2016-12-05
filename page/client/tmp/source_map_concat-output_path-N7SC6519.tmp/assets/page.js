@@ -195,7 +195,7 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
         for (var i = 0; i < selectedNodes.length; i++) {
           selectedNodes[i].classList.remove("selected-region");
         }
-        console.log("selectedNodes", selectedNodes);
+        console.log("selectedNodes11", selectedNodes);
 
         var pageContent = pageNodes.innerHTML;
         var styleSheet = document.styleSheets[2];
@@ -593,6 +593,433 @@ define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/c
     });
   };
 });
+define('page/controllers/page', ['exports', 'ember', 'page/components/class-list-item'], function (exports, _ember, _pageComponentsClassListItem) {
+  exports['default'] = _ember['default'].Controller.extend({
+    selectedRegion: false,
+    selectedClasses: [],
+    stylesheet: {},
+
+    actions: {
+      deselect: function deselect() {
+        var elems = document.querySelectorAll(".selected-region");
+        [].forEach.call(elems, function (el) {
+          el.classList.remove("selected-region");
+        });
+        this.set("selectedRegion", false);
+        return false;
+      },
+
+      mouseUpOnEdits: function mouseUpOnEdits() {
+        var selected = window.getSelection();
+        selected = new Region(selected.anchorNode, selected.extentNode, selected.anchorOffset, selected.extentOffset);
+        this.send("selectRegion", selected);
+      },
+
+      save: function save() {
+        var pageNodes = document.getElementById("edit");
+        var selectedNodes = pageNodes.getElementsByClassName("selected-region");
+
+        for (var i = 0; i < selectedNodes.length; i++) {
+          selectedNodes[i].classList.remove("selected-region");
+        }
+        console.log("selectedNodes2", selectedNodes);
+
+        var pageContent = pageNodes.innerHTML;
+        var styleSheet = document.styleSheets[2];
+        var cssArray = [];
+        console.log(styleSheet.cssRules);
+        if (styleSheet.cssRules != null) {
+          for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            cssArray.push(styleSheet.cssRules[i].cssText);
+          }
+          var pageCSS = cssArray.join(" ");
+          console.log("pageCSS: ", pageCSS);
+        }
+        console.log("model: ", this.get("model"));
+        var htmlData = {
+          name: this.get("model").name,
+          html: pageContent,
+          css: pageCSS
+        };
+        var promise = $.post({
+          url: "http://192.241.235.59:1111/api/setPage",
+          data: JSON.stringify(htmlData),
+          dataType: "text"
+        });
+        promise.then(function (response) {
+          console.log(response);
+        });
+      },
+
+      cancelEdits: function cancelEdits() {
+        var edit = document.getElementById("edit");
+        this.send("cancelEditsOnModel");
+        edit.innerHTML = this.get("model");
+      },
+
+      noBubble: function noBubble() {
+        return false;
+      },
+
+      newNode: function newNode() {
+        var node = insertNode(this.get("selectedRegion"));
+        this.send("selectNode", node);
+      },
+
+      changeTag: function changeTag() {
+        var selectedRegion = this.get("selectedRegion");
+        var tagNameElement = document.getElementById("tagName");
+        var newNode = changeNodeType(selectedRegion.anchorElement, tagNameElement.innerHTML.replace(/&nbsp;/gi, '').trim());
+        this.send("selectNode", newNode);
+        Caret.goToEndOfNode(event.target);
+        return false;
+      },
+
+      changeId: function changeId() {
+        var selectedRegion = this.get("selectedRegion");
+        var tagIdElement = document.getElementById("tagId-unfocusable");
+        tagIdElement.focus();
+        selectedRegion.anchorElement.setAttribute("id", tagIdElement.innerHTML.replace(/&nbsp;/gi, '').trim());
+        return false;
+      },
+
+      fieldFocused: function fieldFocused(event) {
+        event.target.classList.add("selected");
+        Caret.highlightNodeContents(event.target);
+        return false;
+      },
+
+      fieldBlurred: function fieldBlurred(event) {
+        event.target.classList.remove("selected");
+        return false;
+      },
+
+      parentFieldFocused: function parentFieldFocused(event) {
+        event.target.parentNode.classList.add("selected");
+        Caret.highlightNodeContents(event.target);
+        return false;
+      },
+
+      parentFieldBlurred: function parentFieldBlurred(event) {
+        event.target.parentNode.classList.remove("selected");
+        return false;
+      },
+
+      selectRegion: function selectRegion(region) {
+        var elems = document.querySelectorAll(".selected-region");
+        [].forEach.call(elems, function (el) {
+          el.classList.remove("selected-region");
+        });
+
+        region.anchorElement.classList.add("selected-region");
+
+        this.set("selectedRegion", region);
+
+        this.send("updateClassList", region.anchorElement);
+        this.send("updateCssRules", region.anchorElement);
+      },
+
+      selectNode: function selectNode(node) {
+        var selected = new Region(node, node, 0, 0);
+        this.send("selectRegion", selected);
+      },
+
+      updateClassList: function updateClassList(node) {
+        var classList = [];
+        node.classList.forEach(function (val) {
+          classList.push({
+            name: val
+          });
+        });
+        this.set("selectedClasses", classList);
+      },
+
+      updateCssRules: function updateCssRules(node) {
+        var newRules = css(node);
+        var formattedNewRules = newRules.map(function (val) {
+          if (val.selectorText !== ".selected-region") {
+            var obj = {};
+            obj.selector = val.selectorText;
+            obj.rules = [];
+            for (var i = 0; i < val.style.length; i++) {
+              obj.rules.push({ name: val.style[i] });
+              obj.rules[i].value = val.style[obj.rules[i].name];
+            }
+            return obj;
+          }
+        });
+
+        formattedNewRules = formattedNewRules.filter(function (n) {
+          return n != undefined;
+        });
+        this.set("selectedCssRules", formattedNewRules);
+      },
+
+      changeClass: function changeClass() {
+        var region = this.get("selectedRegion");
+        var classListItems = _ember['default'].$(".class-list-item");
+        var newClass = [];
+        for (var i = 0; i < classListItems.length; i++) {
+          newClass.push(classListItems[i].textContent.trim());
+        }
+        region.anchorElement.className = newClass.join(" ");
+        return false;
+      },
+
+      changeCssRules: function changeCssRules(selector, ruleName, ruleValue) {
+        var styleSheet = document.styleSheets[2];
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+          if (styleSheet.cssRules[i].selectorText == selector) {
+            if (ruleName == "" || ruleValue == "") {
+              styleSheet.cssRules[i].style[camelCase(ruleName)] = "";
+              styleSheet.cssRules[i].style.removeProperty(camelCase(ruleName));
+              console.log("tryna delete this shi");
+            } else {
+              styleSheet.cssRules[i].style[camelCase(ruleName)] = ruleValue;
+            }
+          }
+        }
+      },
+
+      addClass: function addClass() {
+        var region = this.get("selectedRegion");
+        region.anchorElement.className = region.anchorElement.className + " new-class";
+        this.set("selectedRegion", region);
+        this.send("updateClassList", this.get("selectedRegion").anchorElement);
+      },
+
+      addCssRule: function addCssRule(selector) {
+        var styleSheet = document.styleSheets[2];
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+          if (styleSheet.cssRules[i].selectorText == selector) {
+            styleSheet.cssRules[i].style.setProperty("counter-reset", "value");
+            console.log("style: ", styleSheet.cssRules[i].style);
+            break;
+          }
+        }
+
+        console.log("cssRules: ", styleSheet.cssRules);
+        this.send("updateCssRules", this.get("selectedRegion").anchorElement);
+        console.log("adding Css Rule!");
+      },
+
+      selectParentNode: function selectParentNode() {
+        var region = this.get("selectedRegion");
+        if (region.anchorElement.parentNode.id != "edit") {
+          this.send("selectNode", region.anchorElement.parentNode);
+        }
+      },
+
+      addCssStyle: function addCssStyle() {
+        console.log("adding CSS Style!!!");
+        var sheet = document.styleSheets[2];
+        var region = this.get("selectedRegion");
+        var selector = region.anchorElement.nodeName;
+        for (var i = 0; i < region.anchorElement.classList.length; i++) {
+          if (!(region.anchorElement.classList[i] == 'selected-region')) {
+            selector += ".";
+            selector += region.anchorElement.classList[i];
+          }
+        }
+        console.log("selector: ", selector);
+        sheet.addRule(selector, "color: red", 1);
+        this.send("updateCssRules", this.get("selectedRegion").anchorElement);
+        console.log("Sheet:", document.styleSheets[2]);
+      },
+
+      removeCssStyle: function removeCssStyle(selector) {
+        console.log('removing!');
+        var styleSheet = document.styleSheets[2];
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+          if (styleSheet.cssRules[i].selectorText == selector) {
+            console.log("styleSheet from remove:", styleSheet);
+            styleSheet.deleteRule(i);
+          }
+        }
+        this.send("updateCssRules", this.get("selectedRegion").anchorElement);
+      },
+
+      deleteCurrentNode: function deleteCurrentNode() {
+        var region = this.get("selectedRegion");
+        var element = region.anchorElement;
+        this.send("selectNode", region.anchorElement.parentNode);
+        element.outerHTML = "";
+      }
+    },
+
+    modelObserver: _ember['default'].observer('model', function () {
+      var edit = document.getElementById("edit");
+      if (edit != null) {
+        edit.innerHTML = this.get("model");
+      }
+    })
+  });
+
+  // useful functions
+
+  function changeNodeType(element, newType) {
+    var new_element = document.createElement(newType),
+        old_attributes = element.attributes,
+        new_attributes = new_element.attributes;
+
+    // copy attributes
+    if (typeof old_attributes !== "undefined") {
+      for (var i = 0, len = old_attributes.length; i < len; i++) {
+        new_attributes.setNamedItem(old_attributes.item(i).cloneNode());
+      }
+    }
+
+    // copy child nodes
+    do {
+      new_element.appendChild(element.firstChild);
+    } while (element.firstChild);
+
+    // replace element
+    element.parentNode.replaceChild(new_element, element);
+    return new_element;
+  }
+
+  function insertNode(selectedNode) {
+    var new_element;
+    // create a node after selectedNode
+    if (selectedNode.extentNode.length <= selectedNode.extentOffset) {
+      new_element = document.createElement("h6");
+      new_element.textContent = "new element";
+      var nextSibling = selectedNode.extentNode.parentNode.nextSibling;
+      nextSibling.parentNode.insertBefore(new_element, nextSibling);
+      // create a node before selectedNode
+    } else if (selectedNode.extentOffset == 0) {
+        new_element = document.createElement("h6");
+        new_element.textContent = "new element";
+        var parent = selectedNode.extentNode.parentNode;
+        parent.parentNode.insertBefore(new_element, parent);
+        // create a node inside selectedNode
+      } else {
+          var selectedAnchor = selectedNode.anchorNode;
+          if (selectedNode.extentNode == selectedNode.anchorNode) {
+            var textNode1Content = selectedAnchor.textContent.slice(0, selectedNode.anchorOffset);
+            var newNodeContent = selectedAnchor.textContent.slice(selectedNode.anchorOffset, selectedNode.extentOffset);
+            var textNode2Content = selectedAnchor.textContent.slice(selectedNode.extentOffset);
+
+            var textNode1 = document.createTextNode(textNode1Content);
+            var newTextNode = document.createTextNode(newNodeContent);
+            var textNode2 = document.createTextNode(textNode2Content);
+            new_element = document.createElement("b");
+            new_element.appendChild(newTextNode);
+            selectedAnchor.parentNode.insertBefore(textNode1, selectedAnchor);
+            selectedAnchor.parentNode.insertBefore(new_element, selectedAnchor);
+            selectedAnchor.parentNode.insertBefore(textNode2, selectedAnchor);
+            selectedAnchor.remove();
+          }
+        }
+    document.getElementById("tagName").focus();
+    return new_element;
+  }
+
+  function byValue(obj) {
+    var clonedObj = Object.create(obj).__proto__;
+    return clonedObj;
+  }
+
+  function Region(anchorNode, extentNode, anchorOffset, extentOffset) {
+    this.anchorNode = anchorNode;
+    this.extentNode = extentNode;
+    this.anchorOffset = anchorOffset;
+    this.extentOffset = extentOffset;
+    if (anchorNode.nodeName == "#text") {
+      this.anchorElement = anchorNode.parentNode;
+    } else {
+      this.anchorElement = anchorNode;
+    }
+    if (extentNode.nodeName == "#text") {
+      this.extentElement = extentNode.parentNode;
+    } else {
+      this.extentElement = extentNode;
+    }
+  }
+
+  var Caret = {
+    highlightNodeContents: function highlightNodeContents(el) {
+      setTimeout(function () {
+        var range = document.createRange();
+        var sel = window.getSelection();
+        range.selectNodeContents(el);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      });
+    },
+    goToEndOfNode: function goToEndOfNode(el) {
+      setTimeout(function () {
+        var range = document.createRange();
+        var sel = window.getSelection();
+        range.selectNodeContents(el);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      });
+    }
+  };
+
+  document.onkeyup = function (e) {
+    console.log("keyup: ", e.keyCode);
+    if (e.keyCode == 27) {
+      var controller = Page.__container__.lookup("controller:editing-tests");
+      var boundSend = controller.send.bind(controller);
+      boundSend('deselect');
+    }
+  };
+
+  document.addEventListener("keydown", function (e) {
+    if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+      e.preventDefault();
+      var controller = Page.__container__.lookup("controller:page");
+      var boundSend = controller.send.bind(controller);
+      boundSend('save');
+      console.log("saved!!!");
+    }
+  }, false);
+
+  var CssPage = function CssPage() {
+    var styleElement = document.createElement('style');
+    document.head.appendChild(styleElement);
+    this.setDocument = function (string) {
+      styleElement.innerHTML = string;
+    };
+  };
+
+  var cssPage = new CssPage();
+
+  var promise = $.ajax({
+    url: "http://192.241.235.59:1111/api/spoofhtml",
+    type: 'get'
+  });
+  promise.then(function (response) {
+    console.log("response's css: ", response);
+    cssPage.setDocument(response.css);
+  });
+
+  function css(a) {
+    var sheets = document.styleSheets,
+        o = [];
+    a.matches = a.matches || a.webkitMatchesSelector || a.mozMatchesSelector || a.msMatchesSelector || a.oMatchesSelector;
+    for (var i in sheets) {
+      var rules = sheets[i].rules || sheets[i].cssRules;
+      for (var r in rules) {
+        if (a.matches(rules[r].selectorText)) {
+          o.push(rules[r]);
+        }
+      }
+    }
+    return o;
+  }
+
+  var camelCase = function camelCase(str) {
+    console.log("str: ", str);
+    return str.replace(/-([a-z])/g, function (g) {
+      return g[1].toUpperCase();
+    });
+  };
+});
 define("page/helpers/class-id", ["exports", "ember"], function (exports, _ember) {
   exports.classId = classId;
 
@@ -861,7 +1288,31 @@ define('page/routes/navtest', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Route.extend({});
 });
 define('page/routes/page', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Route.extend({});
+  exports['default'] = _ember['default'].Route.extend({
+    model: function model(params) {
+      var cursorPos = 0;
+      var nodes;
+      var promise = _ember['default'].$.ajax({
+        url: "http://192.241.235.59:1111/api/getPage",
+        data: { name: params.page_name },
+        type: 'get'
+      });
+      return promise.then(function (response) {
+        return response;
+      });
+    },
+
+    actions: {
+      cancelEditsOnModel: function cancelEditsOnModel() {
+        console.log("refreshing...");
+        this.refresh();
+      },
+
+      invalidateModel: function invalidateModel() {
+        this.refresh();
+      }
+    }
+  });
 });
 define("page/routes/signup", ["exports", "ember"], function (exports, _ember) {
   exports["default"] = _ember["default"].Route.extend({
@@ -2359,6 +2810,154 @@ define("page/templates/navtest", ["exports"], function (exports) {
 });
 define("page/templates/page", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@2.8.2",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 4,
+              "column": 2
+            },
+            "end": {
+              "line": 37,
+              "column": 2
+            }
+          },
+          "moduleName": "page/templates/page.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("section");
+          dom.setAttribute(el1, "id", "sidebar-top");
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("button");
+          dom.setAttribute(el2, "id", "viewRoot");
+          dom.setAttribute(el2, "class", "up");
+          var el3 = dom.createTextNode("up");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("button");
+          dom.setAttribute(el2, "id", "viewRoot");
+          dom.setAttribute(el2, "class", "up");
+          var el3 = dom.createTextNode("deleteNode");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("br");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("button");
+          dom.setAttribute(el2, "id", "newNode");
+          var el3 = dom.createTextNode("create tag");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("section");
+          dom.setAttribute(el1, "id", "sidebar-classes");
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("button");
+          dom.setAttribute(el2, "id", "newClass");
+          dom.setAttribute(el2, "class", "class");
+          var el3 = dom.createTextNode("add class");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1]);
+          var element1 = dom.childAt(element0, [1]);
+          var element2 = dom.childAt(element0, [3]);
+          var element3 = dom.childAt(element0, [7]);
+          var element4 = dom.childAt(fragment, [3]);
+          var element5 = dom.childAt(element4, [1]);
+          var morphs = new Array(8);
+          morphs[0] = dom.createElementMorph(element1);
+          morphs[1] = dom.createElementMorph(element2);
+          morphs[2] = dom.createElementMorph(element3);
+          morphs[3] = dom.createMorphAt(element0, 9, 9);
+          morphs[4] = dom.createMorphAt(element0, 11, 11);
+          morphs[5] = dom.createElementMorph(element5);
+          morphs[6] = dom.createMorphAt(element4, 3, 3);
+          morphs[7] = dom.createMorphAt(fragment, 5, 5, contextualElement);
+          return morphs;
+        },
+        statements: [["element", "action", ["selectParentNode"], [], ["loc", [null, [6, 39], [6, 68]]], 0, 0], ["element", "action", ["deleteCurrentNode"], [], ["loc", [null, [7, 39], [7, 69]]], 0, 0], ["element", "action", ["newNode"], ["bubbles", false], ["loc", [null, [9, 27], [9, 61]]], 0, 0], ["inline", "tag-name", [], ["changeTagFunction", ["subexpr", "action", ["changeTag"], [], ["loc", [null, [10, 36], [10, 56]]], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [11, 32], [11, 55]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [12, 31], [12, 54]]], 0, 0], "region", ["subexpr", "@mut", [["get", "selectedRegion", ["loc", [null, [13, 25], [13, 39]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [10, 6], [14, 8]]], 0, 0], ["inline", "tag-id", [], ["changeIdFunction", ["subexpr", "action", ["changeId"], [], ["loc", [null, [15, 35], [15, 54]]], 0, 0], "focusFunction", ["subexpr", "action", ["parentFieldFocused"], [], ["loc", [null, [16, 32], [16, 61]]], 0, 0], "blurFunction", ["subexpr", "action", ["parentFieldBlurred"], [], ["loc", [null, [17, 31], [17, 60]]], 0, 0], "region", ["subexpr", "@mut", [["get", "selectedRegion", ["loc", [null, [18, 25], [18, 39]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [15, 6], [19, 8]]], 0, 0], ["element", "action", ["addClass"], ["bubbles", false], ["loc", [null, [22, 42], [22, 77]]], 0, 0], ["inline", "class-list", [], ["list", ["subexpr", "@mut", [["get", "selectedClasses", ["loc", [null, [23, 25], [23, 40]]], 0, 0, 0, 0]], [], [], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [24, 34], [24, 57]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [25, 33], [25, 56]]], 0, 0], "changeClassFunction", ["subexpr", "action", ["changeClass"], [], ["loc", [null, [26, 40], [26, 62]]], 0, 0]], ["loc", [null, [23, 6], [27, 8]]], 0, 0], ["inline", "css-rules", [], ["list", ["subexpr", "@mut", [["get", "selectedCssRules", ["loc", [null, [29, 21], [29, 37]]], 0, 0, 0, 0]], [], [], 0, 0], "focusFunction", ["subexpr", "action", ["fieldFocused"], [], ["loc", [null, [30, 30], [30, 53]]], 0, 0], "blurFunction", ["subexpr", "action", ["fieldBlurred"], [], ["loc", [null, [31, 29], [31, 52]]], 0, 0], "changeCssFunction", ["subexpr", "action", ["changeCssRules"], [], ["loc", [null, [32, 34], [32, 59]]], 0, 0], "addCssRuleFunction", ["subexpr", "action", ["addCssRule"], [], ["loc", [null, [33, 35], [33, 56]]], 0, 0], "addCssStyleFunction", ["subexpr", "action", ["addCssStyle"], [], ["loc", [null, [34, 36], [34, 58]]], 0, 0], "removeCssStyleFunction", ["subexpr", "action", ["removeCssStyle"], [], ["loc", [null, [35, 39], [35, 64]]], 0, 0]], ["loc", [null, [29, 4], [36, 6]]], 0, 0]],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child1 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@2.8.2",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 37,
+              "column": 2
+            },
+            "end": {
+              "line": 38,
+              "column": 2
+            }
+          },
+          "moduleName": "page/templates/page.hbs"
+        },
+        isEmpty: true,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes() {
+          return [];
+        },
+        statements: [],
+        locals: [],
+        templates: []
+      };
+    })();
     return {
       meta: {
         "revision": "Ember@2.8.2",
@@ -2369,7 +2968,7 @@ define("page/templates/page", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 2,
+            "line": 48,
             "column": 0
           }
         },
@@ -2385,17 +2984,61 @@ define("page/templates/page", ["exports"], function (exports) {
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "id", "sidebar");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "class", "container");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "class", "page");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3, "id", "edit");
+        dom.setAttribute(el3, "contenteditable", "true");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var morphs = new Array(1);
+        var element6 = dom.childAt(fragment, [6]);
+        var morphs = new Array(5);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        morphs[1] = dom.createMorphAt(fragment, 2, 2, contextualElement);
+        morphs[2] = dom.createMorphAt(dom.childAt(fragment, [4]), 1, 1);
+        morphs[3] = dom.createElementMorph(element6);
+        morphs[4] = dom.createUnsafeMorphAt(dom.childAt(element6, [1, 1]), 1, 1);
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0]],
+      statements: [["content", "navbar", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["content", "outlet", ["loc", [null, [2, 0], [2, 10]]], 0, 0, 0, 0], ["block", "if", [["get", "selectedRegion", ["loc", [null, [4, 8], [4, 22]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [4, 2], [38, 9]]]], ["element", "action", ["mouseUpOnEdits"], [], ["loc", [null, [41, 23], [41, 50]]], 0, 0], ["content", "model.html", ["loc", [null, [44, 6], [44, 22]]], 0, 0, 0, 0]],
       locals: [],
-      templates: []
+      templates: [child0, child1]
     };
   })());
 });

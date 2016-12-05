@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import ClassListItemComponent from 'page/components/class-list-item';
 
-
 export default Ember.Controller.extend({
   selectedRegion: false,
   selectedClasses: [],
@@ -31,7 +30,7 @@ export default Ember.Controller.extend({
       for(var i = 0; i < selectedNodes.length; i++){
         selectedNodes[i].classList.remove("selected-region");
       }
-      console.log("selectedNodes11", selectedNodes);
+      console.log("selectedNodes2", selectedNodes);
 
       var pageContent = pageNodes.innerHTML;
       var styleSheet = document.styleSheets[2]
@@ -44,9 +43,9 @@ export default Ember.Controller.extend({
         var pageCSS = cssArray.join(" ");
         console.log("pageCSS: ", pageCSS);
       }
-
+      console.log("model: ", this.get("model"));
       var htmlData = {
-        name: "newPage",
+        name: this.get("model").name,
         html: pageContent,
         css: pageCSS
       };
@@ -383,10 +382,10 @@ document.onkeyup = function(e){
 document.addEventListener("keydown", function(e) {
   if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
     e.preventDefault();
-    var controller = Page.__container__.lookup("controller:editing-tests");
+    var controller = Page.__container__.lookup("controller:page");
     var boundSend = controller.send.bind(controller);
     boundSend('save');
-    console.log("saved");
+    console.log("saved!!!");
   }
 }, false);
 
