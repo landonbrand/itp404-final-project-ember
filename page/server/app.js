@@ -67,7 +67,7 @@ app.get('/api/getpage', function (request, response) {
 app.POST('/api/setpage', function (request, response) {
   var newPage = new PageModel({
     name: "faked",
-    html: "<h1>heading</h1>";
+    html: "<h1>heading</h1>",
     css: "h1 { background-color: blue; }"
   });
   newPage.save(function (err, fluffy) {
