@@ -4,6 +4,12 @@ var mongoose = require('mongoose');
 var findOrCreate = require('mongoose-findorcreate');
 var http = require('http');
 
+var morgan = require('morgan');
+var passport = require('passport');
+var config = require('./config/database');
+var User = require('./model/user');
+var jwt = require('jwt-simple');
+
 var util = require('util');
 var session = require('express-session');
 var methodOverride = require('method-override');
@@ -45,6 +51,9 @@ app.use(function(req, res, next) {
 app.use(session({secret: 'mySecretKey'}));
 
 app.use(bodyParser.text({type:"*/*"}));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(morgan('dev'));
+app.use(passport.initialize());
 
 app.get('/api/getpage', function (request, response) {
   var query = PageModel.findOne({ 'name' : request.query.name }, function(err, doc){
