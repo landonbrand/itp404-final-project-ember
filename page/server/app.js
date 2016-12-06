@@ -15,28 +15,6 @@ var session = require('express-session');
 var methodOverride = require('method-override');
 mongoose.connect(config.database);
 require('./config/passport')(passport);
-var apiRoutes = express.Router();
-
-// create a new user account (POST http://localhost:8080/api/signup)
-apiRoutes.post('/signup', function(req, res) {
-  console.log("req: ", req, "\n");
-  console.log("req body: ", req.body, "\n");
-  if (!req.body.name || !req.body.password) {
-    res.json({success: false, msg: 'Please pass name and password.'});
-  } else {
-    var newUser = new User({
-      name: req.body.name,
-      password: req.body.password
-    });
-    // save the user
-    newUser.save(function(err) {
-      if (err) {
-        return res.json({success: false, msg: 'Username already exists.'});
-      }
-      res.json({success: true, msg: 'Successful created new user.'});
-    });
-  }
-});
 
 // connect the api routes under /api/*
 var app = express();
@@ -79,6 +57,30 @@ app.use(bodyParser.text({type:"*/*"}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 app.use(passport.initialize());
+
+var apiRoutes = express.Router();
+
+// create a new user account (POST http://localhost:8080/api/signup)
+apiRoutes.post('/signup', function(req, res) {
+  console.log("req: ", req, "\n");
+  console.log("req body: ", req.body, "\n");
+  if (!req.body.name || !req.body.password) {
+    res.json({success: false, msg: 'Please pass name and password.'});
+  } else {
+    var newUser = new User({
+      name: req.body.name,
+      password: req.body.password
+    });
+    // save the user
+    newUser.save(function(err) {
+      if (err) {
+        return res.json({success: false, msg: 'Username already exists.'});
+      }
+      res.json({success: true, msg: 'Successful created new user.'});
+    });
+  }
+});
+
 
 app.get('/api/getpage', function (request, response) {
   var query = PageModel.findOne({ 'name' : request.query.name }, function(err, doc){

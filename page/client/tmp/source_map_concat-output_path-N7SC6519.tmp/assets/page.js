@@ -1327,10 +1327,14 @@ define("page/routes/signup", ["exports", "ember"], function (exports, _ember) {
     actions: {
       authenticateUser: function authenticateUser() {
         console.log("Authenticating...");
-        window.open("http://192.241.235.59:1111/auth/github");
+        // window.open("http://192.241.235.59:1111/api/signup");
         var promise = _ember["default"].$.ajax({
-          url: "http://192.241.235.59:1111/api/getuser",
-          type: 'get',
+          url: "http://192.241.235.59:1111/api/signup",
+          type: 'post',
+          data: {
+            name: "Landon",
+            password: "pass"
+          },
           success: function success(res) {
             console.log(res);
           }
