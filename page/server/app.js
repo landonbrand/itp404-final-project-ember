@@ -13,7 +13,7 @@ var jwt = require('jwt-simple');
 var util = require('util');
 var session = require('express-session');
 var methodOverride = require('method-override');
-mongoose.connect('mongodb://192.241.235.59/pagedb');
+mongoose.connect(config.database);
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
