@@ -20,7 +20,7 @@ export default Ember.Route.extend({
           name: "Landon",
           password: "pass"
         },
-        contentType: "json",
+        dataType: "JSON",
         success: function(res){
           console.log(res);
         }

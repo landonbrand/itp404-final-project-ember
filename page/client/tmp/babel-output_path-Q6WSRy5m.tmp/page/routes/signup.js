@@ -19,7 +19,7 @@ define("page/routes/signup", ["exports", "ember"], function (exports, _ember) {
             name: "Landon",
             password: "pass"
           },
-          contentType: "json",
+          dataType: "JSON",
           success: function success(res) {
             console.log(res);
           }
