@@ -18,8 +18,6 @@ require('./config/passport')(passport);
 
 // connect the api routes under /api/*
 var app = express();
-var apiRoutes = express.Router();
-app.use('/api', apiRoutes);
 
 // db.on('error', console.error.bind(console, 'connection error:'));
 // db.once('open', function() {
@@ -59,6 +57,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(passport.initialize());
+var apiRoutes = express.Router();
+app.use('/api', apiRoutes);
 
 // create a new user account (POST http://localhost:8080/api/signup)
 apiRoutes.post('/signup', function(req, res) {
