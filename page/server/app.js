@@ -109,51 +109,51 @@ apiRoutes.post('/authenticate', function(req, res) {
   });
 });
 
-apiRoutes.get('/memberinfo', passport.authenticate('jwt', function(err, user, info) {
-  console.log("user: ", user);
-  console.log("err: ", err);
-  console.log("info: ", info);
-  if (err) {
-    return next(err); // will generate a 500 error
-  }
-  // Generate a JSON response reflecting authentication status
-  if (! user) {
-    console.log("logging");
-    return res.send({ success : false, message : 'authentication failed' });
-  }
-  // ***********************************************************************
-  // "Note that when using a custom callback, it becomes the application's
-  // responsibility to establish a session (by calling req.login()) and send
-  // a response."
-  // Source: http://passportjs.org/docs
-  // ***********************************************************************
-  req.login(user, loginErr => {
-    if (loginErr) {
-      return next(loginErr);
-    }
-    return res.send({ success : true, message : 'authentication succeeded' });
-  });
-  })(req, res, next),
-  function(req, res) {
-  console.log("Req.header: ", req.header, "\n");
-  var token = getToken(req.headers);
-  if (token) {
-    var decoded = jwt.decode(token, config.secret);
-    User.findOne({
-      name: decoded.name
-    }, function(err, user) {
-        if (err) throw err;
-
-        if (!user) {
-          return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-        } else {
-          res.json({success: true, msg: 'Welcome in the member area ' + user.name + '!'});
-        }
-    });
-  } else {
-    return res.status(403).send({success: false, msg: 'No token provided.'});
-  }
-});
+// apiRoutes.get('/memberinfo', passport.authenticate('jwt', function(err, user, info) {
+//   console.log("user: ", user);
+//   console.log("err: ", err);
+//   console.log("info: ", info);
+//   if (err) {
+//     return next(err); // will generate a 500 error
+//   }
+//   // Generate a JSON response reflecting authentication status
+//   if (! user) {
+//     console.log("logging");
+//     return res.send({ success : false, message : 'authentication failed' });
+//   }
+//   // ***********************************************************************
+//   // "Note that when using a custom callback, it becomes the application's
+//   // responsibility to establish a session (by calling req.login()) and send
+//   // a response."
+//   // Source: http://passportjs.org/docs
+//   // ***********************************************************************
+//   req.login(user, loginErr => {
+//     if (loginErr) {
+//       return next(loginErr);
+//     }
+//     return res.send({ success : true, message : 'authentication succeeded' });
+//   });
+//   })(req, res, next),
+//   function(req, res) {
+//   console.log("Req.header: ", req.header, "\n");
+//   var token = getToken(req.headers);
+//   if (token) {
+//     var decoded = jwt.decode(token, config.secret);
+//     User.findOne({
+//       name: decoded.name
+//     }, function(err, user) {
+//         if (err) throw err;
+//
+//         if (!user) {
+//           return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+//         } else {
+//           res.json({success: true, msg: 'Welcome in the member area ' + user.name + '!'});
+//         }
+//     });
+//   } else {
+//     return res.status(403).send({success: false, msg: 'No token provided.'});
+//   }
+// });
 
 getToken = function (headers) {
   console.log("Get token is running with these headers: ", headers, "\n");
