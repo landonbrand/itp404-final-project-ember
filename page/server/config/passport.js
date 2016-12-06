@@ -10,11 +10,12 @@ module.exports = function (passport) {
     var opts = {};
 
     opts.secretOrKey = jwtconfig.secret;
-    opts.issuer = jwtconfig.issuer;
-    opts.audience = jwtconfig.audience;
+    // opts.issuer = jwtconfig.issuer;
+    // opts.audience = jwtconfig.audience;
     opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
 
     passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
+      console.log("passport use jTW strategy");
         console.log(`PAYLOAD: ${jwt_payload}`);
         User.findOne({userName: jwt_payload.sub}, function (err, user) {
             if (err) {
