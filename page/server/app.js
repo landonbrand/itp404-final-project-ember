@@ -14,22 +14,45 @@ var util = require('util');
 var session = require('express-session');
 var methodOverride = require('method-override');
 mongoose.connect(config.database);
+require('./config/passport')(passport);
+var apiRoutes = express.Router();
 
-var db = mongoose.connection;
+// create a new user account (POST http://localhost:8080/api/signup)
+apiRoutes.post('/signup', function(req, res) {
+  if (!req.body.name || !req.body.password) {
+    res.json({success: false, msg: 'Please pass name and password.'});
+  } else {
+    var newUser = new User({
+      name: req.body.name,
+      password: req.body.password
+    });
+    // save the user
+    newUser.save(function(err) {
+      if (err) {
+        return res.json({success: false, msg: 'Username already exists.'});
+      }
+      res.json({success: true, msg: 'Successful created new user.'});
+    });
+  }
+});
+
+// connect the api routes under /api/*
+app.use('/api', apiRoutes);
+
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("we're connected to the database!");
   // console.log(db);
 });
 
-var pageSchema = new mongoose.Schema({
-  name: String,
-  html: String,
-  css: String
-});
-
-pageSchema.plugin(findOrCreate);
-var PageModel = mongoose.model('Page', pageSchema);
+// var pageSchema = new mongoose.Schema({
+//   name: String,
+//   html: String,
+//   css: String
+// });
+//
+// pageSchema.plugin(findOrCreate);
+// var PageModel = mongoose.model('Page', pageSchema);
 
 var GITHUB_CLIENT_ID = "90c810f2ae9f6b8c1a9e";
 var GITHUB_CLIENT_SECRET = "56acd69b369c551e85a624fd9b48249ff9bbfc85";
