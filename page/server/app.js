@@ -129,6 +129,7 @@ apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), fu
 });
 
 getToken = function (headers) {
+  console.log("Get token is running with these headers: ", headers, "\n");
   if (headers && headers.authorization) {
     var parted = headers.authorization.split(' ');
     if (parted.length === 2) {
