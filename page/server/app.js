@@ -37,13 +37,14 @@ apiRoutes.post('/signup', function(req, res) {
 });
 
 // connect the api routes under /api/*
+var app = express();
 app.use('/api', apiRoutes);
 
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log("we're connected to the database!");
-  // console.log(db);
-});
+// db.on('error', console.error.bind(console, 'connection error:'));
+// db.once('open', function() {
+//   console.log("we're connected to the database!");
+//   // console.log(db);
+// });
 
 // var pageSchema = new mongoose.Schema({
 //   name: String,
@@ -57,7 +58,6 @@ db.once('open', function() {
 var GITHUB_CLIENT_ID = "90c810f2ae9f6b8c1a9e";
 var GITHUB_CLIENT_SECRET = "56acd69b369c551e85a624fd9b48249ff9bbfc85";
 
-var app = express();
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Credentials', true);
