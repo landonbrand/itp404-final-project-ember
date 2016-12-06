@@ -12,7 +12,7 @@ module.exports = function (passport) {
     opts.secretOrKey = jwtconfig.secret;
     // opts.issuer = jwtconfig.issuer;
     // opts.audience = jwtconfig.audience;
-    opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
+    opts.jwtFromRequest = ExtractJwt.fromHeader("Authorization");
 
     passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
       console.log("passport use jTW strategy");
