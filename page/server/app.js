@@ -64,12 +64,13 @@ app.use('/api', apiRoutes);
 apiRoutes.post('/signup', function(req, res) {
   console.log("req: ", req, "\n");
   console.log("req body: ", JSON.parse(req.body), "\n");
-  if (!req.body.name || !req.body.password) {
+  var obj = JSON.parse(req.body);
+  if (!obj.name || !obj.password) {
     res.json({success: false, msg: 'Please pass name and password.'});
   } else {
     var newUser = new User({
-      name: req.body.name,
-      password: req.body.password
+      name: obj.name,
+      password: obj.password
     });
     // save the user
     newUser.save(function(err) {
