@@ -13,8 +13,6 @@ var jwt = require('jwt-simple');
 var util = require('util');
 var session = require('express-session');
 var methodOverride = require('method-override');
-mongoose.connect(config.database);
-require('./config/passport')(passport);
 
 // connect the api routes under /api/*
 var app = express();
@@ -56,9 +54,12 @@ app.use(bodyParser.text({type:"*/*"}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
+mongoose.connect(config.database);
+require('./config/passport')(passport);
 app.use(passport.initialize());
 var apiRoutes = express.Router();
 app.use('/api', apiRoutes);
+
 
 // create a new user account (POST http://localhost:8080/api/signup)
 apiRoutes.post('/signup', function(req, res) {
