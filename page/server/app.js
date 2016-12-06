@@ -63,7 +63,7 @@ app.use('/api', apiRoutes);
 // create a new user account (POST http://localhost:8080/api/signup)
 apiRoutes.post('/signup', function(req, res) {
   console.log("req: ", req, "\n");
-  console.log("req body: ", JSON.parse(req.body), "\n");
+  console.log("req body: ", req.body, "\n");
   if (!req.body.name || !req.body.password) {
     res.json({success: false, msg: 'Please pass name and password.'});
   } else {
