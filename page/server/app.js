@@ -108,6 +108,7 @@ apiRoutes.post('/authenticate', function(req, res) {
 });
 
 apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), function(req, res) {
+  console.log(req.header);
   var token = getToken(req.headers);
   if (token) {
     var decoded = jwt.decode(token, config.secret);
