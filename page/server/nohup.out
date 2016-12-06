@@ -1,0 +1,265 @@
+mongod --help for help and startup options
+Sun Dec  4 11:48:02 
+Sun Dec  4 11:48:02 warning: 32-bit servers don't have journaling enabled by default. Please use --journal if you want durability.
+Sun Dec  4 11:48:02 
+Sun Dec  4 11:48:02 [initandlisten] MongoDB starting : pid=8534 port=27017 dbpath=/data/db/ 32-bit host=cubed-work-1
+Sun Dec  4 11:48:02 [initandlisten] 
+Sun Dec  4 11:48:02 [initandlisten] ** NOTE: when using MongoDB 32 bit, you are limited to about 2 gigabytes of data
+Sun Dec  4 11:48:02 [initandlisten] **       see http://blog.mongodb.org/post/137788967/32-bit-limitations
+Sun Dec  4 11:48:02 [initandlisten] **       with --journal, the limit is lower
+Sun Dec  4 11:48:02 [initandlisten] 
+Sun Dec  4 11:48:02 [initandlisten] db version v2.0.4, pdfile version 4.5
+Sun Dec  4 11:48:02 [initandlisten] git version: nogitversion
+Sun Dec  4 11:48:02 [initandlisten] build info: Linux roseapple 2.6.42-37-generic #58-Ubuntu SMP Thu Jan 24 15:28:10 UTC 2013 i686 BOOST_LIB_VERSION=1_46_1
+Sun Dec  4 11:48:02 [initandlisten] options: {}
+Sun Dec  4 11:48:02 [initandlisten] waiting for connections on port 27017
+Sun Dec  4 11:48:02 [websvr] admin web console waiting for connections on port 28017
+Sun Dec  4 11:48:15 [initandlisten] connection accepted from 192.241.235.59:59998 #1
+Sun Dec  4 11:48:16 [FileAllocator] allocating new datafile /data/db/pagedb.ns, filling with zeroes...
+Sun Dec  4 11:48:16 [FileAllocator] creating directory /data/db/_tmp
+Sun Dec  4 11:48:16 [FileAllocator] done allocating datafile /data/db/pagedb.ns, size: 16MB,  took 0 secs
+Sun Dec  4 11:48:16 [FileAllocator] allocating new datafile /data/db/pagedb.0, filling with zeroes...
+Sun Dec  4 11:48:16 [FileAllocator] done allocating datafile /data/db/pagedb.0, size: 16MB,  took 0 secs
+Sun Dec  4 11:48:16 [FileAllocator] allocating new datafile /data/db/pagedb.1, filling with zeroes...
+Sun Dec  4 11:48:16 [FileAllocator] done allocating datafile /data/db/pagedb.1, size: 32MB,  took 0 secs
+Sun Dec  4 11:48:16 [conn1] build index pagedb.users { _id: 1 }
+Sun Dec  4 11:48:16 [conn1] build index done 0 records 0 secs
+Sun Dec  4 11:49:02 [clientcursormon] mem (MB) res:28 virt:115 mapped:32
+Sun Dec  4 11:54:02 [clientcursormon] mem (MB) res:28 virt:115 mapped:32
+Sun Dec  4 11:58:23 [conn1] end connection 192.241.235.59:59998
+Sun Dec  4 11:58:28 [initandlisten] connection accepted from 192.241.235.59:59999 #2
+Sun Dec  4 11:58:32 [conn2] end connection 192.241.235.59:59999
+Sun Dec  4 11:58:40 [initandlisten] connection accepted from 192.241.235.59:60002 #3
+Sun Dec  4 11:59:02 [clientcursormon] mem (MB) res:28 virt:115 mapped:32
+Sun Dec  4 12:02:28 [initandlisten] connection accepted from 127.0.0.1:39087 #4
+Sun Dec  4 12:04:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 12:06:16 [conn3] end connection 192.241.235.59:60002
+Sun Dec  4 12:06:23 [initandlisten] connection accepted from 192.241.235.59:60008 #5
+Sun Dec  4 12:07:27 [conn5] end connection 192.241.235.59:60008
+Sun Dec  4 12:07:59 [initandlisten] connection accepted from 192.241.235.59:60015 #6
+Sun Dec  4 12:09:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 12:10:19 [conn6] end connection 192.241.235.59:60015
+Sun Dec  4 12:10:21 [initandlisten] connection accepted from 192.241.235.59:60020 #7
+Sun Dec  4 12:11:51 [conn7] end connection 192.241.235.59:60020
+Sun Dec  4 12:11:53 [initandlisten] connection accepted from 192.241.235.59:60025 #8
+Sun Dec  4 12:13:10 [conn8] end connection 192.241.235.59:60025
+Sun Dec  4 12:13:16 [initandlisten] connection accepted from 192.241.235.59:60028 #9
+Sun Dec  4 12:14:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 12:19:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 12:22:34 [conn9] end connection 192.241.235.59:60028
+Sun Dec  4 12:24:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 12:24:08 [initandlisten] connection accepted from 192.241.235.59:60039 #10
+Sun Dec  4 12:27:05 [conn10] end connection 192.241.235.59:60039
+Sun Dec  4 12:27:12 [initandlisten] connection accepted from 192.241.235.59:60048 #11
+Sun Dec  4 12:28:03 [conn11] end connection 192.241.235.59:60048
+Sun Dec  4 12:28:08 [initandlisten] connection accepted from 192.241.235.59:60055 #12
+Sun Dec  4 12:29:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 12:34:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 12:37:16 [conn12] end connection 192.241.235.59:60055
+Sun Dec  4 12:37:24 [initandlisten] connection accepted from 192.241.235.59:60060 #13
+Sun Dec  4 12:39:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 12:44:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 12:49:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 12:54:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 12:59:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 13:04:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 13:06:15 [conn13] end connection 192.241.235.59:60060
+Sun Dec  4 13:06:21 [initandlisten] connection accepted from 192.241.235.59:60065 #14
+Sun Dec  4 13:07:01 [conn14] end connection 192.241.235.59:60065
+Sun Dec  4 13:07:07 [initandlisten] connection accepted from 192.241.235.59:60069 #15
+Sun Dec  4 13:08:00 [conn15] end connection 192.241.235.59:60069
+Sun Dec  4 13:08:07 [initandlisten] connection accepted from 192.241.235.59:60073 #16
+Sun Dec  4 13:08:57 [conn16] end connection 192.241.235.59:60073
+Sun Dec  4 13:09:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 13:09:22 [initandlisten] connection accepted from 192.241.235.59:60077 #17
+Sun Dec  4 13:11:00 [conn17] end connection 192.241.235.59:60077
+Sun Dec  4 13:11:07 [initandlisten] connection accepted from 192.241.235.59:60081 #18
+Sun Dec  4 13:14:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 13:17:54 [conn18] end connection 192.241.235.59:60081
+Sun Dec  4 13:17:57 [initandlisten] connection accepted from 192.241.235.59:60083 #19
+Sun Dec  4 13:18:09 [conn19] end connection 192.241.235.59:60083
+Sun Dec  4 13:18:15 [initandlisten] connection accepted from 192.241.235.59:60087 #20
+Sun Dec  4 13:19:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 13:20:13 [conn20] end connection 192.241.235.59:60087
+Sun Dec  4 13:20:19 [initandlisten] connection accepted from 192.241.235.59:60091 #21
+Sun Dec  4 13:22:42 [conn21] end connection 192.241.235.59:60091
+Sun Dec  4 13:23:23 [initandlisten] connection accepted from 192.241.235.59:60098 #22
+Sun Dec  4 13:24:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 13:24:36 [conn22] end connection 192.241.235.59:60098
+Sun Dec  4 13:24:57 [initandlisten] connection accepted from 192.241.235.59:60102 #23
+Sun Dec  4 13:26:14 [conn23] end connection 192.241.235.59:60102
+Sun Dec  4 13:26:21 [initandlisten] connection accepted from 192.241.235.59:60106 #24
+Sun Dec  4 13:26:28 [conn24] end connection 192.241.235.59:60106
+Sun Dec  4 13:29:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 13:29:58 [initandlisten] connection accepted from 192.241.235.59:60107 #25
+Sun Dec  4 13:34:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 13:39:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 13:44:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 13:49:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 13:52:48 [conn25] end connection 192.241.235.59:60107
+Sun Dec  4 13:53:10 [initandlisten] connection accepted from 192.241.235.59:60114 #26
+Sun Dec  4 13:54:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 13:54:22 [conn26] end connection 192.241.235.59:60114
+Sun Dec  4 13:54:28 [initandlisten] connection accepted from 192.241.235.59:60119 #27
+Sun Dec  4 13:58:11 [conn27] end connection 192.241.235.59:60119
+Sun Dec  4 13:58:17 [initandlisten] connection accepted from 192.241.235.59:60128 #28
+Sun Dec  4 13:59:02 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 13:59:19 got kill or ctrl c or hup signal 1 (Hangup), will terminate after current cmd ends
+Sun Dec  4 13:59:19 [interruptThread] now exiting
+Sun Dec  4 13:59:19 dbexit: 
+Sun Dec  4 13:59:19 [interruptThread] shutdown: going to close listening sockets...
+Sun Dec  4 13:59:19 [interruptThread] closing listening socket: 5
+Sun Dec  4 13:59:19 [interruptThread] closing listening socket: 6
+Sun Dec  4 13:59:19 [interruptThread] closing listening socket: 7
+Sun Dec  4 13:59:19 [interruptThread] removing socket file: /tmp/mongodb-27017.sock
+Sun Dec  4 13:59:19 [interruptThread] shutdown: going to flush diaglog...
+Sun Dec  4 13:59:19 [interruptThread] shutdown: going to close sockets...
+Sun Dec  4 13:59:19 [interruptThread] shutdown: waiting for fs preallocator...
+Sun Dec  4 13:59:19 [interruptThread] shutdown: closing all files...
+Sun Dec  4 13:59:19 [interruptThread] closeAllFiles() finished
+Sun Dec  4 13:59:19 [interruptThread] shutdown: removing fs lock...
+Sun Dec  4 13:59:19 dbexit: really exiting now
+mongod --help for help and startup options
+Sun Dec  4 21:29:39 
+Sun Dec  4 21:29:39 warning: 32-bit servers don't have journaling enabled by default. Please use --journal if you want durability.
+Sun Dec  4 21:29:39 
+Sun Dec  4 21:29:39 [initandlisten] MongoDB starting : pid=20735 port=27017 dbpath=/data/db/ 32-bit host=cubed-work-1
+Sun Dec  4 21:29:39 [initandlisten] 
+Sun Dec  4 21:29:39 [initandlisten] ** NOTE: when using MongoDB 32 bit, you are limited to about 2 gigabytes of data
+Sun Dec  4 21:29:39 [initandlisten] **       see http://blog.mongodb.org/post/137788967/32-bit-limitations
+Sun Dec  4 21:29:39 [initandlisten] **       with --journal, the limit is lower
+Sun Dec  4 21:29:39 [initandlisten] 
+Sun Dec  4 21:29:39 [initandlisten] db version v2.0.4, pdfile version 4.5
+Sun Dec  4 21:29:39 [initandlisten] git version: nogitversion
+Sun Dec  4 21:29:39 [initandlisten] build info: Linux roseapple 2.6.42-37-generic #58-Ubuntu SMP Thu Jan 24 15:28:10 UTC 2013 i686 BOOST_LIB_VERSION=1_46_1
+Sun Dec  4 21:29:39 [initandlisten] options: {}
+Sun Dec  4 21:29:39 [initandlisten] waiting for connections on port 27017
+Sun Dec  4 21:29:39 [websvr] admin web console waiting for connections on port 28017
+Sun Dec  4 21:29:56 [initandlisten] connection accepted from 192.241.235.59:60246 #1
+Sun Dec  4 21:30:39 [clientcursormon] mem (MB) res:12 virt:83 mapped:0
+Sun Dec  4 21:35:39 [clientcursormon] mem (MB) res:12 virt:83 mapped:0
+Sun Dec  4 21:38:33 [conn1] end connection 192.241.235.59:60246
+Sun Dec  4 21:38:42 [initandlisten] connection accepted from 192.241.235.59:60249 #2
+Sun Dec  4 21:39:44 [conn2] end connection 192.241.235.59:60249
+Sun Dec  4 21:39:49 [initandlisten] connection accepted from 192.241.235.59:60251 #3
+Sun Dec  4 21:39:49 [conn3] end connection 192.241.235.59:60251
+Sun Dec  4 21:39:55 [initandlisten] connection accepted from 192.241.235.59:60254 #4
+Sun Dec  4 21:40:39 [clientcursormon] mem (MB) res:12 virt:83 mapped:0
+Sun Dec  4 21:41:09 [conn4] end connection 192.241.235.59:60254
+Sun Dec  4 21:41:16 [initandlisten] connection accepted from 192.241.235.59:60257 #5
+Sun Dec  4 21:41:19 [conn5] build index pagedb.pages { _id: 1 }
+Sun Dec  4 21:41:19 [conn5] build index done 0 records 0 secs
+Sun Dec  4 21:41:39 [clientcursormon] mem (MB) res:28 virt:115 mapped:32
+Sun Dec  4 21:42:12 [conn5] end connection 192.241.235.59:60257
+Sun Dec  4 21:42:18 [initandlisten] connection accepted from 192.241.235.59:60260 #6
+Sun Dec  4 21:44:24 [conn6] end connection 192.241.235.59:60260
+Sun Dec  4 21:44:32 [initandlisten] connection accepted from 192.241.235.59:60263 #7
+Sun Dec  4 21:45:17 [conn7] end connection 192.241.235.59:60263
+Sun Dec  4 21:45:27 [initandlisten] connection accepted from 192.241.235.59:60266 #8
+Sun Dec  4 21:46:39 [clientcursormon] mem (MB) res:28 virt:115 mapped:32
+Sun Dec  4 21:47:04 [conn8] end connection 192.241.235.59:60266
+Sun Dec  4 21:47:10 [initandlisten] connection accepted from 192.241.235.59:60269 #9
+Sun Dec  4 21:48:25 [initandlisten] connection accepted from 127.0.0.1:39352 #10
+Sun Dec  4 21:51:39 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 21:56:39 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 21:56:51 [conn10] end connection 127.0.0.1:39352
+Sun Dec  4 21:56:57 [conn9] end connection 192.241.235.59:60269
+Sun Dec  4 21:57:03 [initandlisten] connection accepted from 192.241.235.59:60273 #11
+Sun Dec  4 22:01:11 [conn11] end connection 192.241.235.59:60273
+Sun Dec  4 22:01:18 [initandlisten] connection accepted from 192.241.235.59:60276 #12
+Sun Dec  4 22:01:39 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 22:03:41 [conn12] end connection 192.241.235.59:60276
+Sun Dec  4 22:03:48 [initandlisten] connection accepted from 192.241.235.59:60279 #13
+Sun Dec  4 22:06:08 [conn13] end connection 192.241.235.59:60279
+Sun Dec  4 22:06:13 [initandlisten] connection accepted from 192.241.235.59:60282 #14
+Sun Dec  4 22:06:39 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 22:07:08 [conn14] end connection 192.241.235.59:60282
+Sun Dec  4 22:07:15 [initandlisten] connection accepted from 192.241.235.59:60285 #15
+Sun Dec  4 22:09:29 [conn15] end connection 192.241.235.59:60285
+Sun Dec  4 22:09:35 [initandlisten] connection accepted from 192.241.235.59:60288 #16
+Sun Dec  4 22:11:39 [clientcursormon] mem (MB) res:28 virt:116 mapped:32
+Sun Dec  4 22:12:42 [conn16] end connection 192.241.235.59:60288
+Sun Dec  4 22:12:49 [initandlisten] connection accepted from 192.241.235.59:60291 #17
+Sun Dec  4 22:16:02 [conn17] end connection 192.241.235.59:60291
+Sun Dec  4 22:16:08 [initandlisten] connection accepted from 192.241.235.59:60294 #18
+Sun Dec  4 22:16:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 22:17:02 [conn18] end connection 192.241.235.59:60294
+Sun Dec  4 22:17:09 [initandlisten] connection accepted from 192.241.235.59:60297 #19
+Sun Dec  4 22:18:34 [conn19] end connection 192.241.235.59:60297
+Sun Dec  4 22:18:39 [initandlisten] connection accepted from 192.241.235.59:60300 #20
+Sun Dec  4 22:18:46 [conn20] end connection 192.241.235.59:60300
+Sun Dec  4 22:19:46 [initandlisten] connection accepted from 192.241.235.59:60303 #21
+Sun Dec  4 22:19:49 [conn21] end connection 192.241.235.59:60303
+Sun Dec  4 22:20:29 [initandlisten] connection accepted from 192.241.235.59:60306 #22
+Sun Dec  4 22:21:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 22:26:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 22:27:28 [conn22] end connection 192.241.235.59:60306
+Sun Dec  4 22:27:34 [initandlisten] connection accepted from 192.241.235.59:60309 #23
+Sun Dec  4 22:27:55 [initandlisten] connection accepted from 127.0.0.1:39392 #24
+Sun Dec  4 22:29:30 [conn24] end connection 127.0.0.1:39392
+Sun Dec  4 22:29:35 [conn23] end connection 192.241.235.59:60309
+Sun Dec  4 22:29:36 [initandlisten] connection accepted from 192.241.235.59:60311 #25
+Sun Dec  4 22:29:37 [conn25] end connection 192.241.235.59:60311
+Sun Dec  4 22:29:42 [initandlisten] connection accepted from 192.241.235.59:60314 #26
+Sun Dec  4 22:30:32 [conn26] end connection 192.241.235.59:60314
+Sun Dec  4 22:30:37 [initandlisten] connection accepted from 192.241.235.59:60317 #27
+Sun Dec  4 22:31:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 22:36:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 22:39:29 [conn27] end connection 192.241.235.59:60317
+Sun Dec  4 22:39:37 [initandlisten] connection accepted from 192.241.235.59:60320 #28
+Sun Dec  4 22:40:28 [conn28] end connection 192.241.235.59:60320
+Sun Dec  4 22:40:34 [initandlisten] connection accepted from 192.241.235.59:60323 #29
+Sun Dec  4 22:41:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 22:41:50 [conn29] end connection 192.241.235.59:60323
+Sun Dec  4 22:41:57 [initandlisten] connection accepted from 192.241.235.59:60326 #30
+Sun Dec  4 22:42:41 [initandlisten] connection accepted from 127.0.0.1:39409 #31
+Sun Dec  4 22:45:16 [conn30] end connection 192.241.235.59:60326
+Sun Dec  4 22:45:22 [initandlisten] connection accepted from 192.241.235.59:60330 #32
+Sun Dec  4 22:46:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 22:50:50 [conn32] end connection 192.241.235.59:60330
+Sun Dec  4 22:50:58 [initandlisten] connection accepted from 192.241.235.59:60333 #33
+Sun Dec  4 22:51:02 [conn33] end connection 192.241.235.59:60333
+Sun Dec  4 22:51:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 22:52:18 [initandlisten] connection accepted from 192.241.235.59:60336 #34
+Sun Dec  4 22:52:21 [conn34] end connection 192.241.235.59:60336
+Sun Dec  4 22:53:16 [initandlisten] connection accepted from 192.241.235.59:60339 #35
+Sun Dec  4 22:53:18 [conn35] end connection 192.241.235.59:60339
+Sun Dec  4 22:56:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 23:01:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 23:06:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 23:11:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 23:16:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 23:17:21 [initandlisten] connection accepted from 192.241.235.59:60342 #36
+Sun Dec  4 23:17:23 [conn36] end connection 192.241.235.59:60342
+Sun Dec  4 23:18:14 [initandlisten] connection accepted from 192.241.235.59:60345 #37
+Sun Dec  4 23:20:42 [conn37] end connection 192.241.235.59:60345
+Sun Dec  4 23:20:48 [initandlisten] connection accepted from 192.241.235.59:60348 #38
+Sun Dec  4 23:20:51 [conn38] end connection 192.241.235.59:60348
+Sun Dec  4 23:21:30 [initandlisten] connection accepted from 192.241.235.59:60351 #39
+Sun Dec  4 23:21:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 23:23:55 [conn39] end connection 192.241.235.59:60351
+Sun Dec  4 23:24:02 [initandlisten] connection accepted from 192.241.235.59:60354 #40
+Sun Dec  4 23:25:40 [conn40] end connection 192.241.235.59:60354
+Sun Dec  4 23:25:47 [initandlisten] connection accepted from 192.241.235.59:60357 #41
+Sun Dec  4 23:26:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 23:31:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 23:36:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 23:41:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 23:46:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 23:51:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 23:56:39 [clientcursormon] mem (MB) res:29 virt:116 mapped:32
+Sun Dec  4 23:57:09 got kill or ctrl c or hup signal 1 (Hangup), will terminate after current cmd ends
+Sun Dec  4 23:57:09 [interruptThread] now exiting
+Sun Dec  4 23:57:09 dbexit: 
+Sun Dec  4 23:57:09 [interruptThread] shutdown: going to close listening sockets...
+Sun Dec  4 23:57:09 [interruptThread] closing listening socket: 5
+Sun Dec  4 23:57:09 [interruptThread] closing listening socket: 6
+Sun Dec  4 23:57:09 [interruptThread] closing listening socket: 7
+Sun Dec  4 23:57:09 [interruptThread] removing socket file: /tmp/mongodb-27017.sock
+Sun Dec  4 23:57:09 [interruptThread] shutdown: going to flush diaglog...
+Sun Dec  4 23:57:09 [interruptThread] shutdown: going to close sockets...
+Sun Dec  4 23:57:09 [interruptThread] shutdown: waiting for fs preallocator...
+Sun Dec  4 23:57:09 [interruptThread] shutdown: closing all files...
+Sun Dec  4 23:57:09 [interruptThread] closeAllFiles() finished
+Sun Dec  4 23:57:09 [interruptThread] shutdown: removing fs lock...
+Sun Dec  4 23:57:09 dbexit: really exiting now
