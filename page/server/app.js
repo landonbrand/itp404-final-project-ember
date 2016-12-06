@@ -55,6 +55,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 mongoose.connect(config.database);
+
 require('./config/passport')(passport);
 app.use(passport.initialize());
 var apiRoutes = express.Router();

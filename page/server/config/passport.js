@@ -15,10 +15,11 @@ module.exports = function (passport) {
     opts.jwtFromRequest = ExtractJwt.fromHeader("Authorization");
 
     passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
-      console.log("passport use jTW strategy");
+      console.log("passport use JWT strategy");
         console.log(`PAYLOAD: ${jwt_payload}`);
         User.findOne({userName: jwt_payload.sub}, function (err, user) {
             if (err) {
+                console.log("err: ", err);
                 return done(err, false);
             }
             if (user) {
