@@ -83,8 +83,9 @@ apiRoutes.post('/signup', function(req, res) {
 });
 
 apiRoutes.post('/authenticate', function(req, res) {
+  var obj = JSON.parse(req.body);
   User.findOne({
-    name: req.body.name
+    name: obj.name
   }, function(err, user) {
     if (err) throw err;
 
@@ -92,7 +93,7 @@ apiRoutes.post('/authenticate', function(req, res) {
       res.send({success: false, msg: 'Authentication failed. User not found.'});
     } else {
       // check if password matches
-      user.comparePassword(req.body.password, function (err, isMatch) {
+      user.comparePassword(obj.password, function (err, isMatch) {
         if (isMatch && !err) {
           // if user is found and password is right create a token
           var token = jwt.encode(user, config.secret);
