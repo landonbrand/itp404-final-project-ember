@@ -56,6 +56,7 @@ app.use(session({secret: 'mySecretKey'}));
 
 app.use(bodyParser.text({type:"*/*"}));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(passport.initialize());
 
