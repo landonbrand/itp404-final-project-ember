@@ -119,7 +119,7 @@ apiRoutes.get('/memberinfo', passport.authenticate('jwt', function(err, user, in
   // Generate a JSON response reflecting authentication status
   if (! user) {
     console.log("logging");
-    return res.send({ success : false, message : 'authentication failed' });
+    return res.send({ success : false, message : 'authentication failed man. bad day.' });
   }
   // ***********************************************************************
   // "Note that when using a custom callback, it becomes the application's
@@ -133,7 +133,7 @@ apiRoutes.get('/memberinfo', passport.authenticate('jwt', function(err, user, in
     }
     return res.send({ success : true, message : 'authentication succeeded' });
   });
-  }),
+})(req, res, next),
   function(req, res) {
   console.log("Req.header: ", req.header, "\n");
   var token = getToken(req.headers);
