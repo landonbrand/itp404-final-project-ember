@@ -60,7 +60,6 @@ app.get('/api/getuserspages', function(request, response) {
       console.log(request.query.nickname, "exists");
     }
   });
-  response.json(obj);
 });
 
 app.get('/api/getpage', function (request, response) {
