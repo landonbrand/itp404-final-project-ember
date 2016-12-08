@@ -46,10 +46,10 @@ app.use(passport.initialize());
 app.get('/api/getuserspages', function(request, response) {
   var obj = {response: "got"};
   console.log("nickname: ", request.query.nickname, "\n");
-  User.findOne({ 'nickname' : request.body.name }, function(err, doc){
+  User.findOne({ 'nickname' : request.query.name }, function(err, doc){
     if (err) return handleError(err);
     if (doc == null || doc == undefined){
-      console.log(request.body.name, "does not exist, making them now.");
+      console.log(request.query.name, "does not exist, making them now.");
       var newDoc = new User({ nickname: request.query.name });
       newDoc.pages = [];
       newDoc.save(function (err, updatedDoc) {
@@ -57,7 +57,7 @@ app.get('/api/getuserspages', function(request, response) {
         response.send(updatedDoc);
       });
     } else {
-      console.log(request.body.name, "exists");
+      console.log(request.query.name, "exists");
     }
   });
   response.json(obj);
