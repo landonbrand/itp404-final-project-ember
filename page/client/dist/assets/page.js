@@ -239,14 +239,14 @@ define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _e
       },
 
       addPage: function addPage() {
-        var page = "myPage";
+        var myPage = "myPage";
         var data = {
           nickname: this.get("nickname"),
           page: myPage
         };
         var promise = $.post({
-          url: "http://192.241.235.59:1111/api/addPage",
-          data: JSON.stringify(page),
+          url: "http://192.241.235.59:1111/api/addUsersPage",
+          data: JSON.stringify(data),
           dataType: "text"
         });
         promise.then(function (response) {
