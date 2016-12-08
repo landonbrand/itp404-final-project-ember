@@ -79,7 +79,7 @@ app.post('/api/adduserspage', function(request, response) {
   console.log("nickname: ", bod.nickname, "\n");
   User.findOne({ 'nickname' : bod.nickname }, function(err, doc){
     if (err) return handleError(err);
-    if(doc.pages.indexOf(bod.page > -1)){
+    if(doc.pages.indexOf(bod.page) > -1){
       console.log("page already is part...");
     } else {
       doc.pages.push(bod.page);

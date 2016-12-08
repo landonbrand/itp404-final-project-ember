@@ -9,11 +9,11 @@ define("page/templates/dashboard", ["exports"], function (exports) {
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 13,
+                  "line": 14,
                   "column": 18
                 },
                 "end": {
-                  "line": 13,
+                  "line": 14,
                   "column": 51
                 }
               },
@@ -36,7 +36,7 @@ define("page/templates/dashboard", ["exports"], function (exports) {
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["content", "page", ["loc", [null, [13, 43], [13, 51]]], 0, 0, 0, 0]],
+            statements: [["content", "page", ["loc", [null, [14, 43], [14, 51]]], 0, 0, 0, 0]],
             locals: [],
             templates: []
           };
@@ -47,11 +47,11 @@ define("page/templates/dashboard", ["exports"], function (exports) {
             "loc": {
               "source": null,
               "start": {
-                "line": 12,
+                "line": 13,
                 "column": 10
               },
               "end": {
-                "line": 15,
+                "line": 16,
                 "column": 10
               }
             },
@@ -80,7 +80,7 @@ define("page/templates/dashboard", ["exports"], function (exports) {
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["block", "link-to", ["page", ["get", "page", ["loc", [null, [13, 36], [13, 40]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [13, 18], [13, 63]]]]],
+          statements: [["block", "link-to", ["page", ["get", "page", ["loc", [null, [14, 36], [14, 40]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [14, 18], [14, 63]]]]],
           locals: ["page"],
           templates: [child0]
         };
@@ -95,7 +95,7 @@ define("page/templates/dashboard", ["exports"], function (exports) {
               "column": 6
             },
             "end": {
-              "line": 17,
+              "line": 18,
               "column": 6
             }
           },
@@ -127,6 +127,12 @@ define("page/templates/dashboard", ["exports"], function (exports) {
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n        ");
           dom.appendChild(el0, el1);
+          var el1 = dom.createElement("input");
+          dom.setAttribute(el1, "id", "page-to-add");
+          dom.setAttribute(el1, "value", "Add a new page");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n        ");
+          dom.appendChild(el0, el1);
           var el1 = dom.createElement("button");
           var el2 = dom.createTextNode(" Add page ");
           dom.appendChild(el1, el2);
@@ -147,15 +153,15 @@ define("page/templates/dashboard", ["exports"], function (exports) {
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
           var element2 = dom.childAt(fragment, [5]);
-          var element3 = dom.childAt(fragment, [7]);
+          var element3 = dom.childAt(fragment, [9]);
           var morphs = new Array(4);
           morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
           morphs[1] = dom.createElementMorph(element2);
           morphs[2] = dom.createElementMorph(element3);
-          morphs[3] = dom.createMorphAt(dom.childAt(fragment, [9]), 1, 1);
+          morphs[3] = dom.createMorphAt(dom.childAt(fragment, [11]), 1, 1);
           return morphs;
         },
-        statements: [["content", "nickname", ["loc", [null, [7, 17], [7, 29]]], 0, 0, 0, 0], ["element", "action", ["getPages"], [], ["loc", [null, [9, 16], [9, 37]]], 0, 0], ["element", "action", ["addPage"], [], ["loc", [null, [10, 16], [10, 36]]], 0, 0], ["block", "each", [["get", "pages", ["loc", [null, [12, 18], [12, 23]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [12, 10], [15, 19]]]]],
+        statements: [["content", "nickname", ["loc", [null, [7, 17], [7, 29]]], 0, 0, 0, 0], ["element", "action", ["getPages"], [], ["loc", [null, [9, 16], [9, 37]]], 0, 0], ["element", "action", ["addPage"], [], ["loc", [null, [11, 16], [11, 36]]], 0, 0], ["block", "each", [["get", "pages", ["loc", [null, [13, 18], [13, 23]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [13, 10], [16, 19]]]]],
         locals: [],
         templates: [child0]
       };
@@ -167,11 +173,11 @@ define("page/templates/dashboard", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 17,
+              "line": 18,
               "column": 6
             },
             "end": {
-              "line": 29,
+              "line": 30,
               "column": 6
             }
           },
@@ -251,7 +257,7 @@ define("page/templates/dashboard", ["exports"], function (exports) {
           morphs[1] = dom.createMorphAt(dom.childAt(element0, [15]), 1, 1);
           return morphs;
         },
-        statements: [["element", "action", ["authenticateUser"], [], ["loc", [null, [25, 34], [25, 63]]], 0, 0], ["content", "model", ["loc", [null, [27, 20], [27, 29]]], 0, 0, 0, 0]],
+        statements: [["element", "action", ["authenticateUser"], [], ["loc", [null, [26, 34], [26, 63]]], 0, 0], ["content", "model", ["loc", [null, [28, 20], [28, 29]]], 0, 0, 0, 0]],
         locals: [],
         templates: []
       };
@@ -266,7 +272,7 @@ define("page/templates/dashboard", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 33,
+            "line": 34,
             "column": 0
           }
         },
@@ -322,7 +328,7 @@ define("page/templates/dashboard", ["exports"], function (exports) {
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["content", "nav-bar", ["loc", [null, [4, 4], [4, 15]]], 0, 0, 0, 0], ["block", "if", [["get", "isLoggedIn", ["loc", [null, [6, 12], [6, 22]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [6, 6], [29, 13]]]]],
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["content", "nav-bar", ["loc", [null, [4, 4], [4, 15]]], 0, 0, 0, 0], ["block", "if", [["get", "isLoggedIn", ["loc", [null, [6, 12], [6, 22]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [6, 6], [30, 13]]]]],
       locals: [],
       templates: [child0, child1]
     };

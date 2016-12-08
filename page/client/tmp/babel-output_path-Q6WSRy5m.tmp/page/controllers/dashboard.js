@@ -86,9 +86,11 @@ define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _e
 
       addPage: function addPage() {
         var myPage = "myPage";
+        var pageToAdd = document.getElementById("page-to-add");
+        console.log(pageToAdd);
         var data = {
           nickname: this.get("nickname"),
-          page: myPage
+          page: document.getElementById("page-to-add").value
         };
         var promise = $.post({
           url: "http://192.241.235.59:1111/api/addUsersPage",

@@ -7,6 +7,7 @@
         <p>Hello {{nickname}}</p>
         <br/>
         <button {{action "getPages"}}> Get Pages </button>
+        <input id="page-to-add" value="Add a new page">
         <button {{action "addPage"}}> Add page </button>
         <div>
           {{#each pages as |page|}}
