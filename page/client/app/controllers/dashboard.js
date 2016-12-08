@@ -2,14 +2,24 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
 
-  isLoggedIn: true,
-
   auth0 : new Auth0({
     domain:       'landonbrand.auth0.com',
     clientID:     'JLAa4IzlUImrFFUqkri3OFyeCRgDArox',
     callbackURL:  'http://localhost:4200/dashboard',
     responseType: 'token'
   }),
+
+  isLoggedIn: Ember.computed('auth0', function(){
+    var auth0 = this.get("auth0");
+    var result = auth0.parseHash(window.location.hash);
+    if(result != null){
+      return true;
+    } else {
+      return false;
+    }
+  }),
+
+  nickname: "",
 
   init: function(){
     console.log("hi!");
@@ -18,12 +28,14 @@ export default Ember.Controller.extend({
     var result = auth0.parseHash(window.location.hash);
     console.log("result: ", result);
     //use result.idToken to call your rest api
+    var _this = this;
 
     if (result && result.idToken) {
       // optionally fetch user profile
       auth0.getProfile(result.idToken, function (err, profile) {
+        console.log(profile);
         // alert('hello ' + profile.name);
-        // this.set("isLoggedIn", true);
+        _this.set("nickname", profile.nickname);
       });
 
       // If offline_access was a requested scope
@@ -45,5 +57,17 @@ export default Ember.Controller.extend({
         return alert('success signup without login!')
       });
     },
+
+    testApi: function() {
+      var promise =  Ember.$.ajax({
+        url: "http://192.241.235.59:1111/api/getuserspages",
+        data: {nickname: this.get("nickname")},
+        type: 'get'
+      });
+      return promise.then(function(response){
+        console.log(response);
+        return response;
+      });
+    }
   }
 });

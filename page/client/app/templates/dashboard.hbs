@@ -3,7 +3,12 @@
   <div class="centerizer">
     {{nav-bar}}
     <section class="limit-width centered">
-      <h1 class="main-heading">Sign Up</h1>
+      {{#if isLoggedIn}}
+        <p>Hello {{nickname}}</p>
+        <br/>
+        <button {{action "testApi"}}> Test API </button>
+      {{else}}
+      <h1 class="main-heading">Sign Up or Log In</h1>
       <div class="centerizer pad-top">
         <span>Name</span>
         <br/>
@@ -14,13 +19,7 @@
         <br/>
         <span>User: {{model}}</span>
       </div>
-      {{#if isLoggedIn}}
-        <p>Logged in!</p>
-      {{else}}
-        <p> not logged in.</p>
       {{/if}}
-      {{isLoggedIn}}
-      {{log isLoggedIn}}
     </section>
   </div>
 </div>

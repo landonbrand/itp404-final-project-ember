@@ -14,23 +14,7 @@ var util = require('util');
 var session = require('express-session');
 var methodOverride = require('method-override');
 
-// connect the api routes under /api/*
 var app = express();
-
-// db.on('error', console.error.bind(console, 'connection error:'));
-// db.once('open', function() {
-//   console.log("we're connected to the database!");
-//   // console.log(db);
-// });
-
-// var pageSchema = new mongoose.Schema({
-//   name: String,
-//   html: String,
-//   css: String
-// });
-//
-// pageSchema.plugin(findOrCreate);
-// var PageModel = mongoose.model('Page', pageSchema);
 
 var GITHUB_CLIENT_ID = "90c810f2ae9f6b8c1a9e";
 var GITHUB_CLIENT_SECRET = "56acd69b369c551e85a624fd9b48249ff9bbfc85";
@@ -58,117 +42,33 @@ mongoose.connect(config.database);
 
 require('./config/passport')(passport);
 app.use(passport.initialize());
-var apiRoutes = express.Router();
-app.use('/api', apiRoutes);
 
-
-// create a new user account (POST http://localhost:8080/api/signup)
-apiRoutes.post('/signup', function(req, res) {
-  console.log("req: ", req, "\n");
-  console.log("req body: ", JSON.parse(req.body), "\n");
-  var obj = JSON.parse(req.body);
-  if (!obj.name || !obj.password) {
-    res.json({success: false, msg: 'Please pass name and password.'});
-  } else {
-    var newUser = new User({
-      name: obj.name,
-      password: obj.password
-    });
-    // save the user
-    newUser.save(function(err) {
-      if (err) {
-        return res.json({success: false, msg: 'Username already exists.'});
-      }
-      res.json({success: true, msg: 'Successful created new user.'});
-    });
-  }
+app.get('/api/getuserspages', function(request, response) {
+  var obj = {response: "got"};
+  console.log("Request body: ", request.body);
+  // User.findOne({ 'nickname' : request.body.name }, function(err, doc){
+  //   if (err) return handleError(err);
+  //   if (doc == null){
+  //     var newDoc = new PageModel({ name: request.query.name });
+  //     newDoc.name = obj.name;
+  //     newDoc.html = obj.html;
+  //     newDoc.css = obj.css;
+  //     newDoc.save(function (err, updatedDoc) {
+  //       if (err) return handleError(err);
+  //       response.send(updatedDoc);
+  //     });
+  //   } else {
+  //     doc.name = obj.name;
+  //     doc.html = obj.html;
+  //     doc.css = obj.css;
+  //     doc.save(function (err, updatedDoc) {
+  //       if (err) return handleError(err);
+  //       response.send(updatedDoc);
+  //     });
+  //   }
+  // });
+  response.json(obj);
 });
-
-apiRoutes.post('/authenticate', function(req, res) {
-  var obj = JSON.parse(req.body);
-  User.findOne({
-    name: obj.name
-  }, function(err, user) {
-    if (err) throw err;
-
-    if (!user) {
-      res.send({success: false, msg: 'Authentication failed. User not found.'});
-    } else {
-      // check if password matches
-      user.comparePassword(obj.password, function (err, isMatch) {
-        if (isMatch && !err) {
-          // if user is found and password is right create a token
-          var token = jwt.encode(user, config.secret);
-          // return the information including token as JSON
-          res.json({success: true, token: 'JWT ' + token});
-        } else {
-          res.send({success: false, msg: 'Authentication failed. Wrong password.'});
-        }
-      });
-    }
-  });
-});
-
-apiRoutes.get('/memberinfo', passport.authenticate('jwt', function(err, user, info) {
-  console.log("user: ", user);
-  console.log("err: ", err);
-  console.log("info: ", info);
-  if (err) {
-    return next(err); // will generate a 500 error
-  }
-  // Generate a JSON response reflecting authentication status
-  if (! user) {
-    console.log("logging");
-    return res.send({ success : false, message : 'authentication failed' });
-  }
-  // ***********************************************************************
-  // "Note that when using a custom callback, it becomes the application's
-  // responsibility to establish a session (by calling req.login()) and send
-  // a response."
-  // Source: http://passportjs.org/docs
-  // ***********************************************************************
-  req.login(user, loginErr => {
-    if (loginErr) {
-      return next(loginErr);
-    }
-    return res.send({ success : true, message : 'authentication succeeded' });
-  });
-  }),
-  function(req, res) {
-  console.log("Req.header: ", req.header, "\n");
-  var token = getToken(req.headers);
-  if (token) {
-    var decoded = jwt.decode(token, config.secret);
-    User.findOne({
-      name: decoded.name
-    }, function(err, user) {
-        if (err) throw err;
-
-        if (!user) {
-          return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-        } else {
-          res.json({success: true, msg: 'Welcome in the member area ' + user.name + '!'});
-        }
-    });
-  } else {
-    return res.status(403).send({success: false, msg: 'No token provided.'});
-  }
-});
-
-getToken = function (headers) {
-  console.log("Get token is running with these headers: ", headers, "\n");
-  if (headers && headers.authorization) {
-    var parted = headers.authorization.split(' ');
-    if (parted.length === 2) {
-      return parted[1];
-    } else {
-      return null;
-    }
-  } else {
-    return null;
-  }
-};
-
 
 app.get('/api/getpage', function (request, response) {
   var query = PageModel.findOne({ 'name' : request.query.name }, function(err, doc){
