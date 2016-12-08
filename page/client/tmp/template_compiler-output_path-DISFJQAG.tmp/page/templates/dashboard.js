@@ -1,5 +1,93 @@
 export default Ember.HTMLBars.template((function() {
   var child0 = (function() {
+    var child0 = (function() {
+      var child0 = (function() {
+        return {
+          meta: {
+            "revision": "Ember@2.8.2",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 13,
+                "column": 18
+              },
+              "end": {
+                "line": 13,
+                "column": 51
+              }
+            },
+            "moduleName": "page/templates/dashboard.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [
+            ["content","page",["loc",[null,[13,43],[13,51]]],0,0,0,0]
+          ],
+          locals: [],
+          templates: []
+        };
+      }());
+      return {
+        meta: {
+          "revision": "Ember@2.8.2",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 12,
+              "column": 10
+            },
+            "end": {
+              "line": 15,
+              "column": 10
+            }
+          },
+          "moduleName": "page/templates/dashboard.hbs"
+        },
+        isEmpty: false,
+        arity: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("            page: ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n            ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("br");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment,1,1,contextualElement);
+          return morphs;
+        },
+        statements: [
+          ["block","link-to",["page",["get","page",["loc",[null,[13,36],[13,40]]],0,0,0,0]],[],0,null,["loc",[null,[13,18],[13,63]]]]
+        ],
+        locals: ["page"],
+        templates: [child0]
+      };
+    }());
     return {
       meta: {
         "revision": "Ember@2.8.2",
@@ -10,7 +98,7 @@ export default Ember.HTMLBars.template((function() {
             "column": 6
           },
           "end": {
-            "line": 11,
+            "line": 17,
             "column": 6
           }
         },
@@ -46,6 +134,16 @@ export default Ember.HTMLBars.template((function() {
         var el2 = dom.createTextNode(" Add page ");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n        ");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("        ");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
@@ -53,19 +151,21 @@ export default Ember.HTMLBars.template((function() {
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element2 = dom.childAt(fragment, [5]);
         var element3 = dom.childAt(fragment, [7]);
-        var morphs = new Array(3);
+        var morphs = new Array(4);
         morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
         morphs[1] = dom.createElementMorph(element2);
         morphs[2] = dom.createElementMorph(element3);
+        morphs[3] = dom.createMorphAt(dom.childAt(fragment, [9]),1,1);
         return morphs;
       },
       statements: [
         ["content","nickname",["loc",[null,[7,17],[7,29]]],0,0,0,0],
         ["element","action",["getPages"],[],["loc",[null,[9,16],[9,37]]],0,0],
-        ["element","action",["addPage"],[],["loc",[null,[10,16],[10,36]]],0,0]
+        ["element","action",["addPage"],[],["loc",[null,[10,16],[10,36]]],0,0],
+        ["block","each",[["get","pages",["loc",[null,[12,18],[12,23]]],0,0,0,0]],[],0,null,["loc",[null,[12,10],[15,19]]]]
       ],
       locals: [],
-      templates: []
+      templates: [child0]
     };
   }());
   var child1 = (function() {
@@ -75,11 +175,11 @@ export default Ember.HTMLBars.template((function() {
         "loc": {
           "source": null,
           "start": {
-            "line": 11,
+            "line": 17,
             "column": 6
           },
           "end": {
-            "line": 23,
+            "line": 29,
             "column": 6
           }
         },
@@ -160,8 +260,8 @@ export default Ember.HTMLBars.template((function() {
         return morphs;
       },
       statements: [
-        ["element","action",["authenticateUser"],[],["loc",[null,[19,34],[19,63]]],0,0],
-        ["content","model",["loc",[null,[21,20],[21,29]]],0,0,0,0]
+        ["element","action",["authenticateUser"],[],["loc",[null,[25,34],[25,63]]],0,0],
+        ["content","model",["loc",[null,[27,20],[27,29]]],0,0,0,0]
       ],
       locals: [],
       templates: []
@@ -177,7 +277,7 @@ export default Ember.HTMLBars.template((function() {
           "column": 0
         },
         "end": {
-          "line": 27,
+          "line": 33,
           "column": 0
         }
       },
@@ -236,7 +336,7 @@ export default Ember.HTMLBars.template((function() {
     statements: [
       ["content","outlet",["loc",[null,[1,0],[1,10]]],0,0,0,0],
       ["content","nav-bar",["loc",[null,[4,4],[4,15]]],0,0,0,0],
-      ["block","if",[["get","isLoggedIn",["loc",[null,[6,12],[6,22]]],0,0,0,0]],[],0,1,["loc",[null,[6,6],[23,13]]]]
+      ["block","if",[["get","isLoggedIn",["loc",[null,[6,12],[6,22]]],0,0,0,0]],[],0,1,["loc",[null,[6,6],[29,13]]]]
     ],
     locals: [],
     templates: [child0, child1]

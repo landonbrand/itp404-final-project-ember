@@ -8,6 +8,12 @@
         <br/>
         <button {{action "getPages"}}> Get Pages </button>
         <button {{action "addPage"}}> Add page </button>
+        <div>
+          {{#each pages as |page|}}
+            page: {{#link-to "page" page }}{{page}}{{/link-to}}
+            <br/>
+          {{/each}}
+        </div>
       {{else}}
       <h1 class="main-heading">Sign Up or Log In</h1>
       <div class="centerizer pad-top">

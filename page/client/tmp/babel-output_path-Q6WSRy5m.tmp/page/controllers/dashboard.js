@@ -19,6 +19,7 @@ define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _e
     }),
 
     nickname: "",
+    pages: [],
 
     init: function init() {
       console.log("hi!");
@@ -35,6 +36,18 @@ define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _e
           console.log(profile);
           // alert('hello ' + profile.name);
           _this.set("nickname", profile.nickname);
+
+          var obj = { nickname: _this.get("nickname") };
+          var promise = _ember['default'].$.ajax({
+            url: "http://192.241.235.59:1111/api/getuserspages",
+            data: obj,
+            dataType: "text",
+            type: 'get'
+          });
+          return promise.then(function (response) {
+            console.log("Response pages: ", JSON.parse(response));
+            _this.set("pages", JSON.parse(response).pages);
+          });
         });
 
         // If offline_access was a requested scope

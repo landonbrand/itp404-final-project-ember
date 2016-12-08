@@ -20,6 +20,7 @@ export default Ember.Controller.extend({
   }),
 
   nickname: "",
+  pages: [],
 
   init: function(){
     console.log("hi!");
@@ -36,6 +37,18 @@ export default Ember.Controller.extend({
         console.log(profile);
         // alert('hello ' + profile.name);
         _this.set("nickname", profile.nickname);
+
+        var obj = {nickname: _this.get("nickname")};
+        var promise =  Ember.$.ajax({
+          url: "http://192.241.235.59:1111/api/getuserspages",
+          data: obj,
+          dataType: "text",
+          type: 'get'
+        });
+        return promise.then(function(response){
+          console.log("Response pages: ", JSON.parse(response));
+          _this.set("pages", JSON.parse(response).pages);
+        });
       });
 
       // If offline_access was a requested scope

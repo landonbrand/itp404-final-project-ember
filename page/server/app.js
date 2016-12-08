@@ -43,6 +43,15 @@ mongoose.connect(config.database);
 require('./config/passport')(passport);
 app.use(passport.initialize());
 
+var pageSchema = new mongoose.Schema({
+  name: String,
+  html: String,
+  css: String
+});
+
+pageSchema.plugin(findOrCreate);
+var PageModel = mongoose.model('Page', pageSchema);
+
 app.get('/api/getuserspages', function(request, response) {
   console.log("nickname: ", request.query.nickname, "\n");
   User.findOne({ 'nickname' : request.query.nickname }, function(err, doc){
