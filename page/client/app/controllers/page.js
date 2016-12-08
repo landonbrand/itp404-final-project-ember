@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import ClassListItemComponent from 'page/components/class-list-item';
 
 export default Ember.Controller.extend({
   selectedRegion: false,
@@ -33,14 +32,15 @@ export default Ember.Controller.extend({
       console.log("selectedNodes2", selectedNodes);
 
       var pageContent = pageNodes.innerHTML;
-      var styleSheet = document.styleSheets[2]
+      var styleSheet = document.styleSheets[2];
       var cssArray = [];
+      var pageCSS;
       console.log(styleSheet.cssRules);
       if(styleSheet.cssRules != null){
-        for(var i = 0; i < styleSheet.cssRules.length; i++){
+        for(i = 0; i < styleSheet.cssRules.length; i++){
           cssArray.push(styleSheet.cssRules[i].cssText);
         }
-        var pageCSS = cssArray.join(" ");
+        pageCSS = cssArray.join(" ");
         console.log("pageCSS: ", pageCSS);
       }
       console.log("model: ", this.get("model"));
@@ -49,7 +49,7 @@ export default Ember.Controller.extend({
         html: pageContent,
         css: pageCSS
       };
-      var promise =  $.post({
+      var promise =  Ember.$.post({
         url: "http://192.241.235.59:1111/api/setPage",
         data: JSON.stringify(htmlData),
         dataType: "text"
@@ -157,7 +157,7 @@ export default Ember.Controller.extend({
         }
       });
 
-      formattedNewRules = formattedNewRules.filter(function(n){ return n != undefined });
+      formattedNewRules = formattedNewRules.filter(function(n){ return n !== undefined; });
       this.set("selectedCssRules", formattedNewRules);
     },
 
@@ -175,8 +175,8 @@ export default Ember.Controller.extend({
     changeCssRules: function(selector, ruleName, ruleValue){
       var styleSheet = document.styleSheets[2];
       for(var i = 0; i < styleSheet.cssRules.length; i++){
-        if(styleSheet.cssRules[i].selectorText == selector){
-          if(ruleName == "" || ruleValue == ""){
+        if(styleSheet.cssRules[i].selectorText === selector){
+          if(ruleName === "" || ruleValue === ""){
             styleSheet.cssRules[i].style[camelCase(ruleName)] = "";
             styleSheet.cssRules[i].style.removeProperty(camelCase(ruleName));
             console.log("tryna delete this shi");
@@ -197,7 +197,7 @@ export default Ember.Controller.extend({
     addCssRule: function(selector){
       var styleSheet = document.styleSheets[2];
       for(var i = 0; i < styleSheet.cssRules.length; i++){
-        if(styleSheet.cssRules[i].selectorText == selector){
+        if(styleSheet.cssRules[i].selectorText === selector){
           styleSheet.cssRules[i].style.setProperty("counter-reset", "value");
           console.log("style: ", styleSheet.cssRules[i].style);
           break;
@@ -211,7 +211,7 @@ export default Ember.Controller.extend({
 
     selectParentNode: function(){
       var region = this.get("selectedRegion");
-      if(region.anchorElement.parentNode.id != "edit"){
+      if(region.anchorElement.parentNode.id !== "edit"){
         this.send("selectNode", region.anchorElement.parentNode);
       }
     },
@@ -222,7 +222,7 @@ export default Ember.Controller.extend({
       var region = this.get("selectedRegion");
       var selector = region.anchorElement.nodeName;
       for(var i = 0 ; i < region.anchorElement.classList.length; i++){
-        if(!(region.anchorElement.classList[i] == 'selected-region')){
+        if( region.anchorElement.classList[i] !== 'selected-region' ){
           selector += ".";
           selector += region.anchorElement.classList[i];
         }
@@ -237,16 +237,16 @@ export default Ember.Controller.extend({
       console.log('removing!');
       var styleSheet = document.styleSheets[2];
       for(var i = 0; i < styleSheet.cssRules.length; i++){
-        if(styleSheet.cssRules[i].selectorText == selector){
+        if(styleSheet.cssRules[i].selectorText === selector){
           console.log("styleSheet from remove:", styleSheet);
-          styleSheet.deleteRule(i)
+          styleSheet.deleteRule(i);
         }
       }
       this.send("updateCssRules", this.get("selectedRegion").anchorElement);
     },
 
     deleteCurrentNode: function(){
-      var region = this.get("selectedRegion")
+      var region = this.get("selectedRegion");
       var element = region.anchorElement;
       this.send("selectNode", region.anchorElement.parentNode);
       element.outerHTML = "";
@@ -295,7 +295,7 @@ function insertNode(selectedNode){
     var nextSibling = selectedNode.extentNode.parentNode.nextSibling;
     nextSibling.parentNode.insertBefore(new_element, nextSibling);
   // create a node before selectedNode
-  } else if (selectedNode.extentOffset == 0){
+} else if (selectedNode.extentOffset === 0){
     new_element = document.createElement("h6");
     new_element.textContent = "new element";
     var parent = selectedNode.extentNode.parentNode;
@@ -303,7 +303,7 @@ function insertNode(selectedNode){
   // create a node inside selectedNode
   } else {
     var selectedAnchor = selectedNode.anchorNode;
-    if(selectedNode.extentNode == selectedNode.anchorNode){
+    if(selectedNode.extentNode === selectedNode.anchorNode){
       var textNode1Content = selectedAnchor.textContent.slice(
           0, selectedNode.anchorOffset);
       var newNodeContent = selectedAnchor.textContent.slice(
@@ -326,22 +326,17 @@ function insertNode(selectedNode){
   return new_element;
 }
 
-function byValue(obj){
-  var clonedObj = Object.create(obj).__proto__;
-  return clonedObj;
-}
-
 function Region(anchorNode, extentNode, anchorOffset, extentOffset){
   this.anchorNode = anchorNode;
   this.extentNode = extentNode;
   this.anchorOffset = anchorOffset;
   this.extentOffset = extentOffset;
-  if(anchorNode.nodeName == "#text"){
+  if(anchorNode.nodeName === "#text"){
     this.anchorElement = anchorNode.parentNode;
   } else {
     this.anchorElement = anchorNode;
   }
-  if(extentNode.nodeName == "#text"){
+  if(extentNode.nodeName === "#text"){
     this.extentElement = extentNode.parentNode;
   } else {
     this.extentElement = extentNode;
@@ -368,19 +363,19 @@ var Caret = {
       sel.addRange(range);
     });
   }
-}
+};
 
 document.onkeyup = function(e){
   console.log("keyup: ", e.keyCode);
-  if(e.keyCode == 27){
+  if(e.keyCode === 27){
     var controller = Page.__container__.lookup("controller:editing-tests");
     var boundSend = controller.send.bind(controller);
     boundSend('deselect');
   }
-}
+};
 
 document.addEventListener("keydown", function(e) {
-  if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+  if (e.keyCode === 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
     e.preventDefault();
     var controller = Page.__container__.lookup("controller:page");
     var boundSend = controller.send.bind(controller);
@@ -400,7 +395,7 @@ var CssPage = function () {
 
 var cssPage = new CssPage();
 
-var promise =  $.ajax({
+var promise =  Ember.$.ajax({
   url: "http://192.241.235.59:1111/api/spoofhtml",
   type: 'get'
 });
@@ -426,4 +421,4 @@ function css(a) {
 var camelCase = function(str){
   console.log("str: ", str);
   return str.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
-}
+};

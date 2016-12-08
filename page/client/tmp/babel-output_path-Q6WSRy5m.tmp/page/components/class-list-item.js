@@ -1,7 +1,7 @@
 define('page/components/class-list-item', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Component.extend({
     shouldBeShown: _ember['default'].computed('className', function () {
-      if (this.get("className") == 'selected-region') {
+      if (this.get("className") === 'selected-region') {
         return false;
       } else {
         return true;

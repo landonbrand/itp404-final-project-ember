@@ -19,7 +19,7 @@ export default Ember.Component.extend({
       var selector = event.target.parentNode.children[0].textContent;
       this.get("addCssRuleFunction")(selector);
     },
-    addStyleClicked: function(event){
+    addStyleClicked: function(){
       this.get("addCssStyleFunction")();
     },
     removeStyleClicked: function(event){

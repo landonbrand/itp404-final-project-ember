@@ -1,5 +1,5 @@
-define('page/controllers/page', ['exports', 'ember', 'page/components/class-list-item'], function (exports, _ember, _pageComponentsClassListItem) {
-  exports['default'] = _ember['default'].Controller.extend({
+define("page/controllers/page", ["exports", "ember"], function (exports, _ember) {
+  exports["default"] = _ember["default"].Controller.extend({
     selectedRegion: false,
     selectedClasses: [],
     stylesheet: {},
@@ -32,12 +32,13 @@ define('page/controllers/page', ['exports', 'ember', 'page/components/class-list
         var pageContent = pageNodes.innerHTML;
         var styleSheet = document.styleSheets[2];
         var cssArray = [];
+        var pageCSS;
         console.log(styleSheet.cssRules);
         if (styleSheet.cssRules != null) {
-          for (var i = 0; i < styleSheet.cssRules.length; i++) {
+          for (i = 0; i < styleSheet.cssRules.length; i++) {
             cssArray.push(styleSheet.cssRules[i].cssText);
           }
-          var pageCSS = cssArray.join(" ");
+          pageCSS = cssArray.join(" ");
           console.log("pageCSS: ", pageCSS);
         }
         console.log("model: ", this.get("model"));
@@ -46,7 +47,7 @@ define('page/controllers/page', ['exports', 'ember', 'page/components/class-list
           html: pageContent,
           css: pageCSS
         };
-        var promise = $.post({
+        var promise = _ember["default"].$.post({
           url: "http://192.241.235.59:1111/api/setPage",
           data: JSON.stringify(htmlData),
           dataType: "text"
@@ -155,14 +156,14 @@ define('page/controllers/page', ['exports', 'ember', 'page/components/class-list
         });
 
         formattedNewRules = formattedNewRules.filter(function (n) {
-          return n != undefined;
+          return n !== undefined;
         });
         this.set("selectedCssRules", formattedNewRules);
       },
 
       changeClass: function changeClass() {
         var region = this.get("selectedRegion");
-        var classListItems = _ember['default'].$(".class-list-item");
+        var classListItems = _ember["default"].$(".class-list-item");
         var newClass = [];
         for (var i = 0; i < classListItems.length; i++) {
           newClass.push(classListItems[i].textContent.trim());
@@ -174,8 +175,8 @@ define('page/controllers/page', ['exports', 'ember', 'page/components/class-list
       changeCssRules: function changeCssRules(selector, ruleName, ruleValue) {
         var styleSheet = document.styleSheets[2];
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
-          if (styleSheet.cssRules[i].selectorText == selector) {
-            if (ruleName == "" || ruleValue == "") {
+          if (styleSheet.cssRules[i].selectorText === selector) {
+            if (ruleName === "" || ruleValue === "") {
               styleSheet.cssRules[i].style[camelCase(ruleName)] = "";
               styleSheet.cssRules[i].style.removeProperty(camelCase(ruleName));
               console.log("tryna delete this shi");
@@ -196,7 +197,7 @@ define('page/controllers/page', ['exports', 'ember', 'page/components/class-list
       addCssRule: function addCssRule(selector) {
         var styleSheet = document.styleSheets[2];
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
-          if (styleSheet.cssRules[i].selectorText == selector) {
+          if (styleSheet.cssRules[i].selectorText === selector) {
             styleSheet.cssRules[i].style.setProperty("counter-reset", "value");
             console.log("style: ", styleSheet.cssRules[i].style);
             break;
@@ -210,7 +211,7 @@ define('page/controllers/page', ['exports', 'ember', 'page/components/class-list
 
       selectParentNode: function selectParentNode() {
         var region = this.get("selectedRegion");
-        if (region.anchorElement.parentNode.id != "edit") {
+        if (region.anchorElement.parentNode.id !== "edit") {
           this.send("selectNode", region.anchorElement.parentNode);
         }
       },
@@ -221,7 +222,7 @@ define('page/controllers/page', ['exports', 'ember', 'page/components/class-list
         var region = this.get("selectedRegion");
         var selector = region.anchorElement.nodeName;
         for (var i = 0; i < region.anchorElement.classList.length; i++) {
-          if (!(region.anchorElement.classList[i] == 'selected-region')) {
+          if (region.anchorElement.classList[i] !== 'selected-region') {
             selector += ".";
             selector += region.anchorElement.classList[i];
           }
@@ -236,7 +237,7 @@ define('page/controllers/page', ['exports', 'ember', 'page/components/class-list
         console.log('removing!');
         var styleSheet = document.styleSheets[2];
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
-          if (styleSheet.cssRules[i].selectorText == selector) {
+          if (styleSheet.cssRules[i].selectorText === selector) {
             console.log("styleSheet from remove:", styleSheet);
             styleSheet.deleteRule(i);
           }
@@ -252,7 +253,7 @@ define('page/controllers/page', ['exports', 'ember', 'page/components/class-list
       }
     },
 
-    modelObserver: _ember['default'].observer('model', function () {
+    modelObserver: _ember["default"].observer('model', function () {
       var edit = document.getElementById("edit");
       if (edit != null) {
         edit.innerHTML = this.get("model");
@@ -293,7 +294,7 @@ define('page/controllers/page', ['exports', 'ember', 'page/components/class-list
       var nextSibling = selectedNode.extentNode.parentNode.nextSibling;
       nextSibling.parentNode.insertBefore(new_element, nextSibling);
       // create a node before selectedNode
-    } else if (selectedNode.extentOffset == 0) {
+    } else if (selectedNode.extentOffset === 0) {
         new_element = document.createElement("h6");
         new_element.textContent = "new element";
         var parent = selectedNode.extentNode.parentNode;
@@ -301,7 +302,7 @@ define('page/controllers/page', ['exports', 'ember', 'page/components/class-list
         // create a node inside selectedNode
       } else {
           var selectedAnchor = selectedNode.anchorNode;
-          if (selectedNode.extentNode == selectedNode.anchorNode) {
+          if (selectedNode.extentNode === selectedNode.anchorNode) {
             var textNode1Content = selectedAnchor.textContent.slice(0, selectedNode.anchorOffset);
             var newNodeContent = selectedAnchor.textContent.slice(selectedNode.anchorOffset, selectedNode.extentOffset);
             var textNode2Content = selectedAnchor.textContent.slice(selectedNode.extentOffset);
@@ -321,22 +322,17 @@ define('page/controllers/page', ['exports', 'ember', 'page/components/class-list
     return new_element;
   }
 
-  function byValue(obj) {
-    var clonedObj = Object.create(obj).__proto__;
-    return clonedObj;
-  }
-
   function Region(anchorNode, extentNode, anchorOffset, extentOffset) {
     this.anchorNode = anchorNode;
     this.extentNode = extentNode;
     this.anchorOffset = anchorOffset;
     this.extentOffset = extentOffset;
-    if (anchorNode.nodeName == "#text") {
+    if (anchorNode.nodeName === "#text") {
       this.anchorElement = anchorNode.parentNode;
     } else {
       this.anchorElement = anchorNode;
     }
-    if (extentNode.nodeName == "#text") {
+    if (extentNode.nodeName === "#text") {
       this.extentElement = extentNode.parentNode;
     } else {
       this.extentElement = extentNode;
@@ -367,7 +363,7 @@ define('page/controllers/page', ['exports', 'ember', 'page/components/class-list
 
   document.onkeyup = function (e) {
     console.log("keyup: ", e.keyCode);
-    if (e.keyCode == 27) {
+    if (e.keyCode === 27) {
       var controller = Page.__container__.lookup("controller:editing-tests");
       var boundSend = controller.send.bind(controller);
       boundSend('deselect');
@@ -375,7 +371,7 @@ define('page/controllers/page', ['exports', 'ember', 'page/components/class-list
   };
 
   document.addEventListener("keydown", function (e) {
-    if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+    if (e.keyCode === 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
       e.preventDefault();
       var controller = Page.__container__.lookup("controller:page");
       var boundSend = controller.send.bind(controller);
@@ -394,7 +390,7 @@ define('page/controllers/page', ['exports', 'ember', 'page/components/class-list
 
   var cssPage = new CssPage();
 
-  var promise = $.ajax({
+  var promise = _ember["default"].$.ajax({
     url: "http://192.241.235.59:1111/api/spoofhtml",
     type: 'get'
   });

@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   shouldBeShown: Ember.computed('className', function() {
-    if(this.get("className") == 'selected-region'){
+    if(this.get("className") === 'selected-region'){
       return false;
     } else {
       return true;

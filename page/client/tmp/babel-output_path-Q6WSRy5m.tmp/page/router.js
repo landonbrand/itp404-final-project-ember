@@ -6,13 +6,7 @@ define('page/router', ['exports', 'ember', 'page/config/environment'], function 
   });
 
   Router.map(function () {
-    this.route('navtest');
     this.route('home', { path: "/" });
-    this.route('create');
-    this.route('template-tests');
-    this.route('editing-tests');
-    this.route('login');
-    this.route('signup');
     this.route('page', { path: '/page/:page_name' });
     this.route('dashboard');
   });

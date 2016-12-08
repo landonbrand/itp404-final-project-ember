@@ -18,7 +18,7 @@ define("page/components/css-rules", ["exports", "ember"], function (exports, _em
         var selector = event.target.parentNode.children[0].textContent;
         this.get("addCssRuleFunction")(selector);
       },
-      addStyleClicked: function addStyleClicked(event) {
+      addStyleClicked: function addStyleClicked() {
         this.get("addCssStyleFunction")();
       },
       removeStyleClicked: function removeStyleClicked(event) {

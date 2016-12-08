@@ -36,7 +36,7 @@ define('page/tests/components/class-list-item.jshint', ['exports'], function (ex
   QUnit.module('JSHint | components/class-list-item.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'components/class-list-item.js should pass jshint.\ncomponents/class-list-item.js: line 5, col 32, Expected \'===\' and instead saw \'==\'.\n\n1 error');
+    assert.ok(true, 'components/class-list-item.js should pass jshint.');
   });
 });
 define('page/tests/components/class-list.jshint', ['exports'], function (exports) {
@@ -54,7 +54,7 @@ define('page/tests/components/css-rules.jshint', ['exports'], function (exports)
   QUnit.module('JSHint | components/css-rules.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'components/css-rules.js should pass jshint.\ncomponents/css-rules.js: line 22, col 31, \'event\' is defined but never used.\n\n1 error');
+    assert.ok(true, 'components/css-rules.js should pass jshint.');
   });
 });
 define('page/tests/components/nav-bar.jshint', ['exports'], function (exports) {
@@ -99,16 +99,7 @@ define('page/tests/controllers/dashboard.jshint', ['exports'], function (exports
   QUnit.module('JSHint | controllers/dashboard.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/dashboard.js should pass jshint.\ncontrollers/dashboard.js: line 88, col 8, Missing semicolon.\ncontrollers/dashboard.js: line 89, col 11, \'_this\' is already defined.\ncontrollers/dashboard.js: line 81, col 11, \'myPage\' is defined but never used.\ncontrollers/dashboard.js: line 5, col 15, \'Auth0\' is not defined.\ncontrollers/dashboard.js: line 90, col 22, \'$\' is not defined.\n\n5 errors');
-  });
-});
-define('page/tests/controllers/editing-tests.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | controllers/editing-tests.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(false, 'controllers/editing-tests.js should pass jshint.\ncontrollers/editing-tests.js: line 37, col 47, Missing semicolon.\ncontrollers/editing-tests.js: line 41, col 17, \'i\' is already defined.\ncontrollers/editing-tests.js: line 51, col 14, \'pageCSS\' used out of scope.\ncontrollers/editing-tests.js: line 161, col 76, Expected \'!==\' and instead saw \'!=\'.\ncontrollers/editing-tests.js: line 161, col 86, Missing semicolon.\ncontrollers/editing-tests.js: line 179, col 50, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 180, col 25, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 180, col 44, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 201, col 50, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 215, col 47, Expected \'!==\' and instead saw \'!=\'.\ncontrollers/editing-tests.js: line 226, col 50, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 226, col 12, Confusing use of \'!\'.\ncontrollers/editing-tests.js: line 241, col 50, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 243, col 35, Missing semicolon.\ncontrollers/editing-tests.js: line 250, col 46, Missing semicolon.\ncontrollers/editing-tests.js: line 299, col 42, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 307, col 34, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 331, col 47, The \'__proto__\' property is deprecated.\ncontrollers/editing-tests.js: line 340, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 345, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 372, col 2, Missing semicolon.\ncontrollers/editing-tests.js: line 376, col 18, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 381, col 2, Missing semicolon.\ncontrollers/editing-tests.js: line 384, col 19, Expected \'===\' and instead saw \'==\'.\ncontrollers/editing-tests.js: line 430, col 2, Missing semicolon.\ncontrollers/editing-tests.js: line 53, col 22, \'$\' is not defined.\ncontrollers/editing-tests.js: line 404, col 16, \'$\' is not defined.\ncontrollers/editing-tests.js: line 377, col 22, \'Page\' is not defined.\ncontrollers/editing-tests.js: line 386, col 22, \'Page\' is not defined.\ncontrollers/editing-tests.js: line 2, col 8, \'ClassListItemComponent\' is defined but never used.\ncontrollers/editing-tests.js: line 330, col 10, \'byValue\' is defined but never used.\n\n31 errors');
+    assert.ok(false, 'controllers/dashboard.js should pass jshint.\ncontrollers/dashboard.js: line 5, col 15, \'Auth0\' is not defined.\n\n1 error');
   });
 });
 define('page/tests/controllers/page.jshint', ['exports'], function (exports) {
@@ -117,7 +108,7 @@ define('page/tests/controllers/page.jshint', ['exports'], function (exports) {
   QUnit.module('JSHint | controllers/page.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/page.js should pass jshint.\ncontrollers/page.js: line 36, col 47, Missing semicolon.\ncontrollers/page.js: line 40, col 17, \'i\' is already defined.\ncontrollers/page.js: line 50, col 14, \'pageCSS\' used out of scope.\ncontrollers/page.js: line 160, col 76, Expected \'!==\' and instead saw \'!=\'.\ncontrollers/page.js: line 160, col 86, Missing semicolon.\ncontrollers/page.js: line 178, col 50, Expected \'===\' and instead saw \'==\'.\ncontrollers/page.js: line 179, col 25, Expected \'===\' and instead saw \'==\'.\ncontrollers/page.js: line 179, col 44, Expected \'===\' and instead saw \'==\'.\ncontrollers/page.js: line 200, col 50, Expected \'===\' and instead saw \'==\'.\ncontrollers/page.js: line 214, col 47, Expected \'!==\' and instead saw \'!=\'.\ncontrollers/page.js: line 225, col 50, Expected \'===\' and instead saw \'==\'.\ncontrollers/page.js: line 225, col 12, Confusing use of \'!\'.\ncontrollers/page.js: line 240, col 50, Expected \'===\' and instead saw \'==\'.\ncontrollers/page.js: line 242, col 35, Missing semicolon.\ncontrollers/page.js: line 249, col 46, Missing semicolon.\ncontrollers/page.js: line 298, col 42, Expected \'===\' and instead saw \'==\'.\ncontrollers/page.js: line 306, col 34, Expected \'===\' and instead saw \'==\'.\ncontrollers/page.js: line 330, col 47, The \'__proto__\' property is deprecated.\ncontrollers/page.js: line 339, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/page.js: line 344, col 28, Expected \'===\' and instead saw \'==\'.\ncontrollers/page.js: line 371, col 2, Missing semicolon.\ncontrollers/page.js: line 375, col 18, Expected \'===\' and instead saw \'==\'.\ncontrollers/page.js: line 380, col 2, Missing semicolon.\ncontrollers/page.js: line 383, col 19, Expected \'===\' and instead saw \'==\'.\ncontrollers/page.js: line 429, col 2, Missing semicolon.\ncontrollers/page.js: line 52, col 22, \'$\' is not defined.\ncontrollers/page.js: line 403, col 16, \'$\' is not defined.\ncontrollers/page.js: line 376, col 22, \'Page\' is not defined.\ncontrollers/page.js: line 385, col 22, \'Page\' is not defined.\ncontrollers/page.js: line 2, col 8, \'ClassListItemComponent\' is defined but never used.\ncontrollers/page.js: line 329, col 10, \'byValue\' is defined but never used.\n\n31 errors');
+    assert.ok(false, 'controllers/page.js should pass jshint.\ncontrollers/page.js: line 371, col 22, \'Page\' is not defined.\ncontrollers/page.js: line 380, col 22, \'Page\' is not defined.\n\n2 errors');
   });
 });
 define('page/tests/helpers/class-id.jshint', ['exports'], function (exports) {
@@ -244,15 +235,6 @@ define('page/tests/helpers/start-app.jshint', ['exports'], function (exports) {
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'helpers/start-app.js should pass jshint.');
-  });
-});
-define('page/tests/helpers/tag-start.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | helpers/tag-start.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'helpers/tag-start.js should pass jshint.');
   });
 });
 define('page/tests/integration/components/class-list-item-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
@@ -1253,40 +1235,13 @@ define('page/tests/router.jshint', ['exports'], function (exports) {
     assert.ok(true, 'router.js should pass jshint.');
   });
 });
-define('page/tests/routes/about.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | routes/about.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'routes/about.js should pass jshint.');
-  });
-});
-define('page/tests/routes/create.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | routes/create.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'routes/create.js should pass jshint.');
-  });
-});
 define('page/tests/routes/dashboard.jshint', ['exports'], function (exports) {
   'use strict';
 
   QUnit.module('JSHint | routes/dashboard.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/dashboard.js should pass jshint.\nroutes/dashboard.js: line 6, col 33, Missing semicolon.\nroutes/dashboard.js: line 11, col 16, Missing semicolon.\nroutes/dashboard.js: line 16, col 17, Expected \'===\' and instead saw \'==\'.\nroutes/dashboard.js: line 16, col 29, Expected \'{\' and instead saw \'callback\'.\nroutes/dashboard.js: line 25, col 20, Missing semicolon.\nroutes/dashboard.js: line 28, col 19, Missing semicolon.\nroutes/dashboard.js: line 31, col 2, Missing semicolon.\nroutes/dashboard.js: line 15, col 1, \'jQuery\' is not defined.\nroutes/dashboard.js: line 17, col 10, \'$\' is not defined.\n\n9 errors');
-  });
-});
-define('page/tests/routes/editing-tests.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | routes/editing-tests.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(false, 'routes/editing-tests.js should pass jshint.\nroutes/editing-tests.js: line 5, col 9, \'cursorPos\' is defined but never used.\nroutes/editing-tests.js: line 6, col 9, \'nodes\' is defined but never used.\n\n2 errors');
+    assert.ok(true, 'routes/dashboard.js should pass jshint.');
   });
 });
 define('page/tests/routes/home.jshint', ['exports'], function (exports) {
@@ -1298,49 +1253,13 @@ define('page/tests/routes/home.jshint', ['exports'], function (exports) {
     assert.ok(true, 'routes/home.js should pass jshint.');
   });
 });
-define('page/tests/routes/login.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | routes/login.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'routes/login.js should pass jshint.');
-  });
-});
-define('page/tests/routes/navtest.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | routes/navtest.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'routes/navtest.js should pass jshint.');
-  });
-});
 define('page/tests/routes/page.jshint', ['exports'], function (exports) {
   'use strict';
 
   QUnit.module('JSHint | routes/page.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/page.js should pass jshint.\nroutes/page.js: line 5, col 9, \'cursorPos\' is defined but never used.\nroutes/page.js: line 6, col 9, \'nodes\' is defined but never used.\n\n2 errors');
-  });
-});
-define('page/tests/routes/signup.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | routes/signup.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(false, 'routes/signup.js should pass jshint.\nroutes/signup.js: line 12, col 33, Missing semicolon.\nroutes/signup.js: line 17, col 16, Missing semicolon.\nroutes/signup.js: line 39, col 18, Expected \'{\' and instead saw \'return\'.\nroutes/signup.js: line 40, col 54, Missing semicolon.\nroutes/signup.js: line 20, col 32, \'e\' is defined but never used.\nroutes/signup.js: line 47, col 17, Expected \'===\' and instead saw \'==\'.\nroutes/signup.js: line 47, col 29, Expected \'{\' and instead saw \'callback\'.\nroutes/signup.js: line 56, col 20, Missing semicolon.\nroutes/signup.js: line 59, col 19, Missing semicolon.\nroutes/signup.js: line 62, col 2, Missing semicolon.\nroutes/signup.js: line 5, col 15, \'Auth0\' is not defined.\nroutes/signup.js: line 46, col 1, \'jQuery\' is not defined.\nroutes/signup.js: line 48, col 10, \'$\' is not defined.\n\n13 errors');
-  });
-});
-define('page/tests/routes/template-tests.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | routes/template-tests.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(false, 'routes/template-tests.js should pass jshint.\nroutes/template-tests.js: line 5, col 9, \'nodes\' is defined but never used.\nroutes/template-tests.js: line 7, col 20, \'$\' is not defined.\n\n2 errors');
+    assert.ok(true, 'routes/page.js should pass jshint.');
   });
 });
 define('page/tests/test-helper', ['exports', 'page/tests/helpers/resolver', 'ember-qunit'], function (exports, _pageTestsHelpersResolver, _emberQunit) {
@@ -1376,28 +1295,6 @@ define('page/tests/unit/controllers/dashboard-test.jshint', ['exports'], functio
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/controllers/dashboard-test.js should pass jshint.');
-  });
-});
-define('page/tests/unit/controllers/editing-tests-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
-
-  (0, _emberQunit.moduleFor)('controller:editing-tests', 'Unit | Controller | editing tests', {
-    // Specify the other units that are required for this test.
-    // needs: ['controller:foo']
-  });
-
-  // Replace this with your real tests.
-  (0, _emberQunit.test)('it exists', function (assert) {
-    var controller = this.subject();
-    assert.ok(controller);
-  });
-});
-define('page/tests/unit/controllers/editing-tests-test.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | unit/controllers/editing-tests-test.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'unit/controllers/editing-tests-test.js should pass jshint.');
   });
 });
 define('page/tests/unit/controllers/page-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
@@ -1441,67 +1338,6 @@ define('page/tests/unit/helpers/class-id-test.jshint', ['exports'], function (ex
     assert.ok(true, 'unit/helpers/class-id-test.js should pass jshint.');
   });
 });
-define('page/tests/unit/helpers/tag-start-test', ['exports', 'page/helpers/tag-start', 'qunit'], function (exports, _pageHelpersTagStart, _qunit) {
-
-  (0, _qunit.module)('Unit | Helper | tag start');
-
-  // Replace this with your real tests.
-  (0, _qunit.test)('it works', function (assert) {
-    var result = (0, _pageHelpersTagStart.tagStart)([42]);
-    assert.ok(result);
-  });
-});
-define('page/tests/unit/helpers/tag-start-test.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | unit/helpers/tag-start-test.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'unit/helpers/tag-start-test.js should pass jshint.');
-  });
-});
-define('page/tests/unit/routes/about-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
-
-  (0, _emberQunit.moduleFor)('route:about', 'Unit | Route | about', {
-    // Specify the other units that are required for this test.
-    // needs: ['controller:foo']
-  });
-
-  (0, _emberQunit.test)('it exists', function (assert) {
-    var route = this.subject();
-    assert.ok(route);
-  });
-});
-define('page/tests/unit/routes/about-test.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | unit/routes/about-test.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'unit/routes/about-test.js should pass jshint.');
-  });
-});
-define('page/tests/unit/routes/create-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
-
-  (0, _emberQunit.moduleFor)('route:create', 'Unit | Route | create', {
-    // Specify the other units that are required for this test.
-    // needs: ['controller:foo']
-  });
-
-  (0, _emberQunit.test)('it exists', function (assert) {
-    var route = this.subject();
-    assert.ok(route);
-  });
-});
-define('page/tests/unit/routes/create-test.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | unit/routes/create-test.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'unit/routes/create-test.js should pass jshint.');
-  });
-});
 define('page/tests/unit/routes/dashboard-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
 
   (0, _emberQunit.moduleFor)('route:dashboard', 'Unit | Route | dashboard', {
@@ -1521,27 +1357,6 @@ define('page/tests/unit/routes/dashboard-test.jshint', ['exports'], function (ex
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/routes/dashboard-test.js should pass jshint.');
-  });
-});
-define('page/tests/unit/routes/editing-tests-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
-
-  (0, _emberQunit.moduleFor)('route:editing-tests', 'Unit | Route | editing tests', {
-    // Specify the other units that are required for this test.
-    // needs: ['controller:foo']
-  });
-
-  (0, _emberQunit.test)('it exists', function (assert) {
-    var route = this.subject();
-    assert.ok(route);
-  });
-});
-define('page/tests/unit/routes/editing-tests-test.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | unit/routes/editing-tests-test.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'unit/routes/editing-tests-test.js should pass jshint.');
   });
 });
 define('page/tests/unit/routes/home-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
@@ -1565,48 +1380,6 @@ define('page/tests/unit/routes/home-test.jshint', ['exports'], function (exports
     assert.ok(true, 'unit/routes/home-test.js should pass jshint.');
   });
 });
-define('page/tests/unit/routes/login-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
-
-  (0, _emberQunit.moduleFor)('route:login', 'Unit | Route | login', {
-    // Specify the other units that are required for this test.
-    // needs: ['controller:foo']
-  });
-
-  (0, _emberQunit.test)('it exists', function (assert) {
-    var route = this.subject();
-    assert.ok(route);
-  });
-});
-define('page/tests/unit/routes/login-test.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | unit/routes/login-test.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'unit/routes/login-test.js should pass jshint.');
-  });
-});
-define('page/tests/unit/routes/navtest-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
-
-  (0, _emberQunit.moduleFor)('route:navtest', 'Unit | Route | navtest', {
-    // Specify the other units that are required for this test.
-    // needs: ['controller:foo']
-  });
-
-  (0, _emberQunit.test)('it exists', function (assert) {
-    var route = this.subject();
-    assert.ok(route);
-  });
-});
-define('page/tests/unit/routes/navtest-test.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | unit/routes/navtest-test.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'unit/routes/navtest-test.js should pass jshint.');
-  });
-});
 define('page/tests/unit/routes/page-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
 
   (0, _emberQunit.moduleFor)('route:page', 'Unit | Route | page', {
@@ -1626,48 +1399,6 @@ define('page/tests/unit/routes/page-test.jshint', ['exports'], function (exports
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/routes/page-test.js should pass jshint.');
-  });
-});
-define('page/tests/unit/routes/signup-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
-
-  (0, _emberQunit.moduleFor)('route:signup', 'Unit | Route | signup', {
-    // Specify the other units that are required for this test.
-    // needs: ['controller:foo']
-  });
-
-  (0, _emberQunit.test)('it exists', function (assert) {
-    var route = this.subject();
-    assert.ok(route);
-  });
-});
-define('page/tests/unit/routes/signup-test.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | unit/routes/signup-test.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'unit/routes/signup-test.js should pass jshint.');
-  });
-});
-define('page/tests/unit/routes/template-tests-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
-
-  (0, _emberQunit.moduleFor)('route:template-tests', 'Unit | Route | template tests', {
-    // Specify the other units that are required for this test.
-    // needs: ['controller:foo']
-  });
-
-  (0, _emberQunit.test)('it exists', function (assert) {
-    var route = this.subject();
-    assert.ok(route);
-  });
-});
-define('page/tests/unit/routes/template-tests-test.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | unit/routes/template-tests-test.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'unit/routes/template-tests-test.js should pass jshint.');
   });
 });
 /* jshint ignore:start */

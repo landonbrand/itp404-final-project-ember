@@ -78,16 +78,14 @@ export default Ember.Controller.extend({
     },
 
     addPage: function() {
-      var myPage = "myPage";
       var pageToAdd = document.getElementById("page-to-add");
       console.log(pageToAdd);
       var _this = this;
       var data = {
         nickname: this.get("nickname"),
         page: document.getElementById("page-to-add").value
-      }
-      var _this = this;
-      var promise =  $.post({
+      };
+      var promise =  Ember.$.post({
         url: "http://192.241.235.59:1111/api/addUsersPage",
         data: JSON.stringify(data),
         dataType: "text"
