@@ -68,6 +68,22 @@ define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _e
           console.log(response);
           return response;
         });
+      },
+
+      addPage: function addPage() {
+        var page = "myPage";
+        var data = {
+          nickname: this.get("nickname"),
+          page: myPage
+        };
+        var promise = $.post({
+          url: "http://192.241.235.59:1111/api/addPage",
+          data: JSON.stringify(page),
+          dataType: "text"
+        });
+        promise.then(function (response) {
+          console.log(response);
+        });
       }
     }
   });

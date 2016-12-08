@@ -62,6 +62,15 @@ app.get('/api/getuserspages', function(request, response) {
   });
 });
 
+app.post('/api/adduserspage', function(request, response) {
+  var obj = {response: "got"};
+  console.log("nickname: ", request.query.nickname, "\n");
+  User.findOne({ 'nickname' : request.query.nickname }, function(err, doc){
+    if (err) return handleError(err);
+    doc.pages.push(request.qury.page);
+  });
+});
+
 app.get('/api/getpage', function (request, response) {
   var query = PageModel.findOne({ 'name' : request.query.name }, function(err, doc){
     if (err) return handleError(err);
