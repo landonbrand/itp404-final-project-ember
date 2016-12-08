@@ -72,7 +72,9 @@ app.post('/api/adduserspage', function(request, response) {
   User.findOne({ 'nickname' : bod.nickname }, function(err, doc){
     if (err) return handleError(err);
     doc.pages.push(bod.page);
-    response.json(doc);
+    doc.save(function(err, updatedDoc) {
+      response.json(doc);
+    });
   });
 });
 
