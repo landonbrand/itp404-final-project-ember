@@ -44,7 +44,6 @@ require('./config/passport')(passport);
 app.use(passport.initialize());
 
 app.get('/api/getuserspages', function(request, response) {
-  var obj = {response: "got"};
   console.log("nickname: ", request.query.nickname, "\n");
   User.findOne({ 'nickname' : request.query.nickname }, function(err, doc){
     if (err) return handleError(err);
@@ -58,6 +57,8 @@ app.get('/api/getuserspages', function(request, response) {
       });
     } else {
       console.log(request.query.nickname, "exists");
+      console.log("users", User.find());
+      response.json(doc);
     }
   });
 });
