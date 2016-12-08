@@ -20,9 +20,7 @@ app.use(function(req, res, next) {
 app.use(bodyParser.text({type:"*/*"}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-mongoose.connect({
-  'database': 'mongodb://192.241.235.59'
-});
+mongoose.connect('mongodb://192.241.235.59');
 
 
 var pageSchema = new mongoose.Schema({
