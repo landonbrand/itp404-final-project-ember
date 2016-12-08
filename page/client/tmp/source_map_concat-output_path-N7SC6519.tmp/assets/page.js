@@ -228,6 +228,16 @@ define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _e
     },
     actions: {
 
+      authenticateUser: function authenticateUser(e) {
+        this.get("auth0").login({
+          connection: 'github'
+        }, function (err) {
+          console.log(err);
+          if (err) return alert('Something went wrong: ' + err.message);
+          return alert('success signup without login!');
+        });
+      },
+
       getPages: function getPages(_this) {
         console.log("getting pages!");
         var obj = { nickname: _this.get("nickname") };
@@ -893,16 +903,8 @@ define('page/router', ['exports', 'ember', 'page/config/environment'], function 
 define('page/routes/dashboard', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Route.extend({});
 });
-define("page/routes/home", ["exports", "ember"], function (exports, _ember) {
-  exports["default"] = _ember["default"].Route.extend({
-    actions: {
-      goToPage: function goToPage() {
-        var pageName = document.getElementById("pageName").value;
-        console.log("Going to", pageName);
-        this.transitionTo("/page/" + encodeURI(pageName));
-      }
-    }
-  });
+define('page/routes/home', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Route.extend({});
 });
 define('page/routes/page', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Route.extend({

@@ -60,6 +60,16 @@ define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _e
     },
     actions: {
 
+      authenticateUser: function authenticateUser(e) {
+        this.get("auth0").login({
+          connection: 'github'
+        }, function (err) {
+          console.log(err);
+          if (err) return alert('Something went wrong: ' + err.message);
+          return alert('success signup without login!');
+        });
+      },
+
       getPages: function getPages(_this) {
         console.log("getting pages!");
         var obj = { nickname: _this.get("nickname") };

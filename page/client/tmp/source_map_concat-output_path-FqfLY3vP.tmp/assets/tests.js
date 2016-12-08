@@ -1,24 +1,44 @@
 'use strict';
 
-define('page/tests/acceptance/dashboard-test', ['exports', 'qunit', 'page/tests/helpers/module-for-acceptance'], function (exports, _qunit, _pageTestsHelpersModuleForAcceptance) {
+define('page/tests/acceptance/page/1-test', ['exports', 'qunit', 'page/tests/helpers/module-for-acceptance'], function (exports, _qunit, _pageTestsHelpersModuleForAcceptance) {
 
-  (0, _pageTestsHelpersModuleForAcceptance['default'])('Acceptance | dashboard');
+  (0, _pageTestsHelpersModuleForAcceptance['default'])('Acceptance | page/1');
 
-  (0, _qunit.test)('visiting /dashboard', function (assert) {
-    visit('/dashboard');
+  (0, _qunit.test)('visiting /page/1', function (assert) {
+    visit('/page/1');
+    click("#edit");
 
     andThen(function () {
-      assert.equal(currentURL(), '/dashboard');
+      assert.equal(find("#newNode").text(), "create tag");
+    });
+  });
+
+  (0, _qunit.test)('visiting /page/1', function (assert) {
+    visit('/page/1');
+    click("#edit");
+
+    andThen(function () {
+      assert.equal(find("#newClass").text(), "add class");
+    });
+  });
+
+  (0, _qunit.test)('visiting /page/1', function (assert) {
+    visit('/page/1');
+    click("#edit");
+    click("#newClass");
+
+    andThen(function () {
+      assert.equal(find(".class-list-item").text().trim(), "new-class");
     });
   });
 });
-define('page/tests/acceptance/dashboard-test.jshint', ['exports'], function (exports) {
+define('page/tests/acceptance/page/1-test.jshint', ['exports'], function (exports) {
   'use strict';
 
-  QUnit.module('JSHint | acceptance/dashboard-test.js');
+  QUnit.module('JSHint | acceptance/page/1-test.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'acceptance/dashboard-test.js should pass jshint.');
+    assert.ok(true, 'acceptance/page/1-test.js should pass jshint.');
   });
 });
 define('page/tests/app.jshint', ['exports'], function (exports) {
@@ -99,7 +119,7 @@ define('page/tests/controllers/dashboard.jshint', ['exports'], function (exports
   QUnit.module('JSHint | controllers/dashboard.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/dashboard.js should pass jshint.\ncontrollers/dashboard.js: line 5, col 15, \'Auth0\' is not defined.\n\n1 error');
+    assert.ok(false, 'controllers/dashboard.js should pass jshint.\ncontrollers/dashboard.js: line 70, col 18, Expected \'{\' and instead saw \'return\'.\ncontrollers/dashboard.js: line 71, col 54, Missing semicolon.\ncontrollers/dashboard.js: line 65, col 32, \'e\' is defined but never used.\ncontrollers/dashboard.js: line 5, col 15, \'Auth0\' is not defined.\n\n4 errors');
   });
 });
 define('page/tests/controllers/page.jshint', ['exports'], function (exports) {
