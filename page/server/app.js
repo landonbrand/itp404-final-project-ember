@@ -57,7 +57,9 @@ app.get('/api/getuserspages', function(request, response) {
       });
     } else {
       console.log(request.query.nickname, "exists");
-      console.log("users", User.find());
+      User.find({}, function(err, doc){
+        console.log("users", doc);
+      });
       response.json(doc);
     }
   });
