@@ -14,6 +14,13 @@
         <br/>
         <span>User: {{model}}</span>
       </div>
+      {{#if isLoggedIn}}
+        <p>Logged in!</p>
+      {{else}}
+        <p> not logged in.</p>
+      {{/if}}
+      {{isLoggedIn}}
+      {{log isLoggedIn}}
     </section>
   </div>
 </div>

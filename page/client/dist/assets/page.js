@@ -166,6 +166,54 @@ define('page/components/tag-name', ['exports', 'ember'], function (exports, _emb
     }
   });
 });
+define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Controller.extend({
+
+    isLoggedIn: true,
+
+    auth0: new Auth0({
+      domain: 'landonbrand.auth0.com',
+      clientID: 'JLAa4IzlUImrFFUqkri3OFyeCRgDArox',
+      callbackURL: 'http://localhost:4200/dashboard',
+      responseType: 'token'
+    }),
+
+    init: function init() {
+      console.log("hi!");
+
+      var auth0 = this.get("auth0");
+      var result = auth0.parseHash(window.location.hash);
+      console.log("result: ", result);
+      //use result.idToken to call your rest api
+
+      if (result && result.idToken) {
+        // optionally fetch user profile
+        auth0.getProfile(result.idToken, function (err, profile) {
+          // alert('hello ' + profile.name);
+          // this.set("isLoggedIn", true);
+        });
+
+        // If offline_access was a requested scope
+        // You can grab the result.refresh_token here
+      } else if (result && result.error) {
+          // alert('error: ' + result.error);
+        } else {
+            // this.set("isLoggedIn", false);
+          }
+    },
+    actions: {
+      authenticateUser: function authenticateUser(e) {
+        this.get("auth0").login({
+          connection: 'github'
+        }, function (err) {
+          console.log(err);
+          if (err) return alert('Something went wrong: ' + err.message);
+          return alert('success signup without login!');
+        });
+      }
+    }
+  });
+});
 define('page/controllers/editing-tests', ['exports', 'ember', 'page/components/class-list-item'], function (exports, _ember, _pageComponentsClassListItem) {
   exports['default'] = _ember['default'].Controller.extend({
     selectedRegion: false,
@@ -1233,6 +1281,7 @@ define('page/router', ['exports', 'ember', 'page/config/environment'], function 
     this.route('login');
     this.route('signup');
     this.route('page', { path: '/page/:page_name' });
+    this.route('dashboard');
   });
 
   exports['default'] = Router;
@@ -1242,6 +1291,37 @@ define('page/routes/about', ['exports', 'ember'], function (exports, _ember) {
 });
 define('page/routes/create', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Route.extend({});
+});
+define("page/routes/dashboard", ["exports", "ember"], function (exports, _ember) {
+  exports["default"] = _ember["default"].Route.extend({
+
+    model: function model() {
+      console.log("model running");
+      // var promise = Ember.$.ajax({
+      //   url: "http://192.241.235.59:1111/api/getuser",
+      //   type: 'get',
+      // });
+      return "hi";
+    }
+  });
+
+  jQuery.getCORS = function (url, callback) {
+    if (callback == undefined) callback = function () {};
+    return $.ajax({
+      type: 'GET',
+      url: url,
+      contentType: 'application/x-www-form-urlencoded',
+      // xhrFields: {
+      //   withCredentials: true
+      // },
+      success: function success(res) {
+        callback(res);
+      }, error: function error() {
+        console.log("ERROR on jQuery.getCORS");
+        callback({});
+      }
+    });
+  };
 });
 define("page/routes/editing-tests", ["exports", "ember"], function (exports, _ember) {
   exports["default"] = _ember["default"].Route.extend({
@@ -1314,31 +1394,45 @@ define('page/routes/page', ['exports', 'ember'], function (exports, _ember) {
     }
   });
 });
-define("page/routes/signup", ["exports", "ember"], function (exports, _ember) {
-  exports["default"] = _ember["default"].Route.extend({
+define('page/routes/signup', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Route.extend({
+
+    auth0: new Auth0({
+      domain: 'landonbrand.auth0.com',
+      clientID: 'JLAa4IzlUImrFFUqkri3OFyeCRgDArox',
+      callbackURL: 'http://localhost:4200/dashboard',
+      responseType: 'token'
+    }),
     model: function model() {
       console.log("model running");
-      var promise = _ember["default"].$.ajax({
-        url: "http://192.241.235.59:1111/api/getuser",
-        type: 'get'
-      });
+      // var promise = Ember.$.ajax({
+      //   url: "http://192.241.235.59:1111/api/getuser",
+      //   type: 'get',
+      // });
       return "hi";
     },
     actions: {
-      authenticateUser: function authenticateUser() {
-        console.log("Authenticating...");
-        // window.open("http://192.241.235.59:1111/api/signup");
-        var promise = _ember["default"].$.ajax({
-          url: "http://192.241.235.59:1111/api/signup",
-          type: 'post',
-          data: {
-            name: "Landon",
-            password: "pass"
-          },
-          dataType: "JSON",
-          success: function success(res) {
-            console.log(res);
-          }
+      authenticateUser: function authenticateUser(e) {
+        // console.log("Authenticating...");
+        // // window.open("http://192.241.235.59:1111/api/signup");
+        // var promise = Ember.$.ajax({
+        //   url: "http://192.241.235.59:1111/api/signup",
+        //   type: 'post',
+        //   data: {
+        //     name: "Landon",
+        //     password: "pass"
+        //   },
+        //   dataType: "JSON",
+        //   success: function(res){
+        //     console.log(res);
+        //   }
+        // });
+        this.get("auth0").login({
+          connection: 'github'
+        }, function (err) {
+          console.log(err);
+          if (err) return alert('Something went wrong: ' + err.message);
+          return alert('success signup without login!');
         });
       }
     }
@@ -2350,6 +2444,233 @@ define("page/templates/create", ["exports"], function (exports) {
     };
   })());
 });
+define("page/templates/dashboard", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@2.8.2",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 17,
+              "column": 6
+            },
+            "end": {
+              "line": 19,
+              "column": 6
+            }
+          },
+          "moduleName": "page/templates/dashboard.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("p");
+          var el2 = dom.createTextNode("Logged in!");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes() {
+          return [];
+        },
+        statements: [],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child1 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@2.8.2",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 19,
+              "column": 6
+            },
+            "end": {
+              "line": 21,
+              "column": 6
+            }
+          },
+          "moduleName": "page/templates/dashboard.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("p");
+          var el2 = dom.createTextNode(" not logged in.");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes() {
+          return [];
+        },
+        statements: [],
+        locals: [],
+        templates: []
+      };
+    })();
+    return {
+      meta: {
+        "revision": "Ember@2.8.2",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 27,
+            "column": 0
+          }
+        },
+        "moduleName": "page/templates/dashboard.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "id", "main-site");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "class", "centerizer");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("section");
+        dom.setAttribute(el3, "class", "limit-width centered");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h1");
+        dom.setAttribute(el4, "class", "main-heading");
+        var el5 = dom.createTextNode("Sign Up");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4, "class", "centerizer pad-top");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        var el6 = dom.createTextNode("Name");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("input");
+        dom.setAttribute(el5, "type", "text");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("button");
+        dom.setAttribute(el5, "class", "signup-db");
+        var el6 = dom.createTextNode("Sign Up with Github");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("span");
+        var el6 = dom.createTextNode("User: ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var element0 = dom.childAt(fragment, [2, 1]);
+        var element1 = dom.childAt(element0, [3]);
+        var element2 = dom.childAt(element1, [3]);
+        var element3 = dom.childAt(element2, [11]);
+        var morphs = new Array(7);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        morphs[1] = dom.createMorphAt(element0, 1, 1);
+        morphs[2] = dom.createElementMorph(element3);
+        morphs[3] = dom.createMorphAt(dom.childAt(element2, [15]), 1, 1);
+        morphs[4] = dom.createMorphAt(element1, 5, 5);
+        morphs[5] = dom.createMorphAt(element1, 7, 7);
+        morphs[6] = dom.createMorphAt(element1, 9, 9);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["content", "nav-bar", ["loc", [null, [4, 4], [4, 15]]], 0, 0, 0, 0], ["element", "action", ["authenticateUser"], [], ["loc", [null, [13, 34], [13, 63]]], 0, 0], ["content", "model", ["loc", [null, [15, 20], [15, 29]]], 0, 0, 0, 0], ["block", "if", [["get", "isLoggedIn", ["loc", [null, [17, 12], [17, 22]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [17, 6], [21, 13]]]], ["content", "isLoggedIn", ["loc", [null, [22, 6], [22, 20]]], 0, 0, 0, 0], ["inline", "log", [["get", "isLoggedIn", ["loc", [null, [23, 12], [23, 22]]], 0, 0, 0, 0]], [], ["loc", [null, [23, 6], [23, 24]]], 0, 0]],
+      locals: [],
+      templates: [child0, child1]
+    };
+  })());
+});
 define("page/templates/editing-tests", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     var child0 = (function () {
@@ -3126,6 +3447,7 @@ define("page/templates/signup", ["exports"], function (exports) {
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("button");
+        dom.setAttribute(el5, "class", "signup-db");
         var el6 = dom.createTextNode("Sign Up with Github");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
@@ -3169,7 +3491,7 @@ define("page/templates/signup", ["exports"], function (exports) {
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["content", "nav-bar", ["loc", [null, [4, 4], [4, 15]]], 0, 0, 0, 0], ["element", "action", ["authenticateUser"], [], ["loc", [null, [13, 16], [13, 45]]], 0, 0], ["content", "model", ["loc", [null, [15, 20], [15, 29]]], 0, 0, 0, 0]],
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["content", "nav-bar", ["loc", [null, [4, 4], [4, 15]]], 0, 0, 0, 0], ["element", "action", ["authenticateUser"], [], ["loc", [null, [13, 34], [13, 63]]], 0, 0], ["content", "model", ["loc", [null, [15, 20], [15, 29]]], 0, 0, 0, 0]],
       locals: [],
       templates: []
     };
