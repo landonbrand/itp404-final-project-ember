@@ -62,7 +62,7 @@ export default Ember.Controller.extend({
       var obj = {nickname: this.get("nickname")};
       var promise =  Ember.$.ajax({
         url: "http://192.241.235.59:1111/api/getuserspages",
-        data: JSON.stringify(obj),
+        data: obj,
         dataType: "text",
         type: 'get'
       });

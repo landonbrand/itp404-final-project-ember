@@ -45,7 +45,7 @@ app.use(passport.initialize());
 
 app.get('/api/getuserspages', function(request, response) {
   var obj = {response: "got"};
-  console.log("Request body: ", request.query);
+  console.log("Request body: ", request.query.nickname);
   // User.findOne({ 'nickname' : request.body.name }, function(err, doc){
   //   if (err) return handleError(err);
   //   if (doc == null){
