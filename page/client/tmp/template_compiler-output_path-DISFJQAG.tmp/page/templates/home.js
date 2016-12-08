@@ -1,4 +1,39 @@
 export default Ember.HTMLBars.template((function() {
+  var child0 = (function() {
+    return {
+      meta: {
+        "revision": "Ember@2.8.2",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 10,
+            "column": 17
+          },
+          "end": {
+            "line": 10,
+            "column": 52
+          }
+        },
+        "moduleName": "page/templates/home.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("Get Started");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes() { return []; },
+      statements: [
+
+      ],
+      locals: [],
+      templates: []
+    };
+  }());
   return {
     meta: {
       "revision": "Ember@2.8.2",
@@ -9,7 +44,7 @@ export default Ember.HTMLBars.template((function() {
           "column": 0
         },
         "end": {
-          "line": 18,
+          "line": 15,
           "column": 0
         }
       },
@@ -31,9 +66,11 @@ export default Ember.HTMLBars.template((function() {
       dom.appendChild(el1, el2);
       var el2 = dom.createElement("div");
       dom.setAttribute(el2,"class","centerizer");
-      var el3 = dom.createTextNode("\n");
+      var el3 = dom.createTextNode("\n    ");
       dom.appendChild(el2, el3);
-      var el3 = dom.createTextNode("    ");
+      var el3 = dom.createComment("");
+      dom.appendChild(el2, el3);
+      var el3 = dom.createTextNode("\n    ");
       dom.appendChild(el2, el3);
       var el3 = dom.createElement("section");
       dom.setAttribute(el3,"class","limit-width centered");
@@ -62,22 +99,10 @@ export default Ember.HTMLBars.template((function() {
       dom.setAttribute(el4,"class","centerizer pad-top");
       var el5 = dom.createTextNode("\n        ");
       dom.appendChild(el4, el5);
-      var el5 = dom.createElement("input");
-      dom.setAttribute(el5,"id","pageName");
-      dom.setAttribute(el5,"value","page name");
-      dom.appendChild(el4, el5);
-      var el5 = dom.createTextNode("\n        ");
-      dom.appendChild(el4, el5);
-      var el5 = dom.createElement("br");
-      dom.appendChild(el4, el5);
-      var el5 = dom.createTextNode("\n        ");
-      dom.appendChild(el4, el5);
-      var el5 = dom.createElement("br");
-      dom.appendChild(el4, el5);
-      var el5 = dom.createTextNode("\n        ");
-      dom.appendChild(el4, el5);
       var el5 = dom.createElement("button");
-      var el6 = dom.createTextNode("Get Started");
+      var el6 = dom.createTextNode(" ");
+      dom.appendChild(el5, el6);
+      var el6 = dom.createComment("");
       dom.appendChild(el5, el6);
       dom.appendChild(el4, el5);
       var el5 = dom.createTextNode("\n      ");
@@ -97,18 +122,20 @@ export default Ember.HTMLBars.template((function() {
       return el0;
     },
     buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-      var element0 = dom.childAt(fragment, [2, 1, 2, 7, 7]);
-      var morphs = new Array(2);
+      var element0 = dom.childAt(fragment, [2, 1]);
+      var morphs = new Array(3);
       morphs[0] = dom.createMorphAt(fragment,0,0,contextualElement);
-      morphs[1] = dom.createElementMorph(element0);
+      morphs[1] = dom.createMorphAt(element0,1,1);
+      morphs[2] = dom.createMorphAt(dom.childAt(element0, [3, 7, 1]),1,1);
       dom.insertBoundary(fragment, 0);
       return morphs;
     },
     statements: [
       ["content","outlet",["loc",[null,[1,0],[1,10]]],0,0,0,0],
-      ["element","action",["goToPage"],[],["loc",[null,[13,16],[13,37]]],0,0]
+      ["content","nav-bar",["loc",[null,[4,4],[4,15]]],0,0,0,0],
+      ["block","link-to",["dashboard"],[],0,null,["loc",[null,[10,17],[10,64]]]]
     ],
     locals: [],
-    templates: []
+    templates: [child0]
   };
 }()));

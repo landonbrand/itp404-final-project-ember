@@ -1,5 +1,26 @@
 'use strict';
 
+define('page/tests/acceptance/dashboard-test', ['exports', 'qunit', 'page/tests/helpers/module-for-acceptance'], function (exports, _qunit, _pageTestsHelpersModuleForAcceptance) {
+
+  (0, _pageTestsHelpersModuleForAcceptance['default'])('Acceptance | dashboard');
+
+  (0, _qunit.test)('visiting /dashboard', function (assert) {
+    visit('/dashboard');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/dashboard');
+    });
+  });
+});
+define('page/tests/acceptance/dashboard-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | acceptance/dashboard-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'acceptance/dashboard-test.js should pass jshint.');
+  });
+});
 define('page/tests/app.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -78,7 +99,7 @@ define('page/tests/controllers/dashboard.jshint', ['exports'], function (exports
   QUnit.module('JSHint | controllers/dashboard.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/dashboard.js should pass jshint.\ncontrollers/dashboard.js: line 69, col 18, Expected \'{\' and instead saw \'return\'.\ncontrollers/dashboard.js: line 70, col 54, Missing semicolon.\ncontrollers/dashboard.js: line 64, col 32, \'e\' is defined but never used.\ncontrollers/dashboard.js: line 96, col 8, Missing semicolon.\ncontrollers/dashboard.js: line 90, col 11, \'myPage\' is defined but never used.\ncontrollers/dashboard.js: line 5, col 15, \'Auth0\' is not defined.\ncontrollers/dashboard.js: line 97, col 22, \'$\' is not defined.\n\n7 errors');
+    assert.ok(false, 'controllers/dashboard.js should pass jshint.\ncontrollers/dashboard.js: line 88, col 8, Missing semicolon.\ncontrollers/dashboard.js: line 89, col 11, \'_this\' is already defined.\ncontrollers/dashboard.js: line 81, col 11, \'myPage\' is defined but never used.\ncontrollers/dashboard.js: line 5, col 15, \'Auth0\' is not defined.\ncontrollers/dashboard.js: line 90, col 22, \'$\' is not defined.\n\n5 errors');
   });
 });
 define('page/tests/controllers/editing-tests.jshint', ['exports'], function (exports) {

@@ -227,19 +227,10 @@ define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _e
           }
     },
     actions: {
-      authenticateUser: function authenticateUser(e) {
-        this.get("auth0").login({
-          connection: 'github'
-        }, function (err) {
-          console.log(err);
-          if (err) return alert('Something went wrong: ' + err.message);
-          return alert('success signup without login!');
-        });
-      },
 
-      getPages: function getPages() {
+      getPages: function getPages(_this) {
         console.log("getting pages!");
-        var obj = { nickname: this.get("nickname") };
+        var obj = { nickname: _this.get("nickname") };
         var promise = _ember['default'].$.ajax({
           url: "http://192.241.235.59:1111/api/getuserspages",
           data: obj,
@@ -247,8 +238,8 @@ define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _e
           type: 'get'
         });
         return promise.then(function (response) {
-          console.log(response);
-          return response;
+          console.log("Response pages from getPages: ", JSON.parse(response));
+          _this.set("pages", JSON.parse(response).pages);
         });
       },
 
@@ -256,17 +247,20 @@ define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _e
         var myPage = "myPage";
         var pageToAdd = document.getElementById("page-to-add");
         console.log(pageToAdd);
+        var _this = this;
         var data = {
           nickname: this.get("nickname"),
           page: document.getElementById("page-to-add").value
         };
+        var _this = this;
         var promise = $.post({
           url: "http://192.241.235.59:1111/api/addUsersPage",
           data: JSON.stringify(data),
           dataType: "text"
         });
         promise.then(function (response) {
-          console.log(response);
+          console.log("promise returned: ", response);
+          _this.send("getPages", _this);
         });
       }
     }
@@ -2066,7 +2060,7 @@ define("page/templates/components/nav-bar", ["exports"], function (exports) {
             },
             "end": {
               "line": 4,
-              "column": 30
+              "column": 35
             }
           },
           "moduleName": "page/templates/components/nav-bar.hbs"
@@ -2077,42 +2071,7 @@ define("page/templates/components/nav-bar", ["exports"], function (exports) {
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("Sign Up");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes() {
-          return [];
-        },
-        statements: [],
-        locals: [],
-        templates: []
-      };
-    })();
-    var child2 = (function () {
-      return {
-        meta: {
-          "revision": "Ember@2.8.2",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 5,
-              "column": 2
-            },
-            "end": {
-              "line": 5,
-              "column": 27
-            }
-          },
-          "moduleName": "page/templates/components/nav-bar.hbs"
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("login");
+          var el1 = dom.createTextNode("Dashboard");
           dom.appendChild(el0, el1);
           return el0;
         },
@@ -2134,7 +2093,7 @@ define("page/templates/components/nav-bar", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 7,
+            "line": 6,
             "column": 0
           }
         },
@@ -2159,10 +2118,6 @@ define("page/templates/components/nav-bar", ["exports"], function (exports) {
         dom.appendChild(el1, el2);
         var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment("");
-        dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
@@ -2172,17 +2127,16 @@ define("page/templates/components/nav-bar", ["exports"], function (exports) {
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
         var element0 = dom.childAt(fragment, [2]);
-        var morphs = new Array(4);
+        var morphs = new Array(3);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
         morphs[1] = dom.createMorphAt(element0, 1, 1);
         morphs[2] = dom.createMorphAt(element0, 3, 3);
-        morphs[3] = dom.createMorphAt(element0, 5, 5);
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]], 0, 0, 0, 0], ["block", "link-to", ["home"], [], 0, null, ["loc", [null, [3, 2], [3, 37]]]], ["block", "link-to", ["signup"], [], 1, null, ["loc", [null, [4, 2], [4, 42]]]], ["block", "link-to", ["login"], [], 2, null, ["loc", [null, [5, 2], [5, 39]]]]],
+      statements: [["content", "yield", ["loc", [null, [1, 0], [1, 9]]], 0, 0, 0, 0], ["block", "link-to", ["home"], [], 0, null, ["loc", [null, [3, 2], [3, 37]]]], ["block", "link-to", ["dashboard"], [], 1, null, ["loc", [null, [4, 2], [4, 47]]]]],
       locals: [],
-      templates: [child0, child1, child2]
+      templates: [child0, child1]
     };
   })());
 });
@@ -2513,12 +2467,12 @@ define("page/templates/dashboard", ["exports"], function (exports) {
               "loc": {
                 "source": null,
                 "start": {
-                  "line": 14,
-                  "column": 18
+                  "line": 12,
+                  "column": 12
                 },
                 "end": {
-                  "line": 14,
-                  "column": 51
+                  "line": 12,
+                  "column": 45
                 }
               },
               "moduleName": "page/templates/dashboard.hbs"
@@ -2540,7 +2494,7 @@ define("page/templates/dashboard", ["exports"], function (exports) {
               dom.insertBoundary(fragment, null);
               return morphs;
             },
-            statements: [["content", "page", ["loc", [null, [14, 43], [14, 51]]], 0, 0, 0, 0]],
+            statements: [["content", "page", ["loc", [null, [12, 37], [12, 45]]], 0, 0, 0, 0]],
             locals: [],
             templates: []
           };
@@ -2551,11 +2505,11 @@ define("page/templates/dashboard", ["exports"], function (exports) {
             "loc": {
               "source": null,
               "start": {
-                "line": 13,
+                "line": 11,
                 "column": 10
               },
               "end": {
-                "line": 16,
+                "line": 14,
                 "column": 10
               }
             },
@@ -2567,7 +2521,7 @@ define("page/templates/dashboard", ["exports"], function (exports) {
           hasRendered: false,
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("            page: ");
+            var el1 = dom.createTextNode("            ");
             dom.appendChild(el0, el1);
             var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
@@ -2584,7 +2538,7 @@ define("page/templates/dashboard", ["exports"], function (exports) {
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["block", "link-to", ["page", ["get", "page", ["loc", [null, [14, 36], [14, 40]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [14, 18], [14, 63]]]]],
+          statements: [["block", "link-to", ["page", ["get", "page", ["loc", [null, [12, 30], [12, 34]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [12, 12], [12, 57]]]]],
           locals: ["page"],
           templates: [child0]
         };
@@ -2599,7 +2553,7 @@ define("page/templates/dashboard", ["exports"], function (exports) {
               "column": 6
             },
             "end": {
-              "line": 18,
+              "line": 19,
               "column": 6
             }
           },
@@ -2613,26 +2567,39 @@ define("page/templates/dashboard", ["exports"], function (exports) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("        ");
           dom.appendChild(el0, el1);
+          var el1 = dom.createElement("h1");
+          var el2 = dom.createTextNode("Dashboard");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n        ");
+          dom.appendChild(el0, el1);
           var el1 = dom.createElement("p");
-          var el2 = dom.createTextNode("Hello ");
+          var el2 = dom.createTextNode("Welcome back, ");
           dom.appendChild(el1, el2);
           var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n        ");
           dom.appendChild(el0, el1);
-          var el1 = dom.createElement("br");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n        ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("button");
-          var el2 = dom.createTextNode(" Get Pages ");
+          var el1 = dom.createElement("div");
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("h3");
+          var el3 = dom.createTextNode("My Pages:");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("        ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n        ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("input");
           dom.setAttribute(el1, "id", "page-to-add");
+          dom.setAttribute(el1, "class", "no-margin");
           dom.setAttribute(el1, "value", "Add a new page");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n        ");
@@ -2641,31 +2608,19 @@ define("page/templates/dashboard", ["exports"], function (exports) {
           var el2 = dom.createTextNode(" Add page ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n        ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          var el2 = dom.createTextNode("\n");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("        ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
+          var el1 = dom.createTextNode("\n\n");
           dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element2 = dom.childAt(fragment, [5]);
-          var element3 = dom.childAt(fragment, [9]);
-          var morphs = new Array(4);
-          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
-          morphs[1] = dom.createElementMorph(element2);
-          morphs[2] = dom.createElementMorph(element3);
-          morphs[3] = dom.createMorphAt(dom.childAt(fragment, [11]), 1, 1);
+          var element1 = dom.childAt(fragment, [9]);
+          var morphs = new Array(3);
+          morphs[0] = dom.createMorphAt(dom.childAt(fragment, [3]), 1, 1);
+          morphs[1] = dom.createMorphAt(dom.childAt(fragment, [5]), 3, 3);
+          morphs[2] = dom.createElementMorph(element1);
           return morphs;
         },
-        statements: [["content", "nickname", ["loc", [null, [7, 17], [7, 29]]], 0, 0, 0, 0], ["element", "action", ["getPages"], [], ["loc", [null, [9, 16], [9, 37]]], 0, 0], ["element", "action", ["addPage"], [], ["loc", [null, [11, 16], [11, 36]]], 0, 0], ["block", "each", [["get", "pages", ["loc", [null, [13, 18], [13, 23]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [13, 10], [16, 19]]]]],
+        statements: [["content", "nickname", ["loc", [null, [8, 25], [8, 37]]], 0, 0, 0, 0], ["block", "each", [["get", "pages", ["loc", [null, [11, 18], [11, 23]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [11, 10], [14, 19]]]], ["element", "action", ["addPage"], [], ["loc", [null, [17, 16], [17, 36]]], 0, 0]],
         locals: [],
         templates: [child0]
       };
@@ -2677,11 +2632,11 @@ define("page/templates/dashboard", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 18,
+              "line": 19,
               "column": 6
             },
             "end": {
-              "line": 30,
+              "line": 25,
               "column": 6
             }
           },
@@ -2697,8 +2652,12 @@ define("page/templates/dashboard", ["exports"], function (exports) {
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("h1");
           dom.setAttribute(el1, "class", "main-heading");
-          var el2 = dom.createTextNode("Sign Up or Log In");
+          var el2 = dom.createTextNode("Log In");
           dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n      ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("br");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n      ");
           dom.appendChild(el0, el1);
@@ -2706,44 +2665,9 @@ define("page/templates/dashboard", ["exports"], function (exports) {
           dom.setAttribute(el1, "class", "centerizer pad-top");
           var el2 = dom.createTextNode("\n        ");
           dom.appendChild(el1, el2);
-          var el2 = dom.createElement("span");
-          var el3 = dom.createTextNode("Name");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n        ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("br");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n        ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("input");
-          dom.setAttribute(el2, "type", "text");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n        ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("br");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n        ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("br");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n        ");
-          dom.appendChild(el1, el2);
           var el2 = dom.createElement("button");
           dom.setAttribute(el2, "class", "signup-db");
-          var el3 = dom.createTextNode("Sign Up with Github");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n        ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("br");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n        ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("span");
-          var el3 = dom.createTextNode("User: ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createComment("");
+          var el3 = dom.createTextNode("Log In with Github");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n      ");
@@ -2754,14 +2678,12 @@ define("page/templates/dashboard", ["exports"], function (exports) {
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [3]);
-          var element1 = dom.childAt(element0, [11]);
-          var morphs = new Array(2);
-          morphs[0] = dom.createElementMorph(element1);
-          morphs[1] = dom.createMorphAt(dom.childAt(element0, [15]), 1, 1);
+          var element0 = dom.childAt(fragment, [5, 1]);
+          var morphs = new Array(1);
+          morphs[0] = dom.createElementMorph(element0);
           return morphs;
         },
-        statements: [["element", "action", ["authenticateUser"], [], ["loc", [null, [26, 34], [26, 63]]], 0, 0], ["content", "model", ["loc", [null, [28, 20], [28, 29]]], 0, 0, 0, 0]],
+        statements: [["element", "action", ["authenticateUser"], [], ["loc", [null, [23, 34], [23, 63]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -2776,7 +2698,7 @@ define("page/templates/dashboard", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 34,
+            "line": 29,
             "column": 0
           }
         },
@@ -2824,15 +2746,15 @@ define("page/templates/dashboard", ["exports"], function (exports) {
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element4 = dom.childAt(fragment, [2, 1]);
+        var element2 = dom.childAt(fragment, [2, 1]);
         var morphs = new Array(3);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createMorphAt(element4, 1, 1);
-        morphs[2] = dom.createMorphAt(dom.childAt(element4, [3]), 1, 1);
+        morphs[1] = dom.createMorphAt(element2, 1, 1);
+        morphs[2] = dom.createMorphAt(dom.childAt(element2, [3]), 1, 1);
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["content", "nav-bar", ["loc", [null, [4, 4], [4, 15]]], 0, 0, 0, 0], ["block", "if", [["get", "isLoggedIn", ["loc", [null, [6, 12], [6, 22]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [6, 6], [30, 13]]]]],
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["content", "nav-bar", ["loc", [null, [4, 4], [4, 15]]], 0, 0, 0, 0], ["block", "if", [["get", "isLoggedIn", ["loc", [null, [6, 12], [6, 22]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [6, 6], [25, 13]]]]],
       locals: [],
       templates: [child0, child1]
     };
@@ -3069,6 +2991,41 @@ define("page/templates/editing-tests", ["exports"], function (exports) {
 });
 define("page/templates/home", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@2.8.2",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 10,
+              "column": 17
+            },
+            "end": {
+              "line": 10,
+              "column": 52
+            }
+          },
+          "moduleName": "page/templates/home.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Get Started");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes() {
+          return [];
+        },
+        statements: [],
+        locals: [],
+        templates: []
+      };
+    })();
     return {
       meta: {
         "revision": "Ember@2.8.2",
@@ -3079,7 +3036,7 @@ define("page/templates/home", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 18,
+            "line": 15,
             "column": 0
           }
         },
@@ -3101,9 +3058,11 @@ define("page/templates/home", ["exports"], function (exports) {
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
         dom.setAttribute(el2, "class", "centerizer");
-        var el3 = dom.createTextNode("\n");
+        var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("    ");
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("section");
         dom.setAttribute(el3, "class", "limit-width centered");
@@ -3132,22 +3091,10 @@ define("page/templates/home", ["exports"], function (exports) {
         dom.setAttribute(el4, "class", "centerizer pad-top");
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
-        var el5 = dom.createElement("input");
-        dom.setAttribute(el5, "id", "pageName");
-        dom.setAttribute(el5, "value", "page name");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("br");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("br");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
         var el5 = dom.createElement("button");
-        var el6 = dom.createTextNode("Get Started");
+        var el6 = dom.createTextNode(" ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
@@ -3167,16 +3114,17 @@ define("page/templates/home", ["exports"], function (exports) {
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [2, 1, 2, 7, 7]);
-        var morphs = new Array(2);
+        var element0 = dom.childAt(fragment, [2, 1]);
+        var morphs = new Array(3);
         morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-        morphs[1] = dom.createElementMorph(element0);
+        morphs[1] = dom.createMorphAt(element0, 1, 1);
+        morphs[2] = dom.createMorphAt(dom.childAt(element0, [3, 7, 1]), 1, 1);
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["element", "action", ["goToPage"], [], ["loc", [null, [13, 16], [13, 37]]], 0, 0]],
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["content", "nav-bar", ["loc", [null, [4, 4], [4, 15]]], 0, 0, 0, 0], ["block", "link-to", ["dashboard"], [], 0, null, ["loc", [null, [10, 17], [10, 64]]]]],
       locals: [],
-      templates: []
+      templates: [child0]
     };
   })());
 });

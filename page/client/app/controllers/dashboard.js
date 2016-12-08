@@ -61,19 +61,10 @@ export default Ember.Controller.extend({
     }
   },
   actions: {
-    authenticateUser: function(e) {
-      this.get("auth0").login({
-        connection: 'github'
-      }, function (err) {
-        console.log(err);
-        if (err) return alert('Something went wrong: ' + err.message);
-        return alert('success signup without login!')
-      });
-    },
 
-    getPages: function() {
+    getPages: function(_this) {
       console.log("getting pages!");
-      var obj = {nickname: this.get("nickname")};
+      var obj = {nickname: _this.get("nickname")};
       var promise =  Ember.$.ajax({
         url: "http://192.241.235.59:1111/api/getuserspages",
         data: obj,
@@ -81,8 +72,8 @@ export default Ember.Controller.extend({
         type: 'get'
       });
       return promise.then(function(response){
-        console.log(response);
-        return response;
+        console.log("Response pages from getPages: ", JSON.parse(response));
+        _this.set("pages", JSON.parse(response).pages);
       });
     },
 
@@ -90,17 +81,20 @@ export default Ember.Controller.extend({
       var myPage = "myPage";
       var pageToAdd = document.getElementById("page-to-add");
       console.log(pageToAdd);
+      var _this = this;
       var data = {
         nickname: this.get("nickname"),
         page: document.getElementById("page-to-add").value
       }
+      var _this = this;
       var promise =  $.post({
         url: "http://192.241.235.59:1111/api/addUsersPage",
         data: JSON.stringify(data),
         dataType: "text"
       });
       promise.then(function(response){
-        console.log(response);
+        console.log("promise returned: ", response);
+        _this.send("getPages", _this);
       });
     }
   }

@@ -4,28 +4,23 @@
     {{nav-bar}}
     <section class="limit-width centered">
       {{#if isLoggedIn}}
-        <p>Hello {{nickname}}</p>
-        <br/>
-        <button {{action "getPages"}}> Get Pages </button>
-        <input id="page-to-add" value="Add a new page">
-        <button {{action "addPage"}}> Add page </button>
+        <h1>Dashboard</h1>
+        <p>Welcome back, {{nickname}}</p>
         <div>
+          <h3>My Pages:</h3>
           {{#each pages as |page|}}
-            page: {{#link-to "page" page }}{{page}}{{/link-to}}
+            {{#link-to "page" page }}{{page}}{{/link-to}}
             <br/>
           {{/each}}
         </div>
+        <input id="page-to-add" class="no-margin" value="Add a new page">
+        <button {{action "addPage"}}> Add page </button>
+
       {{else}}
-      <h1 class="main-heading">Sign Up or Log In</h1>
+      <h1 class="main-heading">Log In</h1>
+      <br/>
       <div class="centerizer pad-top">
-        <span>Name</span>
-        <br/>
-        <input type="text"/>
-        <br/>
-        <br/>
-        <button class="signup-db" {{action "authenticateUser"}}>Sign Up with Github</button>
-        <br/>
-        <span>User: {{model}}</span>
+        <button class="signup-db" {{action "authenticateUser"}}>Log In with Github</button>
       </div>
       {{/if}}
     </section>
