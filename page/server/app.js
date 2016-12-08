@@ -2,8 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var findOrCreate = require('mongoose-findorcreate');
-var http = require('http');
-
+var config = require('./config/database');
+var User = require('./model/user');
 var app = express();
 
 
@@ -19,14 +19,12 @@ app.use(function(req, res, next) {
    }
 });
 
+
 app.use(bodyParser.text({type:"*/*"}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(morgan('dev'));
 mongoose.connect(config.database);
 
-require('./config/passport')(passport);
-app.use(passport.initialize());
 
 var pageSchema = new mongoose.Schema({
   name: String,
