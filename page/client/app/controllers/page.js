@@ -29,21 +29,17 @@ export default Ember.Controller.extend({
       for(var i = 0; i < selectedNodes.length; i++){
         selectedNodes[i].classList.remove("selected-region");
       }
-      console.log("selectedNodes2", selectedNodes);
 
       var pageContent = pageNodes.innerHTML;
       var styleSheet = document.styleSheets[2];
       var cssArray = [];
       var pageCSS;
-      console.log(styleSheet.cssRules);
       if(styleSheet.cssRules != null){
         for(i = 0; i < styleSheet.cssRules.length; i++){
           cssArray.push(styleSheet.cssRules[i].cssText);
         }
         pageCSS = cssArray.join(" ");
-        console.log("pageCSS: ", pageCSS);
       }
-      console.log("model: ", this.get("model"));
       var htmlData = {
         name: this.get("model").name,
         html: pageContent,
@@ -55,7 +51,6 @@ export default Ember.Controller.extend({
         dataType: "text"
       });
       promise.then(function(response){
-        console.log(response);
       });
     },
 
@@ -173,13 +168,12 @@ export default Ember.Controller.extend({
     },
 
     changeCssRules: function(selector, ruleName, ruleValue){
-      var styleSheet = document.styleSheets[2];
+      var styleSheet = document.styleSheets[3];
       for(var i = 0; i < styleSheet.cssRules.length; i++){
         if(styleSheet.cssRules[i].selectorText === selector){
           if(ruleName === "" || ruleValue === ""){
             styleSheet.cssRules[i].style[camelCase(ruleName)] = "";
             styleSheet.cssRules[i].style.removeProperty(camelCase(ruleName));
-            console.log("tryna delete this shi");
           } else {
             styleSheet.cssRules[i].style[camelCase(ruleName)] = ruleValue;
           }
@@ -199,14 +193,11 @@ export default Ember.Controller.extend({
       for(var i = 0; i < styleSheet.cssRules.length; i++){
         if(styleSheet.cssRules[i].selectorText === selector){
           styleSheet.cssRules[i].style.setProperty("counter-reset", "value");
-          console.log("style: ", styleSheet.cssRules[i].style);
           break;
         }
       }
 
-      console.log("cssRules: ", styleSheet.cssRules);
       this.send("updateCssRules", this.get("selectedRegion").anchorElement);
-      console.log("adding Css Rule!");
     },
 
     selectParentNode: function(){
@@ -217,8 +208,7 @@ export default Ember.Controller.extend({
     },
 
     addCssStyle: function(){
-      console.log("adding CSS Style!!!");
-      var sheet = document.styleSheets[2];
+      var sheet = document.styleSheets[3];
       var region = this.get("selectedRegion");
       var selector = region.anchorElement.nodeName;
       for(var i = 0 ; i < region.anchorElement.classList.length; i++){
@@ -227,18 +217,14 @@ export default Ember.Controller.extend({
           selector += region.anchorElement.classList[i];
         }
       }
-      console.log("selector: ", selector);
-      sheet.addRule(selector, "color: red", 1);
+      sheet.addRule(selector, "color: red", 0);
       this.send("updateCssRules", this.get("selectedRegion").anchorElement);
-      console.log("Sheet:", document.styleSheets[2]);
     },
 
     removeCssStyle: function(selector){
-      console.log('removing!');
-      var styleSheet = document.styleSheets[2];
+      var styleSheet = document.styleSheets[3];
       for(var i = 0; i < styleSheet.cssRules.length; i++){
         if(styleSheet.cssRules[i].selectorText === selector){
-          console.log("styleSheet from remove:", styleSheet);
           styleSheet.deleteRule(i);
         }
       }
@@ -366,7 +352,6 @@ var Caret = {
 };
 
 document.onkeyup = function(e){
-  console.log("keyup: ", e.keyCode);
   if(e.keyCode === 27){
     var controller = Page.__container__.lookup("controller:editing-tests");
     var boundSend = controller.send.bind(controller);
@@ -380,7 +365,6 @@ document.addEventListener("keydown", function(e) {
     var controller = Page.__container__.lookup("controller:page");
     var boundSend = controller.send.bind(controller);
     boundSend('save');
-    console.log("saved!!!");
   }
 }, false);
 
@@ -395,14 +379,6 @@ var CssPage = function () {
 
 var cssPage = new CssPage();
 
-var promise =  Ember.$.ajax({
-  url: "http://192.241.235.59:1111/api/spoofhtml",
-  type: 'get'
-});
-promise.then(function(response){
-  console.log("response's css: ", response);
-  cssPage.setDocument(response.css);
-});
 
 function css(a) {
   var sheets = document.styleSheets, o = [];
@@ -419,6 +395,5 @@ function css(a) {
 }
 
 var camelCase = function(str){
-  console.log("str: ", str);
   return str.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
 };

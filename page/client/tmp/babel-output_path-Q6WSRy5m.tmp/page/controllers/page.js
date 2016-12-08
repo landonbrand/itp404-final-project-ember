@@ -27,21 +27,17 @@ define("page/controllers/page", ["exports", "ember"], function (exports, _ember)
         for (var i = 0; i < selectedNodes.length; i++) {
           selectedNodes[i].classList.remove("selected-region");
         }
-        console.log("selectedNodes2", selectedNodes);
 
         var pageContent = pageNodes.innerHTML;
         var styleSheet = document.styleSheets[2];
         var cssArray = [];
         var pageCSS;
-        console.log(styleSheet.cssRules);
         if (styleSheet.cssRules != null) {
           for (i = 0; i < styleSheet.cssRules.length; i++) {
             cssArray.push(styleSheet.cssRules[i].cssText);
           }
           pageCSS = cssArray.join(" ");
-          console.log("pageCSS: ", pageCSS);
         }
-        console.log("model: ", this.get("model"));
         var htmlData = {
           name: this.get("model").name,
           html: pageContent,
@@ -52,9 +48,7 @@ define("page/controllers/page", ["exports", "ember"], function (exports, _ember)
           data: JSON.stringify(htmlData),
           dataType: "text"
         });
-        promise.then(function (response) {
-          console.log(response);
-        });
+        promise.then(function (response) {});
       },
 
       cancelEdits: function cancelEdits() {
@@ -173,13 +167,12 @@ define("page/controllers/page", ["exports", "ember"], function (exports, _ember)
       },
 
       changeCssRules: function changeCssRules(selector, ruleName, ruleValue) {
-        var styleSheet = document.styleSheets[2];
+        var styleSheet = document.styleSheets[3];
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
           if (styleSheet.cssRules[i].selectorText === selector) {
             if (ruleName === "" || ruleValue === "") {
               styleSheet.cssRules[i].style[camelCase(ruleName)] = "";
               styleSheet.cssRules[i].style.removeProperty(camelCase(ruleName));
-              console.log("tryna delete this shi");
             } else {
               styleSheet.cssRules[i].style[camelCase(ruleName)] = ruleValue;
             }
@@ -199,14 +192,11 @@ define("page/controllers/page", ["exports", "ember"], function (exports, _ember)
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
           if (styleSheet.cssRules[i].selectorText === selector) {
             styleSheet.cssRules[i].style.setProperty("counter-reset", "value");
-            console.log("style: ", styleSheet.cssRules[i].style);
             break;
           }
         }
 
-        console.log("cssRules: ", styleSheet.cssRules);
         this.send("updateCssRules", this.get("selectedRegion").anchorElement);
-        console.log("adding Css Rule!");
       },
 
       selectParentNode: function selectParentNode() {
@@ -217,8 +207,7 @@ define("page/controllers/page", ["exports", "ember"], function (exports, _ember)
       },
 
       addCssStyle: function addCssStyle() {
-        console.log("adding CSS Style!!!");
-        var sheet = document.styleSheets[2];
+        var sheet = document.styleSheets[3];
         var region = this.get("selectedRegion");
         var selector = region.anchorElement.nodeName;
         for (var i = 0; i < region.anchorElement.classList.length; i++) {
@@ -227,18 +216,14 @@ define("page/controllers/page", ["exports", "ember"], function (exports, _ember)
             selector += region.anchorElement.classList[i];
           }
         }
-        console.log("selector: ", selector);
-        sheet.addRule(selector, "color: red", 1);
+        sheet.addRule(selector, "color: red", 0);
         this.send("updateCssRules", this.get("selectedRegion").anchorElement);
-        console.log("Sheet:", document.styleSheets[2]);
       },
 
       removeCssStyle: function removeCssStyle(selector) {
-        console.log('removing!');
-        var styleSheet = document.styleSheets[2];
+        var styleSheet = document.styleSheets[3];
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
           if (styleSheet.cssRules[i].selectorText === selector) {
-            console.log("styleSheet from remove:", styleSheet);
             styleSheet.deleteRule(i);
           }
         }
@@ -362,7 +347,6 @@ define("page/controllers/page", ["exports", "ember"], function (exports, _ember)
   };
 
   document.onkeyup = function (e) {
-    console.log("keyup: ", e.keyCode);
     if (e.keyCode === 27) {
       var controller = Page.__container__.lookup("controller:editing-tests");
       var boundSend = controller.send.bind(controller);
@@ -376,7 +360,6 @@ define("page/controllers/page", ["exports", "ember"], function (exports, _ember)
       var controller = Page.__container__.lookup("controller:page");
       var boundSend = controller.send.bind(controller);
       boundSend('save');
-      console.log("saved!!!");
     }
   }, false);
 
@@ -389,15 +372,6 @@ define("page/controllers/page", ["exports", "ember"], function (exports, _ember)
   };
 
   var cssPage = new CssPage();
-
-  var promise = _ember["default"].$.ajax({
-    url: "http://192.241.235.59:1111/api/spoofhtml",
-    type: 'get'
-  });
-  promise.then(function (response) {
-    console.log("response's css: ", response);
-    cssPage.setDocument(response.css);
-  });
 
   function css(a) {
     var sheets = document.styleSheets,
@@ -415,7 +389,6 @@ define("page/controllers/page", ["exports", "ember"], function (exports, _ember)
   }
 
   var camelCase = function camelCase(str) {
-    console.log("str: ", str);
     return str.replace(/-([a-z])/g, function (g) {
       return g[1].toUpperCase();
     });

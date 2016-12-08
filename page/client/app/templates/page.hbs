@@ -1,5 +1,6 @@
-{{navbar}}
+
 {{outlet}}
+{{navbar}}
 <div id="sidebar">
   {{#if selectedRegion}}
     <section id="sidebar-top">
@@ -36,6 +37,11 @@
     }}
   {{else}}
   {{/if}}
+  <br/>
+  <br/>
+  <p>CMD + S to save</p>
+  <p>Click on elements in the page to edit them </p>
+  {{#link-to "dashboard"}}return to dashboard{{/link-to}}
 </div>
 
 <div class="container" {{action 'mouseUpOnEdits'}}>
