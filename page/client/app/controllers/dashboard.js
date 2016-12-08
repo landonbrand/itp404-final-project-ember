@@ -5,7 +5,7 @@ export default Ember.Controller.extend({
   auth0 : new Auth0({
     domain:       'landonbrand.auth0.com',
     clientID:     'JLAa4IzlUImrFFUqkri3OFyeCRgDArox',
-    callbackURL:  'http://localhost:4200/dashboard',
+    callbackURL:  'http://page.surge.sh/dashboard',
     responseType: 'token'
   }),
 

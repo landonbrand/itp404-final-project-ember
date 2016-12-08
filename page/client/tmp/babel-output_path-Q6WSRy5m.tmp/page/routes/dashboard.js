@@ -1,3 +1,0 @@
-define('page/routes/dashboard', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Route.extend({});
-});
