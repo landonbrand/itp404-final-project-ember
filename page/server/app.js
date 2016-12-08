@@ -56,7 +56,7 @@ app.get('/api/getuserspages', function(request, response) {
         response.send(updatedDoc);
       });
     } else {
-      User.find({}, function(err, doc){
+      User.findOne({'nickname' : request.query.nickname }, function(err, doc){
         console.log("user's pages", doc);
         response.json(doc);
       });
