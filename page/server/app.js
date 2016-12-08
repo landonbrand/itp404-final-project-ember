@@ -45,28 +45,21 @@ app.use(passport.initialize());
 
 app.get('/api/getuserspages', function(request, response) {
   var obj = {response: "got"};
-  console.log("Request body: ", request.query.nickname);
-  // User.findOne({ 'nickname' : request.body.name }, function(err, doc){
-  //   if (err) return handleError(err);
-  //   if (doc == null){
-  //     var newDoc = new PageModel({ name: request.query.name });
-  //     newDoc.name = obj.name;
-  //     newDoc.html = obj.html;
-  //     newDoc.css = obj.css;
-  //     newDoc.save(function (err, updatedDoc) {
-  //       if (err) return handleError(err);
-  //       response.send(updatedDoc);
-  //     });
-  //   } else {
-  //     doc.name = obj.name;
-  //     doc.html = obj.html;
-  //     doc.css = obj.css;
-  //     doc.save(function (err, updatedDoc) {
-  //       if (err) return handleError(err);
-  //       response.send(updatedDoc);
-  //     });
-  //   }
-  // });
+  console.log("nickname: ", request.query.nickname, "\n");
+  User.findOne({ 'nickname' : request.body.name }, function(err, doc){
+    if (err) return handleError(err);
+    if (doc == null){
+      console.log(request.body.name, "does not exist, making them now.");
+      var newDoc = new User({ nickname: request.query.name });
+      newDoc.pages = [];
+      newDoc.save(function (err, updatedDoc) {
+        if (err) return handleError(err);
+        response.send(updatedDoc);
+      });
+    } else {
+      console.log(request.body.name, "exists");
+    }
+  });
   response.json(obj);
 });
 
