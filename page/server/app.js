@@ -63,11 +63,12 @@ app.get('/api/getuserspages', function(request, response) {
 });
 
 app.post('/api/adduserspage', function(request, response) {
-  console.log("query: ", JSON.parse(request.query));
-  console.log("nickname: ", request.query.nickname, "\n");
-  User.findOne({ 'nickname' : request.query.nickname }, function(err, doc){
+  console.log("query: ", JSON.parse(request.body));
+  var bod = JSON.parse(request.body);
+  console.log("nickname: ", bod.nickname, "\n");
+  User.findOne({ 'nickname' : bod.nickname }, function(err, doc){
     if (err) return handleError(err);
-    doc.pages.push(request.query.page);
+    doc.pages.push(bod.page);
     res.json(doc);
   });
 });
