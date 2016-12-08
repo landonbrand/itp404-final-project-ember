@@ -56,11 +56,10 @@ app.get('/api/getuserspages', function(request, response) {
         response.send(updatedDoc);
       });
     } else {
-      console.log(request.query.nickname, "exists");
       User.find({}, function(err, doc){
-        console.log("users", doc);
+        console.log("user's pages", doc.pages);
+        response.json(doc.pages);
       });
-      response.json(doc);
     }
   });
 });

@@ -60,7 +60,7 @@ define("page/templates/dashboard", ["exports"], function (exports) {
           morphs[2] = dom.createElementMorph(element3);
           return morphs;
         },
-        statements: [["content", "nickname", ["loc", [null, [7, 17], [7, 29]]], 0, 0, 0, 0], ["element", "action", ["testApi"], [], ["loc", [null, [9, 16], [9, 36]]], 0, 0], ["element", "action", ["addPage"], [], ["loc", [null, [10, 16], [10, 36]]], 0, 0]],
+        statements: [["content", "nickname", ["loc", [null, [7, 17], [7, 29]]], 0, 0, 0, 0], ["element", "action", ["getPages"], [], ["loc", [null, [9, 16], [9, 37]]], 0, 0], ["element", "action", ["addPage"], [], ["loc", [null, [10, 16], [10, 36]]], 0, 0]],
         locals: [],
         templates: []
       };

@@ -58,7 +58,7 @@ export default Ember.Controller.extend({
       });
     },
 
-    testApi: function() {
+    getPages: function() {
       var obj = {nickname: this.get("nickname")};
       var promise =  Ember.$.ajax({
         url: "http://192.241.235.59:1111/api/getuserspages",
@@ -86,6 +86,5 @@ export default Ember.Controller.extend({
       promise.then(function(response){
         console.log(response);
       });
-    }
-  }
+    },
 });
