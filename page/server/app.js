@@ -63,7 +63,7 @@ app.get('/api/getuserspages', function(request, response) {
 });
 
 app.post('/api/adduserspage', function(request, response) {
-  console.log("query: ", request.query);
+  console.log("query: ", JSON.parse(request.query));
   console.log("nickname: ", request.query.nickname, "\n");
   User.findOne({ 'nickname' : request.query.nickname }, function(err, doc){
     if (err) return handleError(err);
