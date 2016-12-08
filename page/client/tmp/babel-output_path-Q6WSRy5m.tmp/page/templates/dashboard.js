@@ -38,7 +38,7 @@ define("page/templates/dashboard", ["exports"], function (exports) {
           var el1 = dom.createTextNode("\n        ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("button");
-          var el2 = dom.createTextNode(" Test API ");
+          var el2 = dom.createTextNode(" Get Pages ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n        ");

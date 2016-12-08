@@ -56,7 +56,8 @@ define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _e
         });
       },
 
-      testApi: function testApi() {
+      getPages: function getPages() {
+        console.log("getting pages!");
         var obj = { nickname: this.get("nickname") };
         var promise = _ember['default'].$.ajax({
           url: "http://192.241.235.59:1111/api/getuserspages",
@@ -84,24 +85,7 @@ define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _e
         promise.then(function (response) {
           console.log(response);
         });
-      },
-
-      getPages: function getPages() {
-        var myPage = "myPage";
-        var data = {
-          nickname: this.get("nickname"),
-          page: myPage
-        };
-        var promise = $.post({
-          url: "http://192.241.235.59:1111/api/addUsersPage",
-          data: JSON.stringify(data),
-          dataType: "text"
-        });
-        promise.then(function (response) {
-          console.log(response);
-        });
       }
-
     }
   });
 });

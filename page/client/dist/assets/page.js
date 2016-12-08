@@ -224,7 +224,8 @@ define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _e
         });
       },
 
-      testApi: function testApi() {
+      getPages: function getPages() {
+        console.log("getting pages!");
         var obj = { nickname: this.get("nickname") };
         var promise = _ember['default'].$.ajax({
           url: "http://192.241.235.59:1111/api/getuserspages",
@@ -252,24 +253,7 @@ define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _e
         promise.then(function (response) {
           console.log(response);
         });
-      },
-
-      getPages: function getPages() {
-        var myPage = "myPage";
-        var data = {
-          nickname: this.get("nickname"),
-          page: myPage
-        };
-        var promise = $.post({
-          url: "http://192.241.235.59:1111/api/addUsersPage",
-          data: JSON.stringify(data),
-          dataType: "text"
-        });
-        promise.then(function (response) {
-          console.log(response);
-        });
       }
-
     }
   });
 });
@@ -2543,7 +2527,7 @@ define("page/templates/dashboard", ["exports"], function (exports) {
           var el1 = dom.createTextNode("\n        ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("button");
-          var el2 = dom.createTextNode(" Test API ");
+          var el2 = dom.createTextNode(" Get Pages ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n        ");

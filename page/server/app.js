@@ -57,8 +57,8 @@ app.get('/api/getuserspages', function(request, response) {
       });
     } else {
       User.find({}, function(err, doc){
-        console.log("user's pages", doc.pages);
-        response.json(doc.pages);
+        console.log("user's pages", doc);
+        response.json(doc);
       });
     }
   });
@@ -71,7 +71,7 @@ app.post('/api/adduserspage', function(request, response) {
   User.findOne({ 'nickname' : bod.nickname }, function(err, doc){
     if (err) return handleError(err);
     if(doc.pages.indexOf(bod.page > -1)){
-      console.log("page already exists...");
+      console.log("page already is part...");
     } else {
       doc.pages.push(bod.page);
     }
