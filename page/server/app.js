@@ -19,8 +19,6 @@ app.use(function(req, res, next) {
    }
 });
 
-app.use(session({secret: 'mySecretKey'}));
-
 app.use(bodyParser.text({type:"*/*"}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
