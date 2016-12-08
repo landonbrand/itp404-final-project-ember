@@ -67,7 +67,7 @@ app.post('/api/adduserspage', function(request, response) {
   console.log("nickname: ", request.query.nickname, "\n");
   User.findOne({ 'nickname' : request.query.nickname }, function(err, doc){
     if (err) return handleError(err);
-    doc.pages.push(request.qury.page);
+    doc.pages.push(request.query.page);
     res.json(doc);
   });
 });
