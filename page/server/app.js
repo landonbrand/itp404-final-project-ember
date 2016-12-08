@@ -4,20 +4,7 @@ var mongoose = require('mongoose');
 var findOrCreate = require('mongoose-findorcreate');
 var http = require('http');
 
-var morgan = require('morgan');
-var passport = require('passport');
-var config = require('./config/database');
-var User = require('./model/user');
-var jwt = require('jwt-simple');
-
-var util = require('util');
-var session = require('express-session');
-var methodOverride = require('method-override');
-
 var app = express();
-
-var GITHUB_CLIENT_ID = "90c810f2ae9f6b8c1a9e";
-var GITHUB_CLIENT_SECRET = "56acd69b369c551e85a624fd9b48249ff9bbfc85";
 
 
 app.use(function(req, res, next) {
