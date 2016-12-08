@@ -225,9 +225,10 @@ define('page/controllers/dashboard', ['exports', 'ember'], function (exports, _e
       },
 
       testApi: function testApi() {
+        var obj = { nickname: this.get("nickname") };
         var promise = _ember['default'].$.ajax({
           url: "http://192.241.235.59:1111/api/getuserspages",
-          data: { nickname: this.get("nickname") },
+          data: obj,
           dataType: "json",
           type: 'get'
         });
